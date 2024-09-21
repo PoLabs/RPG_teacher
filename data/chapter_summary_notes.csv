@@ -1,54 +1,68 @@
-document_type	document	chapter	data_type	text	key
-text_book	digital_marketing	7	chapter_name	WEB DEVELOPMENT AND DESIGN	
-text_book	digital_marketing	7	summary_note	Designing your website according to best practices, following the process of developing a website from start to finish. 	
-text_book	digital_marketing	7	summary_note	Developing a strong, stable, and usable website.	
-text_book	digital_marketing	7	summary_note	Creating a suitable mobile web experience for your users.	
-text_book	digital_marketing	7	summary_note	Enhancing user experience through design and guiding a visitor seamlessly through a website, as opposed to distracting visitors from their goals.	
-text_book	digital_marketing	7	summary_note	Ensuring consistency in visual messaging across all properties.	
-text_book	digital_marketing	7	summary_note	Supporting a wide range of web browsers and mobile devices.	
-text_book	digital_marketing	7	question	What are some key design elements you would ensure were included when designing a website? 	1
-text_book	digital_marketing	7	question	Why is it so important to realistically assess the needs of your site before development?	2
-text_book	digital_marketing	7	question	What do you think are the biggest challenges for optimising your design across multiple devices? 	3
-text_book	digital_marketing	7	question	What, to you, is the most important step in web development?	4
-text_book	digital_marketing	7	question	What role does a website play in an overall digital marketing strategy?	5
-text_book	digital_marketing	12	chapter_name	CONTENT CREATION: VIDEO	
-text_book	digital_marketing	12	summary_note	Video has become an integral part of the online world. The potential for exposure, as well as interaction, is massive and brands that fail to capitalise on this, risk being left behind as competitors build thriving communities.	
-text_book	digital_marketing	12	summary_note	As with most content, it is up to the brand to decide how to represent its video content. Videos can be hosted on popular video-sharing websites to capitalise on already existing audiences and developed interfaces, or on bespoke websites that allow for free reign in customisation.	
-text_book	digital_marketing	12	summary_note	Brands should then aim to optimise their videos on the chosen platforms to increase their visibility on search engines.	
-text_book	digital_marketing	12	summary_note	Creating a healthy community is also important in increasing exposure. Very rarely, if ever, does an audience come to video content without input from the creators. On top of optimising for search and other tweaks, brands should upload content regularly or risk losing any ground gained.	
-text_book	digital_marketing	12	summary_note	Social media should be considered as its platforms allow for the sharing of content, and commentary. Overall, brands should be aware that there is no quick fix for video. It requires planning and investment, as well as long-term commitment to creating brand advocates.	
-text_book	digital_marketing	12	question	Why should commenting on videos be encouraged?	1
-text_book	digital_marketing	12	question	What sort of personalisation would the self-hosting of a video allow?	2
-text_book	digital_marketing	12	question	How do you feel social media affects video marketing? Justify your answer.	3
-text_book	digital_marketing	12	question	What possible obstacles could a brand face when seeding a viral video?	4
-text_book	digital_marketing	13	chapter_name	SOCIAL MEDIA 	5
-text_book	digital_marketing	13	summary_note	Social media refers to the creation and sharing of content by consumers on the internet. It gives all internet users, including bran	
-text_book	digital_marketing	13	summary_note	Social media refers to a collection of sites and platforms that include the following activities: Creating and engaging in social networks. Generating and sharing content. Using other internet users’ preferences to find content.	
-text_book	digital_marketing	13	summary_note	Most social media services are free to all users and rely on advertising for revenue. Social media provides targeted demographic information to advertisers looking to direct their advertising.	
-text_book	digital_marketing	13	summary_note	In this chapter, we have discussed some of the main platforms, but there are many other smaller niche platforms, such as Tumblr, Vine, Spotify and SlideShare.	
-text_book	digital_marketing	13	question	Why is transparency so important to marketing that uses social media? Has this halted or accelerated the use of social media for marketing?	1
-text_book	digital_marketing	13	question	What is the difference between social media advertising and social media marketing? What are the benefits of social media to each, and what are the challenges?	2
-					
-					
-					
-					
-					
-fantasy_novel	hobbit	1	chapter_name	An Unexpected Party	
-fantasy_novel	hobbit	2	chapter_name	Roast Mutton	
-fantasy_novel	hobbit	3	chapter_name	A Short Rest	
-fantasy_novel	hobbit	4	chapter_name	Over Hill and Under Hill	
-fantasy_novel	hobbit	5	chapter_name	Riddles in the Dark	
-fantasy_novel	hobbit	6	chapter_name	Out of the Frying-Pan into the Fire	
-fantasy_novel	hobbit	7	chapter_name	Queer Lodgings	
-fantasy_novel	hobbit	8	chapter_name	Flies and Spiders	
-fantasy_novel	hobbit	9	chapter_name	Barrels out of Bond	
-fantasy_novel	hobbit	10	chapter_name	A Warm Welcome	
-fantasy_novel	hobbit	11	chapter_name	On the Doorstep	
-fantasy_novel	hobbit	12	chapter_name	Inside Information	
-fantasy_novel	hobbit	13	chapter_name	Not at Home	
-fantasy_novel	hobbit	14	chapter_name	Fire and Water	
-fantasy_novel	hobbit	15	chapter_name	The Gathering of the Clouds	
-fantasy_novel	hobbit	16	chapter_name	A Thief in the Night	
-fantasy_novel	hobbit	17	chapter_name	The Clouds Burst	
-fantasy_novel	hobbit	18	chapter_name	The Return Journey	
-fantasy_novel	hobbit	19	chapter_name	The Last Stage 	
+document_type,document,chapter,data_type,text,key
+text_book,digital_marketing,7,chapter_name,WEB DEVELOPMENT AND DESIGN,
+text_book,digital_marketing,7,summary_note,Designing your website according to best practices  following the process of developing a website from start to finish.  ,
+text_book,digital_marketing,7,summary_note,Developing a strong  stable  and usable website.  ,
+text_book,digital_marketing,7,summary_note,Creating a suitable mobile web experience for your users.,
+text_book,digital_marketing,7,summary_note,Enhancing user experience through design and guiding a visitor seamlessly through a website  as opposed to distracting visitors from their goals. ,
+text_book,digital_marketing,7,summary_note,Ensuring consistency in visual messaging across all properties.,
+text_book,digital_marketing,7,summary_note,Supporting a wide range of web browsers and mobile devices.,
+text_book,digital_marketing,7,question,What are some key design elements you would ensure were included when designing a website? ,1
+text_book,digital_marketing,7,question,Why is it so important to realistically assess the needs of your site before development?,2
+text_book,digital_marketing,7,question,What do you think are the biggest challenges for optimising your design across multiple devices? ,3
+text_book,digital_marketing,7,question,What  to you  is the most important step in web development?  ,4
+text_book,digital_marketing,7,question,What role does a website play in an overall digital marketing strategy?,5
+text_book,digital_marketing,12,chapter_name,CONTENT CREATION: VIDEO,
+text_book,digital_marketing,12,summary_note,Video has become an integral part of the online world. The potential for exposure  as well as interaction  is massive and brands that fail to capitalise on this  risk being left behind as competitors build thriving communities.   ,
+text_book,digital_marketing,12,summary_note,As with most content  it is up to the brand to decide how to represent its video content. Videos can be hosted on popular video-sharing websites to capitalise on already existing audiences and developed interfaces  or on bespoke websites that allow for free reign in customisation.  ,
+text_book,digital_marketing,12,summary_note,Brands should then aim to optimise their videos on the chosen platforms to increase their visibility on search engines.,
+text_book,digital_marketing,12,summary_note,Creating a healthy community is also important in increasing exposure. Very rarely  if ever  does an audience come to video content without input from the creators. On top of optimising for search and other tweaks  brands should upload content regularly or risk losing any ground gained.   ,
+text_book,digital_marketing,12,summary_note,Social media should be considered as its platforms allow for the sharing of content  and commentary. Overall  brands should be aware that there is no quick fix for video. It requires planning and investment  as well as long-term commitment to creating brand advocates.   ,
+text_book,digital_marketing,12,question,Why should commenting on videos be encouraged?,1
+text_book,digital_marketing,12,question,What sort of personalisation would the self-hosting of a video allow?,2
+text_book,digital_marketing,12,question,How do you feel social media affects video marketing? Justify your answer.,3
+text_book,digital_marketing,12,question,What possible obstacles could a brand face when seeding a viral video?,4
+text_book,digital_marketing,13,chapter_name,SOCIAL MEDIA ,5
+text_book,digital_marketing,13,summary_note,"Social media refers to the creation and sharing of content by consumers on the internet. It gives all internet users, including brands and organisations, the opportunity to become both creators and consumers of content.",
+text_book,digital_marketing,13,summary_note,Social media refers to a collection of sites and platforms that include the following activities: Creating and engaging in social networks. Generating and sharing content. Using other internet users’ preferences to find content.,
+text_book,digital_marketing,13,summary_note,Most social media services are free to all users and rely on advertising for revenue. Social media provides targeted demographic information to advertisers looking to direct their advertising.,
+text_book,digital_marketing,13,summary_note,"In this chapter  we have discussed some of the main platforms  but there are many other smaller niche platforms  such as Tumblr    Vine ,  Spotify and SlideShare.    ",
+text_book,digital_marketing,13,question,Why is transparency so important to marketing that uses social media? Has this halted or accelerated the use of social media for marketing?,1
+text_book,digital_marketing,13,question,What is the difference between social media advertising and social media marketing? What are the benefits of social media to each  and what are the challenges? ,2
+fantasy_novel,hobbit,1,chapter_name,An Unexpected Party,
+fantasy_novel,hobbit,1,summary_note,"The wizard Gandalf invites the hobbit Bilbo Baggins to go on an adventure. Bilbo declines but invites him to come to tea the following day. Next afternoon, Gandalf and thirteen dwarves come to Bilbo's place and share their adventurous plan and a map with him. The head dwarf, Thorin, wants Bilbo's help as a ""burglar"" to reclaim his ancestors' treasure, taken by the dragon Smaug years ago and guarded by it in the Lonely Mountain.",
+fantasy_novel,hobbit,2,chapter_name,Roast Mutton,
+fantasy_novel,hobbit,2,summary_note,"Bilbo meets the dwarves at an inn, and they start their journey. The company meets a group of trolls eating around a fire. The dwarves are imprisoned by them but saved by Gandalf, who deceives the trolls until they are turned into stones by the sunlight. Gandalf, Bilbo, and the dwarves find the trolls' caves and take their well-wrought weapons.",
+fantasy_novel,hobbit,3,chapter_name,A Short Rest,
+fantasy_novel,hobbit,3,summary_note,"The company stops at Rivendell, a city of elves. They are invited to eat, rest, and meet Elrond, the great chief elf. Elrond reveals that the swords the companions took from the trolls are famous goblin-killers and he also deciphers some instructions on the dwarves' map.",
+fantasy_novel,hobbit,4,chapter_name,Over Hill and Under Hill,
+fantasy_novel,hobbit,4,summary_note,"As the company advances upon the Misty Mountains, a thunderstorm breaks, and they find shelter in a cave. In the middle of the night, Bilbo and the dwarves are attacked by goblins and taken to their leader. When these discover their goblin-killer swords, the Great Goblin attacks Thorin, but Gandalf saves them again and takes them deeper into the mountain. The goblins follow and attack the dwarf carrying Bilbo, who falls and loses consciousness.",
+fantasy_novel,hobbit,5,chapter_name,Riddles in the Dark,
+fantasy_novel,hobbit,5,summary_note,"After Bilbo regains consciousness, he finds a ring and puts it in his pocket. As he searches for the dwarves, he comes across an underground lake and a creature named Gollum, who proposes a riddle game. If Gollum wins, he will eat Bilbo; if he loses, he will show Bilbo the way out of the mountain. Bilbo wins, but Gollum, still intending to eat him, searches for his magic ring, which can make its wearer invisible. Gollum realizes Bilbo has his ring and attacks him, but Bilbo slips the ring on accidentally and manages to escape.",
+fantasy_novel,hobbit,6,chapter_name,Out of the Frying-Pan into the Fire,
+fantasy_novel,hobbit,6,summary_note,"Bilbo stumbles upon Gandalf and the dwarves, slips off the magic ring, and surprises them. As the company proceeds on their journey, they hear howls and go up some trees to hide but are sieged by wolflike creatures called Wargs. Gandalf throws flames at them and manages to scare some, but they notify the goblins, who light fires under their trees. The company is saved by great eagles, who are friends of Gandalf's and enemies of the goblins.",
+fantasy_novel,hobbit,7,chapter_name,Queer Lodgings,
+fantasy_novel,hobbit,7,summary_note,"Gandalf takes the group to the house of Beorn, a half-man, half-bear creature. Beorn provides them with food and lodging, and recommends they take the northern pass through Mirkwood, the last obstacle before the Lonely Mountain, to avoid an attack by the Wargs and goblins. Beorn and Gandalf warn the group to never stray from the path.",
+fantasy_novel,hobbit,8,chapter_name,Flies and Spiders,
+fantasy_novel,hobbit,8,summary_note,"As Bilbo and the dwarves cross the ominous forest of Mirkwood, they leave the path toward some lights and are trapped by enormous spiders. Using his magic ring, Bilbo frees himself and the dwarves from the spiders, and the companions retreat to a clearing used by wood elves. They realize Thorin is missing, although they are not aware he has been imprisoned by the wood elves after refusing to reveal to their king the purpose of their journey.",
+fantasy_novel,hobbit,9,chapter_name,Barrels out of Bond,
+fantasy_novel,hobbit,9,summary_note,"The other dwarves are captured by the wood elves and Bilbo follows them, invisible. After refusing to tell the Elvenking where they are going, they are also thrown into the dungeon. Bilbo steals the keys from a guardsman, frees the dwarves, puts them inside empty barrels the elves use to exchange goods with men in Lake Town, hops onto a barrel, and they escape along the river.",
+fantasy_novel,hobbit,10,chapter_name,A Warm Welcome,
+fantasy_novel,hobbit,10,summary_note,"At Lake Town, a human city, the barrels with the dwarves are brought to shore and, while the men and elves are away, Bilbo frees his companions. Thorin tells the Master of Lake Town who he is and what he plans to do in the Lonely Mountain. The people rejoice with the news, provide the company with provisions, and they set off up the lake.",
+fantasy_novel,hobbit,11,chapter_name,On the Doorstep,
+fantasy_novel,hobbit,1,summary_note,"When Bilbo and the dwarves reach the foot of the Lonely Mountain, they search for the secret door described on their map, find it, but can't remember how to open it. One day, when Bilbo sees a thrush knocking a snail with its beak, he remembers the message on the map, and they manage to open the secret door and look into the mountain.",
+fantasy_novel,hobbit,12,chapter_name,Inside Information,
+fantasy_novel,hobbit,12,summary_note,"Bilbo enters the mountain and steals a golden cup while Smaug sleeps. The dragon awakes and flies around the mountain, but the companions hide while Smaug chases their ponies away. Bilbo returns to the dragon's lair using his ring, but Smaug questions Bilbo. He answers only in riddles, flatters Smaug, notices an opening in its armor, and rushes back to the passage where his companions are, telling them what he saw while a thrush seems to listen. The dragon roars, they shut the door to the passage, and an avalanche traps them.",
+fantasy_novel,hobbit,13,chapter_name,Not at Home,
+fantasy_novel,hobbit,13,summary_note,"Thinking the people from Lake Town are responsible for the theft, Smaug flies toward the town for revenge, and the company sneaks into its chamber. Bilbo secretly takes the Arkenstone, a gem that Thorin wants, and Thorin gives him a beautiful coat. Thorin leads them out of the mountain and to an old guard-post cavern, where they wonder about Smaug.",
+fantasy_novel,hobbit,14,chapter_name,Fire and Water,
+fantasy_novel,hobbit,14,summary_note,"Smaug flies over Lake Town and lights every roof on fire. People abandon the town, but the thrush tells Bard, the archers' captain, about the opening on the dragon's armor and Bard kills Smaug, who destroys the rest of Lake Town as he falls down dead. The wood elves hear of Smaug's death and come to help. Then humans and elves decide to go to Lonely Mountain to get some of the treasure to rebuild the town.",
+fantasy_novel,hobbit,15,chapter_name,The Gathering of the Clouds,
+fantasy_novel,hobbit,15,summary_note,"The thrush asks an old raven to tell Bilbo and the dwarves about Smaug's death and the army of humans and elves coming their way. Thorin and the company retreat to the mountain and fortify the main gate. Bard and the elves ask the dwarves to share some of their treasure to rebuild the town, but Thorin refuses, and the men and elves besiege the mountain.",
+fantasy_novel,hobbit,16,chapter_name,A Thief in the Night,
+fantasy_novel,hobbit,16,summary_note,"Using the magic ring, Bilbo sneaks out of the mountain and gives Bard the Arkenstone to be used as a bargaining chip against Thorin. On his way back to the mountain, Bilbo runs into Gandalf, who compliments him for his brave deeds.",
+fantasy_novel,hobbit,17,chapter_name,The Clouds Burst,
+fantasy_novel,hobbit,17,summary_note,"In the morning, as Bard returns to bargain with Thorin over the Arkenstone, Bilbo reveals he was the one who gave the gem away, claiming it as his payment. Thorin agrees to give the men part of the treasure, but an army of his relatives, led by Dain, threatens the elves and men. When an army of goblins and Wargs arrive, the dwarves, humans, and elves unite against them. As the evil armies advance, Bilbo sees eagles flying toward the battlefield, just before a stone falls from the mountain and knocks Bilbo unconscious.",
+fantasy_novel,hobbit,18,chapter_name,The Return Journey,
+fantasy_novel,hobbit,18,summary_note,"When Bilbo awakes, he learns that Thorin is mortally wounded, but that the eagles and Beorn have helped their side win the battle. The dead are buried, Dain is crowned the new King under the Mountain, the dwarves make peace with men and elves, and Bard sends the Master of Lake Town gold and gives Bilbo some of the treasure. Bilbo travels toward home with Gandalf and Beorn, and they spend the winter feasting at Beorn's house.",
+fantasy_novel,hobbit,19,chapter_name,The Last Stage ,
+,,19,summary_note,"Bilbo and Gandalf spend a week in Rivendell, where Gandalf and Elrond exchange tales of great deeds. When Bilbo reaches his home in Hobbiton, he learns he has been presumed dead and his things are being auctioned off. Although he manages to recover his possessions, Bilbo is never again accepted by the other hobbits. He doesn't mind, as he is often visited by a wizard, elves, and dwarves now, and still enjoys all the comforts of his place.",
