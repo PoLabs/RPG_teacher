@@ -1,0 +1,26 @@
+182
+
+CLAIMING
+743 Development frameworks 
+The backend of a website refers to the serverside layer This layer is hidden from the users 
+view The interaction between the user and the backend is handled via a presentation layer 
+known as the frontend or clientside layer A website is a marriage between these layers 
+Ferguson 2016 
+Backendserverside languages and frameworks 
+Serverside languages are the hidden web coding languages that determine how your website 
+works and communicates with the web server and your computer
+When choosing a serverside language you need to consider
+Cost The cost varies depending on the language you choose for your web development 
+project as some are more intricate than others the developer may charge more The language 
+chosen may therefore directly influence the salary of the developer If information is processed 
+where your website is housed as opposed to on the clients computer it increases the costs 
+Some languages also require ongoing website management and maintenance which is an 
+additional cost to consider 
+Scalability When planning a project where scalability is a factorconsider whether there 
+are developers readily available to write in this language Also find out if there are supporting 
+libraries and frameworks available that may suit possible changes to your project 
+Some of the most common and popular serverside languages include PHP JavaRuby NET 
+and Python Ask your web developer to advise you on the best language for your specific project 
+Ferguson 2016 Some common backend frameworks are Laravel CodeIgniter Sympfony 
+cakePHP and Zend
+Figure 75 Logos for some popular backend developing languages

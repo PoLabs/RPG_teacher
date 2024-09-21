@@ -1,0 +1,33 @@
+666
+
+ANALYSING
+Wishpond 2016 provides a threestep formula for creating an AB Testing Hypothesis 
+Step 1
+Conversion problem
+Why arent the people converting
+Step 2
+Proposed solution
+What tests can be run to fix the conversion problem
+Step 3
+Impact statement
+How do you anticipate your proposed solution will affect the conversion problem
+Figure 2110 Threestep formula for creating an AB testing hypothesis
+You now have a sound AB testing hypothesis 
+2155 Run tests 
+Implement the tracking code needed to run your tests Most testing software uses cookies to 
+ensure that return visitors see the same version of the test they saw initially You will also need 
+to put tracking code on your conversion page Before taking your test live make sure that the 
+tracking code does not conflict with any other code on your website 
+If everything checks out take your test live and wait for the data to be collected Check in 
+regularly to see how the test is proceeding and wait for a statistically significant outcome 
+2156 Report and repeat 
+When you have a result its time to report on it Refer back to your null hypothesis to determine 
+if the outcome was as expected and if it was statistically significant In your report you should 
+include why things went as expected or why not 
+Implement the betterperforming solution and plan your next test There is always something 
+you can improve 
+216 TOOLS OF THE TRADE 
+Online conversion optimisation relies on being able to record which version of a test a web 
+visitor sees and whether or not that visitor converted To avoid confusion a returning visitor 
+should also see the same version they saw the first time to avoid confusion There are many 
+software solutions that can help you 

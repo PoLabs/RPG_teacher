@@ -1,0 +1,39 @@
+635
+Tracking and analysis
+Explorations
+The second button on the navigation panel is Explorations This is a set of advanced techniques 
+that go further than standard reports to help you find out more about your customers behaviour 
+Under Explorations you can access data and analytical techniques that you cant find in reports
+An exploration consists of three sections  The large area on the right that shows your data 
+using the selected technique is called the canvas It can have multiple tabs which allows you 
+to use multiple techniques in a single exploration The default technique for a blank exploration 
+is the freeform table Lets look at the techniques on offer
+	
+Freeform exploration sets out your data in a crosstab layout You can use different visual
+isations such as bar charts pie charts line charts scatter plots and geo maps 
+	
+Cohort exploration gathers data about the behaviour of users that share common attributes 
+	
+Funnel exploration visualises the users steps necessary to complete a task on your site or 
+app so that you can see how to optimise user experience
+	
+Segment overlap exploration shows how different user segments relate to each other It 
+can be used to identify new segments with complex criteria
+	
+User exploration looks at the users that make up segments Using this you can find extra 
+information on individual user behaviour and activities 
+	
+User lifetime exploration compiles user behaviour over their lifetime as a customer 
+Figure 2011 An example of the Exploration technique template gallery
+On the left is the Variables panel and the Tab 
+settings panel In the Variables panel you can 
+access the dimensions metrics and segments 
+you can use You can also adjust the timeframe 
+here The Tab settings panel lets you configure 
+the currently selected tab First select the 
+technique then add items from the Variables panel and finally configure the Tab settings 
+Dimensions are the things you want to 
+analyse Metrics give you the numbers 
+for your exploration Segments are 
+subsets of users
+NOTE

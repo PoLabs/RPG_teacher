@@ -1,0 +1,38 @@
+490
+
+UNITING
+ 
+Figure 165 The Marketing Charts email template responds to the screen size  
+of the device on which it is viewed 
+To ensure optimal rendering on mobile devices 
+here are some common best practices to follow 
+when designing your emails
+	
+Generally most emails are designed to be 
+600px wide to display well in an email preview pane This scales well on typical mobile 
+screen sizes On a 320px screen an email can be zoomed out to 50 and display perfectly 
+similarly on a 480px screen it can display at 75
+	
+Host your email newsletters online and link to them from your preheader That way anyone 
+who opens your email on a mobile can click straight through to an HTML version of your 
+newsletter 
+	
+Design your email in a grid system This means your content needs to be laid out in vertically 
+and horizontally aligned blocks with gaps in between Doing this will make it easier for 
+various operating systems and email clients to scale your email down to fit a mobile screen 
+This is not a guarantee that the email will display properly in mobile but it should solve the 
+problem for most mobile devices such as iPhone which autofit HTML emails 
+	
+Make sure that you include alt text for your images Your email needs to convey its message 
+with or without images 
+	
+Mobile devices that dont automatically scale your email down will display the content 
+on the left of your email first Make sure that your most important content is placed here 
+	
+Button links need to be at least 44px to render well on mobile phones Smashing Magazine 
+recommends 72px so that users can easily tap buttons with their thumbs and see visual 
+feedback that the button has been pushed
+Dont worry if some of this sounds a bit 
+too technical Your web developer will 
+understand and be able to advise you
+NOTE

@@ -1,0 +1,39 @@
+185
+Web development and design 
+JavaScript 
+This is the most common clientside language used to create rich dynamic web properties 
+Because it is an opensource language many developers have added functionality that can be 
+more quickly implemented For example there are over1000 different gallery systems created 
+by JavaScript developers for JavaScript developers 
+Frameworks 
+Frameworks are packages that are made up of a structure of files and folders of standardised 
+code HTML CSS and JavaScript for example which can be used as the basis for developing 
+websites Essentially frameworks are templates to provide the common structure for websites 
+so that developers dont need to start from scratch each time Frameworks save a lot of time 
+and money 
+Some examples include vuejs backbonejs angularJS emberJS reactjs and the popular 
+jQuery libraries Bootstrap has long been the most popular CSS framework and bulma is also 
+increasing in popularity 
+744 Development best practice 
+There are multiple ways to design and develop for the web but it is a good idea to learn from 
+the best in the industry and to follow some best practice guidelines to achieve the best results
+Meta and title tag customisation 
+The CMS you have either selected or created should allow you to enter your own meta tags 
+for each page as well as allow full customisation of title tags for each page It is important to 
+note that Google does not use keyword meta tags for ranking anymore Lincoln 2015
+URLs 
+Instead of using dynamic parameters the CMS should allow for clean URLs by using server
+side rewriting Clean URLs consist only of the path to a webpage without extra code A clean 
+URL could look like this examplecomcats while an unclean URL could look like this example
+comindexphppagecats It should allow for the creation of URLs that are 
+	
+Static 
+	
+Rewritable 
+	
+Keyword rich 
+Be careful when building clean descriptive and dynamic URLs from CMS content Should 
+you use a news headline for example Storm as part of your URL and someone changes the 
+heading to Tornado this will alter the URL and the search engines will index this as a new 
+page but with the same content as the URL which had the old heading Bear this in mind 
+before adding dynamic parameters to your URLs 

@@ -1,0 +1,49 @@
+506
+
+UNITING
+ISPs thresholds a senders messages will be delivered If not the senders emails may arrive 
+in the bulk or spam folder be quarantined or be bounced back to the sender 
+How it works There are various authentication systems that can impact your reputation 
+score One of these is the Domain Keys Identified Mail DKIM and Domain Name System 
+DNS DKIM associates domain names with individual email addresses ensuring that 
+each organisation has to take responsibility for emails sent that are associated with their 
+domain Basically DKIM signs out any outbound emails 
+The DKIM signature is added to the email header and includes an encrypted code The 
+receiving mail server will then take that DKIM signature and verify it with the DNS system 
+to find the matching DKIM public key Once it has this key it can use it to unlock the 
+encrypted code If the code hasnt been changed the email hasnt been tampered with 
+which means it can be authenticated and passed into the receiving mail server 
+Becoming an effective email marketer requires constant list cleansing and hygiene In fact 
+most lists shrink by about 22 each year as a result of subscribers changing email addresses 
+HubSpot nd Build a preference centre and send out an email once a year asking subscribers 
+to update their details Make sure you are diligent about maintaining a current optin list to 
+achieve maximum deliverability via reputation
+Tips to help your reputation score 
+	
+ISPs offer various authentication standards such as Sender ID sender policy framework 
+SPF and DomainKeys We highly recommend the use of these standards 
+	
+Remember that a huge but inaccurate and outdated database is far less useful to an email 
+marketer than a tightly maintained smaller database Strive to boost your database but 
+dont forget to clean as you go 
+	
+Ensure that email broadcast rates are not too high 
+	
+Respond to complaints and unsubscribe requests If someone requests to be unsubscribed 
+do so If you dont theres a good chance youll face stiff penalties
+	
+Educate users about white lists 
+An emails reputation score can be checked at senderscoreorg
+If the recipient has given permission to be sent 
+marketing messages by emailthen it is not 
+spam Users give permission when they tick 
+a box that says Yesplease send me offers 
+from your company by emailphone The email 
+address can be provided to another company 
+only if the user ticks a box that says Yes please send me offers by email from third parties 
+selected by you 
+The success of your direct marketing 
+relies on users explicitly indicating that 
+they want to hear from you Dont break 
+your customers trust
+NOTE

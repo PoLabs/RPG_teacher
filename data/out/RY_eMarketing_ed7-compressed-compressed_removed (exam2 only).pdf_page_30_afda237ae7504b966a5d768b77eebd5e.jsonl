@@ -1,0 +1,47 @@
+199
+Web development and design 
+771 Functional testing 
+This involves testing the features of a website to ensure that they are working correctly Functional 
+testing should be done early in the development cycle as it speeds up development increases 
+quality and reduces the risk of errors towards the end of the project Testing can take place 
+either manually by a tester or be completely automated using an application AppPerfect 2016
+772 User interface testing 
+This is the process of testing whether users can engage with the site as envisioned during 
+development It also includes testing all features such as screens with controls menus 
+dropdowns buttons icons toolbars dialogue boxes forms and all other user interface features 
+on the site 
+User interface testing is crucial as it is the users 
+experience of the site that will determine if they 
+will or will not use the site or application in 
+the future If an interface is not intuitive and is 
+difficult to understand users are unlikely to use that product again Testing is essential
+The following should be checked during GUI testing
+Figure 716 QA checklist 
+You can read more about GUI testing at 
+wwwguru99comguitestinghtml
+NOTE
+
+
+
+
+
+
+
+
+
+Can users input the necessary information 
+into the user fields
+Does the feature execute the desired 
+function when activated
+Are error messages displayed correctly 
+and for the correct function
+Is the font appropriate 
+Is the text aligned 
+Are the colours and fonts and even error 
+messages visually appealing
+Are the images clear and displaying 
+correctly
+Are the images correctly aligned and do 
+they appear where they are supposed to
+Are the GUI elements positioned correctly 
+for different screen sizes and resolutions 
