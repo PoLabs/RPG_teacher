@@ -1,0 +1,6 @@
+# Nvidia Libraries
+--extra-index-url https://pypi.nvidia.com
+nemo_toolkit
+cython
+fitz
+pymupdf
