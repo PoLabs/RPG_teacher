@@ -25,24 +25,11 @@ assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a v
 print(f"NVIDIA API key is set: {nvidia_api_key[:5]}...")  # Masking for display
 
 # Initialize the NVIDIA LLM using Settings
-Settings.llm = NVIDIA(model="meta/llama-3.1-405b-instruct")
+Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instruct")
 # Initialize the NVIDIA embedding model
 Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
 # Set the text splitter
 Settings.text_splitter = SentenceSplitter(chunk_size=400)
-
-'''# Function to load documents using SimpleDirectoryReader
-def load_documents_from_directory(directory_path):
-    documents = SimpleDirectoryReader(directory_path).load_data()
-    return documents
-
-# Load combined documents
-COMBINED_DOCS_DIR = '/home/polabs2/Code/RPG_teacher/data/combined'  # Replace with your actual path
-combined_documents = load_documents_from_directory(COMBINED_DOCS_DIR)
-
-# Create the index using VectorStoreIndex
-index = VectorStoreIndex.from_documents(combined_documents)'''
-
 
 
 def load_textbook_documents(textbook_name):
@@ -202,7 +189,7 @@ def describe_setting(text, novel):
 def describe_question(setting_description, text, novel):
     """
     Generates a challenging question based on the setting description, text, and novel content.
-    Includes relevant sample questions from chapter_summary_notes.csv.
+    Includes relevant questions from chapter_summary_notes.csv, paired by the 'key' column.
     """
     print("\n--- describe_question called ---")
     print(f"Setting description: {setting_description[:100]}...")
@@ -212,45 +199,47 @@ def describe_question(setting_description, text, novel):
     novel_index = st.session_state.novel_index
     top_k = 5  # Default value
 
-    # Retrieve relevant sample questions from chapter_summary_notes.csv
-    chapter = st.session_state.chapter
+    # Retrieve relevant rows for the current chapter from chapter_summary_notes.csv
     df = st.session_state.chapter_summary_notes
-    chapter_notes = df[df['chapter'] == chapter]
+    chapter = st.session_state.chapter
+    textbook_name = st.session_state.selected_textbook.lower()
+    novel_name = st.session_state.selected_novel.lower()
 
-    if not chapter_notes.empty:
-        sample_questions = chapter_notes['sample_questions'].values[0]
+    # Filter for questions related to the textbook and the novel for the current chapter
+    questions_df = df[
+        (df['chapter'] == chapter) &
+        (df['data_type'] == 'question') &
+        ((df['document'] == textbook_name) | (df['document'] == novel_name))
+    ]
+
+    # Pair questions and answers using the 'key' column
+    questions_dict = {}
+    for key in questions_df['key'].unique():
+        question_data = questions_df[questions_df['key'] == key]
+        question = question_data[question_data['document_type'] == 'text_book']['text'].values[0]
+        answer = question_data[question_data['document_type'] == 'fantasy_novel']['text'].values[0]
+        questions_dict[question] = answer
+
+    # Randomly select a question-answer pair (or you can cycle through them in sequence)
+    import random
+    if questions_dict:
+        question, answer = random.choice(list(questions_dict.items()))
     else:
-        sample_questions = ""
+        question = "No questions available for this chapter."
+        answer = "No answer available."
 
-    # Create query engines for both indexes
-    textbook_query_engine = textbook_index.as_query_engine(similarity_top_k=top_k)
-    novel_query_engine = novel_index.as_query_engine(similarity_top_k=top_k)
-
-    # Query both indexes
-    textbook_response = textbook_query_engine.query(text)
-    novel_response = novel_query_engine.query(novel)
-
-    # Extract content from the retrieved documents
-    textbook_context_docs = [node.node.get_content() for node in textbook_response.source_nodes]
-    novel_context_docs = [node.node.get_content() for node in novel_response.source_nodes]
-
-    # Combine the context documents
-    context = "\n".join(textbook_context_docs + novel_context_docs)
-
-    # Construct the prompt
-    grade_level = st.session_state.grade_level
-
+    # Combine the context from both indexes (textbook and novel) and integrate the setting description
     prompt = f"""
-    Using the following setting description, context, and sample questions, create an engaging question for the player that ties into the RPG adventure. The question should be appropriate for grade level {grade_level} and integrate educational content from the textbook. Please provide the question and its answer.
+    Using the following setting description, context, and sample question, create an engaging question for the player that ties into the RPG adventure. The question should be appropriate for grade level {st.session_state.grade_level} and integrate educational content from the textbook. Please provide the question and its answer.
 
     Setting Description:
     {setting_description}
 
     Context:
-    {context}
+    {text}
 
-    Sample Questions:
-    {sample_questions}
+    Question:
+    {question}
 
     Please format your response as:
 
@@ -282,6 +271,7 @@ def describe_question(setting_description, text, novel):
         answer = ""
 
     return question, answer
+
 
 def give_hint(question):
     """
@@ -454,40 +444,40 @@ def extract_topic_from_textbook(text):
         return "General Topic"
 
 
-def load_chapter_content(chapter_number):
-    # Create a query engine
-    query_engine = index.as_query_engine(similarity_top_k=5)
+#def load_chapter_content(chapter_number):
+#    # Create a query engine
+#    query_engine = index.as_query_engine(similarity_top_k=5)#
 
     # Formulate the query to retrieve the specific chapter's combined document
-    query_str = f"chapter_{chapter_number}_combined.txt"
+#    query_str = f"chapter_{chapter_number}_combined.txt"
 
     # Retrieve the relevant document
-    response = query_engine.query(query_str)
+#    response = query_engine.query(query_str)
 
     # Check if the response contains source nodes
-    if not response or not response.source_nodes:
-        return None
+#    if not response or not response.source_nodes:
+#        return None
 
     # Extract the content from the retrieved document
-    doc_content = response.source_nodes[0].node.get_content()
-    return doc_content
+#    doc_content = response.source_nodes[0].node.get_content()
+#    return doc_content
 
 def get_textbook_content(textbook_name, chapter_number):
-    # Load and return the content of the selected textbook and chapter
-    # Replace with actual content retrieval logic
-    if textbook_name == 'Digital Marketing':
-        # Here you can retrieve the content from your index or database
-        return "Digital marketing involves the promotion of products or services through digital channels..."
-    else:
-        return "Textbook content not found."
+    documents = load_textbook_documents(textbook_name)
+    for doc in documents:
+        content = doc.get_content()
+        if f"Chapter {chapter_number}" in content:
+            return content
+    return "Textbook content not found."
 
 def get_novel_content(novel_name, chapter_number):
-    # Load and return the content of the selected novel and chapter
-    # Replace with actual content retrieval logic
-    if novel_name == 'The Hobbit':
-        return "In a hole in the ground there lived a hobbit..."
-    else:
-        return "Novel content not found."
+    documents = load_novel_documents(novel_name)
+    for doc in documents:
+        content = doc.get_content()
+        if f"Chapter {chapter_number}" in content:
+            return content
+    return "Novel content not found."
+
 
 
 
@@ -616,7 +606,6 @@ def generate_next_story_segment(user_input=None):
         # Update game stage
         st.session_state.game_stage = 'awaiting_answer'
 
-
     elif st.session_state.game_stage == 'awaiting_answer':
         print("Game stage: awaiting_answer")
 
@@ -641,62 +630,74 @@ def generate_next_story_segment(user_input=None):
         else:
             # If the user asked for a hint or input was not understood, stay in the same stage
             st.session_state.game_stage = 'awaiting_answer'
-            elif st.session_state.game_stage == 'awaiting_choice':
-            print("Game stage: awaiting_choice")
 
-            if user_input is None:
-                print("No user input received.")
-                return
+    elif st.session_state.game_stage == 'awaiting_choice':
+        print("Game stage: awaiting_choice")
 
-            # Handle player's choice
-            player_choice_input = user_input
-            st.session_state.storyline.append({'role': 'user', 'content': player_choice_input})
+        if user_input is None:
+            print("No user input received.")
+            return
 
-            # Process the player's choice
-            try:
-                choice_index = int(player_choice_input.strip()) - 1
-                if choice_index < 0 or choice_index >= len(st.session_state.current_choices):
-                    raise ValueError("Invalid choice number.")
-                chosen_option = st.session_state.current_choices[choice_index]
-                print(f"Player chose: {chosen_option}")
-            except ValueError:
-                st.session_state.storyline.append(
-                    {'role': 'assistant', 'content': "Invalid choice. Please enter a valid number."})
-                # Stay in the same stage to prompt for valid input
-                return
+        # Handle player's choice
+        player_choice_input = user_input
+        st.session_state.storyline.append({'role': 'user', 'content': player_choice_input})
 
-            # Handle the choice
-            if choice_index == 0:
-                # Continue the journey: Generate new setting and question
-                text = st.session_state.selected_textbook_content
-                novel = st.session_state.selected_novel_content
-                setting_description = describe_setting(text, novel)
-                st.session_state.current_setting = setting_description
-                st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
+        # Process the player's choice
+        try:
+            choice_index = int(player_choice_input.strip()) - 1
+            if choice_index < 0 or choice_index >= len(st.session_state.current_choices):
+                raise ValueError("Invalid choice number.")
+            chosen_option = st.session_state.current_choices[choice_index]
+            print(f"Player chose: {chosen_option}")
+        except ValueError:
+            st.session_state.storyline.append(
+                {'role': 'assistant', 'content': "Invalid choice. Please enter a valid number."})
+            # Stay in the same stage to prompt for valid input
+            return
 
-                question, question_answer = describe_question(setting_description, text, novel)
-                st.session_state.current_question = question
-                st.session_state.current_question_answer = question_answer
-                st.session_state.storyline.append({'role': 'assistant', 'content': question})
+        # Handle the choice
+        if choice_index == 0:
+            # Continue the journey: Prompt for the next chapter
+            st.text("You've completed this chapter. Please select the next chapter to continue.")
+            st.session_state.chapter = st.selectbox("Select the next chapter:", chapter_options, key='next_chapter')
 
-                # Update game stage
-                st.session_state.game_stage = 'awaiting_answer'
-            elif choice_index == 1:
-                # Review the material: Provide a summary or hint
-                hint = give_hint(st.session_state.current_question)
-                st.session_state.storyline.append({'role': 'assistant', 'content': hint})
-                # Stay in the same stage
-                st.session_state.game_stage = 'awaiting_answer'
-            elif choice_index == 2:
-                # Exit the game
-                st.session_state.storyline.append(
-                    {'role': 'assistant', 'content': "Thank you for playing! See you next time."})
-                st.session_state.game_stage = 'end'
-            else:
-                # Invalid choice
-                st.session_state.storyline.append({'role': 'assistant', 'content': "Invalid choice. Please try again."})
-                # Stay in the same stage
+            # Load the selected textbook and novel content for the new chapter
+            st.session_state.selected_textbook_content = get_textbook_content(
+                st.session_state.selected_textbook, st.session_state.chapter)
+            st.session_state.selected_novel_content = get_novel_content(
+                st.session_state.selected_novel, st.session_state.chapter)
 
+            # Generate the new setting description
+            text = st.session_state.selected_textbook_content
+            novel = st.session_state.selected_novel_content
+            setting_description = describe_setting(text, novel)
+            st.session_state.current_setting = setting_description
+            st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
+
+            # Generate the first question for the new chapter
+            question, question_answer = describe_question(setting_description, text, novel)
+            st.session_state.current_question = question
+            st.session_state.current_question_answer = question_answer
+            st.session_state.storyline.append({'role': 'assistant', 'content': question})
+
+            # Update game stage
+            st.session_state.game_stage = 'awaiting_answer'
+
+        elif choice_index == 1:
+            # Review the material: Provide a summary or hint
+            hint = give_hint(st.session_state.current_question)
+            st.session_state.storyline.append({'role': 'assistant', 'content': hint})
+            # Stay in the same stage
+            st.session_state.game_stage = 'awaiting_answer'
+        elif choice_index == 2:
+            # Exit the game
+            st.session_state.storyline.append(
+                {'role': 'assistant', 'content': "Thank you for playing! See you next time."})
+            st.session_state.game_stage = 'end'
+        else:
+            # Invalid choice
+            st.session_state.storyline.append({'role': 'assistant', 'content': "Invalid choice. Please try again."})
+            # Stay in the same stage
     else:
         st.error("Unknown game stage.")
 
@@ -709,7 +710,7 @@ if 'storyline' not in st.session_state:
 if 'game_stage' not in st.session_state:
     st.session_state.game_stage = 'start'
 if 'chapter' not in st.session_state:
-    st.session_state.chapter = 1
+    st.session_state.chapter = 7
 if 'interaction_count' not in st.session_state:
     st.session_state.interaction_count = 0
 if 'grade_level' not in st.session_state:
@@ -749,6 +750,10 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
 
     # Dropdown for textbook selection
     st.selectbox("Select the textbook:", textbook_options, key='selected_textbook')
+    # Number of chapters (adjust this to the actual number of chapters in your content)
+    chapter_options = [7,12,13]#list(range(1, 11))  # Chapters 1 to 10
+    # Dropdown for chapter selection
+    st.selectbox("Select the chapter:", chapter_options, key='chapter')
 
     # Dropdown for novel selection
     st.selectbox("Select the novel:", novel_options, key='selected_novel')
@@ -756,8 +761,8 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     # Button to start the adventure
     # After the user selects the textbook and novel and clicks "Start Adventure"
     if st.button("Start Adventure", key='start_button'):
-        if st.session_state.grade_level and st.session_state.selected_textbook and st.session_state.selected_novel:
-            # Load the selected textbook and novel content
+        if st.session_state.grade_level and st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
+            # Load the selected textbook and novel content for the selected chapter
             st.session_state.selected_textbook_content = get_textbook_content(
                 st.session_state.selected_textbook, st.session_state.chapter)
             st.session_state.selected_novel_content = get_novel_content(
@@ -767,11 +772,13 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
             st.session_state.textbook_index = create_textbook_index(st.session_state.selected_textbook)
             st.session_state.novel_index = create_novel_index(st.session_state.selected_novel)
 
+            # Start the game
             generate_next_story_segment()
             st.rerun()
 
         else:
             st.error("Please fill in all the fields before starting the adventure.")
+
 else:
     # Display the storyline so far
     for message in st.session_state.storyline:
