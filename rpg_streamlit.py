@@ -16,6 +16,7 @@ from llama_index.core.base.llms.types import ChatMessage, MessageRole
 
 
 # set up model, index, embedding, nvidia API -------------------------------------------------------------------------
+TOP_K = 5  # Global constant
 
 # Set NVIDIA API Key (Hard-coded)
 nvidia_api_key = "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"  # Replace with your actual NVIDIA API key
@@ -30,7 +31,7 @@ Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
 # Set the text splitter
 Settings.text_splitter = SentenceSplitter(chunk_size=400)
 
-# Function to load documents using SimpleDirectoryReader
+'''# Function to load documents using SimpleDirectoryReader
 def load_documents_from_directory(directory_path):
     documents = SimpleDirectoryReader(directory_path).load_data()
     return documents
@@ -40,10 +41,29 @@ COMBINED_DOCS_DIR = '/home/polabs2/Code/RPG_teacher/data/combined'  # Replace wi
 combined_documents = load_documents_from_directory(COMBINED_DOCS_DIR)
 
 # Create the index using VectorStoreIndex
-index = VectorStoreIndex.from_documents(combined_documents)
+index = VectorStoreIndex.from_documents(combined_documents)'''
 
 
 
+def load_textbook_documents(textbook_name):
+    directory_path = f"/home/polabs2/Code/RPG_teacher/data/textbooks/{textbook_name}"
+    documents = SimpleDirectoryReader(directory_path).load_data()
+    return documents
+
+def load_novel_documents(novel_name):
+    directory_path = f"/home/polabs2/Code/RPG_teacher/data/novels/{novel_name}"
+    documents = SimpleDirectoryReader(directory_path).load_data()
+    return documents
+
+def create_textbook_index(textbook_name):
+    documents = load_textbook_documents(textbook_name)
+    textbook_index = VectorStoreIndex.from_documents(documents)
+    return textbook_index
+
+def create_novel_index(novel_name):
+    documents = load_novel_documents(novel_name)
+    novel_index = VectorStoreIndex.from_documents(documents)
+    return novel_index
 
 
 
@@ -130,16 +150,38 @@ def execute_function_call(function_name, arguments):
 def describe_setting(text, novel):
     """
     Generates a vivid setting description that combines textbook content and novel elements.
+    Uses top_k relevant documents from both indexes as context.
     """
+    print("\n--- describe_setting called ---")
+    print(f"text: {text[:100]}...")
+    print(f"novel: {novel[:100]}...")
+
+    # Access indexes from st.session_state
+    textbook_index = st.session_state.textbook_index
+    novel_index = st.session_state.novel_index
+    top_k = 5  # Default value
+
+    # Create query engines for both indexes
+    textbook_query_engine = textbook_index.as_query_engine(similarity_top_k=top_k)
+    novel_query_engine = novel_index.as_query_engine(similarity_top_k=top_k)
+
+    # Query both indexes
+    textbook_response = textbook_query_engine.query(text)
+    novel_response = novel_query_engine.query(novel)
+
+    # Extract content from the retrieved documents
+    textbook_context_docs = [node.node.get_content() for node in textbook_response.source_nodes]
+    novel_context_docs = [node.node.get_content() for node in novel_response.source_nodes]
+
+    # Combine the context documents
+    context = "\n".join(textbook_context_docs + novel_context_docs)
+
     # Construct the prompt
     prompt = f"""
-    Using the following textbook content and novel excerpt, create a vivid and immersive setting description for an RPG adventure. Integrate key concepts from the textbook into the world of the novel.
+    Using the following context from the textbook and novel, create a vivid and immersive setting description for an RPG adventure. Integrate key concepts from the textbook into the world of the novel.
 
-    Textbook Content:
-    {text}
-
-    Novel Excerpt:
-    {novel}
+    Context:
+    {context}
 
     Please provide a detailed setting description that blends these elements seamlessly.
     """
@@ -150,21 +192,73 @@ def describe_setting(text, novel):
     ]
     response = llm_predict_with_retry(messages)
     setting_description = response.message.content.strip()
+
+    print(f"Generated setting description: {setting_description[:100]}...")
+    print("--- describe_setting ended ---\n")
+
     return setting_description
 
 
-def describe_question(topic, difficulty):
+def describe_question(setting_description, text, novel):
     """
-    Generates a challenging question based on the given topic and difficulty level.
+    Generates a challenging question based on the setting description, text, and novel content.
+    Includes relevant sample questions from chapter_summary_notes.csv.
     """
+    print("\n--- describe_question called ---")
+    print(f"Setting description: {setting_description[:100]}...")
+
+    # Access indexes from st.session_state
+    textbook_index = st.session_state.textbook_index
+    novel_index = st.session_state.novel_index
+    top_k = 5  # Default value
+
+    # Retrieve relevant sample questions from chapter_summary_notes.csv
+    chapter = st.session_state.chapter
+    df = st.session_state.chapter_summary_notes
+    chapter_notes = df[df['chapter'] == chapter]
+
+    if not chapter_notes.empty:
+        sample_questions = chapter_notes['sample_questions'].values[0]
+    else:
+        sample_questions = ""
+
+    # Create query engines for both indexes
+    textbook_query_engine = textbook_index.as_query_engine(similarity_top_k=top_k)
+    novel_query_engine = novel_index.as_query_engine(similarity_top_k=top_k)
+
+    # Query both indexes
+    textbook_response = textbook_query_engine.query(text)
+    novel_response = novel_query_engine.query(novel)
+
+    # Extract content from the retrieved documents
+    textbook_context_docs = [node.node.get_content() for node in textbook_response.source_nodes]
+    novel_context_docs = [node.node.get_content() for node in novel_response.source_nodes]
+
+    # Combine the context documents
+    context = "\n".join(textbook_context_docs + novel_context_docs)
+
     # Construct the prompt
+    grade_level = st.session_state.grade_level
+
     prompt = f"""
-    Create a {difficulty}-level question related to the following topic for an educational RPG adventure:
+    Using the following setting description, context, and sample questions, create an engaging question for the player that ties into the RPG adventure. The question should be appropriate for grade level {grade_level} and integrate educational content from the textbook. Please provide the question and its answer.
 
-    Topic:
-    {topic}
+    Setting Description:
+    {setting_description}
 
-    The question should be engaging and appropriate for the adventure setting.
+    Context:
+    {context}
+
+    Sample Questions:
+    {sample_questions}
+
+    Please format your response as:
+
+    Question:
+    [Your question here]
+
+    Answer:
+    [The correct answer here]
     """
     # Call the LLM
     messages = [
@@ -172,40 +266,164 @@ def describe_question(topic, difficulty):
         ChatMessage(role=MessageRole.USER, content=prompt)
     ]
     response = llm_predict_with_retry(messages)
-    question = response.message.content.strip()
-    return question
+    question_and_answer = response.message.content.strip()
 
+    print(f"Generated question and answer: {question_and_answer}")
+    print("--- describe_question ended ---\n")
 
-def handle_answer(user_answer, question):
+    # Parse the response to separate question and answer
+    match = re.search(r'Question:\s*(.*?)\s*Answer:\s*(.*)', question_and_answer, re.DOTALL)
+    if match:
+        question = match.group(1).strip()
+        answer = match.group(2).strip()
+    else:
+        print("Failed to parse question and answer.")
+        question = question_and_answer
+        answer = ""
+
+    return question, answer
+
+def give_hint(question):
     """
-    Evaluates the user's answer to a question and provides feedback.
+    Provides a hint to the user using RAG results from the textbook index.
     """
+    print("\n--- give_hint called ---")
+    print(f"Question: {question}")
+
+    # Access textbook index from st.session_state
+    textbook_index = st.session_state.textbook_index
+    top_k = 5  # Default value
+
+    # Create a query engine for the textbook index
+    query_engine = textbook_index.as_query_engine(similarity_top_k=top_k)
+
+    # Retrieve relevant documents
+    response = query_engine.query(question)
+
+    # Extract content from the retrieved documents
+    context_docs = [node.node.get_content() for node in response.source_nodes]
+
+    # Combine the context documents
+    context = "\n".join(context_docs)
+
     # Construct the prompt
     prompt = f"""
-    Evaluate the following answer to a question and provide feedback:
+    Using the following context, provide a hint to help the student answer the question. Do not provide the answer directly.
 
     Question:
     {question}
 
-    User's Answer:
-    {user_answer}
+    Context:
+    {context}
 
-    As an educator, indicate whether the answer is correct or incorrect. Provide the correct answer with a brief explanation if necessary.
+    Please provide a helpful hint.
     """
-    # Call the LLM
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator evaluating student's answers."),
+        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator providing hints to students."),
         ChatMessage(role=MessageRole.USER, content=prompt)
     ]
     response = llm_predict_with_retry(messages)
-    feedback = response.message.content.strip()
+    hint = response.message.content.strip()
+
+    print(f"Hint: {hint}")
+    print("--- give_hint ended ---\n")
+
+    return hint
+
+
+
+def handle_answer(user_input, question, question_answer):
+    """
+    Evaluates the user's input and decides whether it's an answer, a hint request, or something else.
+    """
+    print("\n--- handle_answer called ---")
+    print(f"user_input: {user_input}")
+    print(f"question: {question}")
+
+    # Use LLM to analyze the user's input
+    prompt = f"""
+    Determine if the following user input is an answer to the question, a request for a hint, or something else.
+
+    Question:
+    {question}
+
+    User Input:
+    {user_input}
+
+    Please respond with one of the following options: 'answer', 'hint_request', or 'other'.
+    """
+    messages = [
+        ChatMessage(role=MessageRole.SYSTEM, content="You are an assistant that classifies user input."),
+        ChatMessage(role=MessageRole.USER, content=prompt)
+    ]
+    response = llm_predict_with_retry(messages)
+    classification = response.message.content.strip().lower()
+
+    print(f"Classification: {classification}")
+
+    if 'answer' in classification:
+        # User provided an answer, grade it
+        feedback = grade_answer(user_input, st.session_state.current_question, st.session_state.current_question_answer)
+    elif 'hint' in classification:
+        # User requested a hint
+        feedback = give_hint(question)
+    else:
+        feedback = "I'm sorry, I didn't understand your response. Could you please try again?"
+
+    print(f"Feedback: {feedback}")
+    print("--- handle_answer ended ---\n")
+
     return feedback
+
+
+def grade_answer(user_answer, question, correct_answer):
+    """
+    Grades the user's answer and provides feedback.
+    """
+    print("\n--- grade_answer called ---")
+    print(f"user_answer: {user_answer}")
+    print(f"question: {question}")
+    print(f"correct_answer: {correct_answer}")
+
+    # Access grade level from st.session_state
+    grade_level = st.session_state.grade_level
+
+    # Construct the prompt
+    prompt = f"""
+    As an educator for grade {grade_level}, grade the following student's answer to the question. Provide a grade from A to F, an explanation, and any necessary references to explain the answer.
+
+    Question:
+    {question}
+
+    Correct Answer:
+    {correct_answer}
+
+    Student's Answer:
+    {user_answer}
+
+    Please provide the grade, explanation, and references.
+    """
+    messages = [
+        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator grading a student's answer."),
+        ChatMessage(role=MessageRole.USER, content=prompt)
+    ]
+    response = llm_predict_with_retry(messages)
+    grading_feedback = response.message.content.strip()
+
+    print(f"Grading Feedback: {grading_feedback}")
+    print("--- grade_answer ended ---\n")
+
+    return grading_feedback
+
 
 
 def player_choice(choices):
     """
     Presents choices to the player and returns a formatted string for display.
     """
+    print("\n--- player_choice called ---")
+    print(f"choices: {choices}")
+
     # Format the choices
     choices_text = "\n".join([f"{i+1}. {choice}" for i, choice in enumerate(choices)])
     prompt = f"""
@@ -215,8 +433,27 @@ def player_choice(choices):
 
     Encourage the player to make a selection by typing the corresponding number.
     """
-    # Since we can't get user input directly here, return the formatted choices
+
+    print(f"Choices prompt: {prompt}")
+    print("--- player_choice ended ---\n")
+
     return prompt
+
+
+
+def extract_topic_from_textbook(text):
+    """
+    Extracts a topic from the textbook content.
+    For simplicity, we'll return a placeholder or the first sentence.
+    """
+    # You can implement a more sophisticated method or use NLP techniques
+    sentences = text.split('.')
+    if sentences:
+        return sentences[0]  # Return the first sentence as the topic
+    else:
+        return "General Topic"
+
+
 def load_chapter_content(chapter_number):
     # Create a query engine
     query_engine = index.as_query_engine(similarity_top_k=5)
@@ -319,11 +556,11 @@ def parse_function_call(content):
     return None, None
 
 
-
 def extract_section(text, section_name):
     pattern = rf"\*\*{section_name}:\*\*(.*?)(?=\n\*\*|$)"
     match = re.search(pattern, text, re.DOTALL)
     return match.group(1).strip() if match else ''
+
 
 @retry(wait=wait_random_exponential(multiplier=1, max=60), stop=stop_after_attempt(3))
 def llm_predict_with_retry(messages):
@@ -342,135 +579,135 @@ def llm_predict_with_retry(messages):
         raise e
 
 
+def generate_next_story_segment(user_input=None):
+    print("\n--- generate_next_story_segment called ---")
+    print(f"user_input: {user_input}")
 
-def generate_next_story_segment(chapter, user_input=None):
-    messages = []
+    # Initialize game state if not already done
+    if 'game_stage' not in st.session_state:
+        st.session_state.game_stage = 'start'
+        st.session_state.current_question = ''
+        st.session_state.current_question_answer = ''
+        st.session_state.current_setting = ''
+        st.session_state.current_choices = []
+        st.session_state.chapter = 1
 
-    if len(st.session_state.storyline) == 0:
-        # Retrieve the content for the selected textbook and novel
-        textbook_content = get_textbook_content(st.session_state.selected_textbook, chapter)
-        novel_content = get_novel_content(st.session_state.selected_novel, chapter)
+    if 'storyline' not in st.session_state:
+        st.session_state.storyline = []
 
-        # Format the initial prompt
-        formatted_prompt = f"""
-        You are a storytelling assistant who combines fantasy adventures with educational content.
+    if st.session_state.game_stage == 'start':
+        print("Game stage: start")
 
-        You have access to the following functions:
+        # Load the selected textbook and novel content
+        text = st.session_state.selected_textbook_content
+        novel = st.session_state.selected_novel_content
 
-        1. `describe_setting(text, novel)`: Generates a description of the RPG setting based on the given educational text and novel content.
-        2. `describe_question(setting_description, text, novel)`: Creates a question and answer based on the setting description, educational text, and novel content.
-        3. `handle_answer(user_text, grade_level, question_answer)`: Evaluates the user's answer.
-        4. `player_choice(previous_choice)`: Determines the next step in the story based on the player's choice.
+        # Describe the initial setting
+        setting_description = describe_setting(text, novel)
+        st.session_state.current_setting = setting_description
+        st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
-        When you need to perform one of these functions, output a JSON object in the following format:
+        # Generate the first question
+        question, question_answer = describe_question(setting_description, text, novel)
+        st.session_state.current_question = question
+        st.session_state.current_question_answer = question_answer
+        st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-        ```json
-        {{"name": "function_name", "parameters": {{"arg1": "value1", "arg2": "value2"}}}}
-        ```
+        # Update game stage
+        st.session_state.game_stage = 'awaiting_answer'
 
-        Do not include any additional text in your response.
 
-        The grade level is {st.session_state.grade_level}.
+    elif st.session_state.game_stage == 'awaiting_answer':
+        print("Game stage: awaiting_answer")
 
-        Please start by calling the `describe_setting` function with the provided textbook and novel content.
-        """
+        if user_input is None:
+            print("No user input received.")
+            return
 
-        # Prepare the initial messages
-        messages.append(ChatMessage(role=MessageRole.SYSTEM, content=formatted_prompt))
-        # Provide the textbook and novel content
-        messages.append(
-            ChatMessage(
-                role=MessageRole.USER,
-                content=f"""
-                        **Textbook Content:**
-                        {textbook_content}
-
-                        **Novel Content:**
-                        {novel_content}
-                        """,
-            )
-        )
-    else:
-        # Map roles from session_state to MessageRole
-        role_mapping = {
-            'system': MessageRole.SYSTEM,
-            'user': MessageRole.USER,
-            'assistant': MessageRole.ASSISTANT,
-            'function': MessageRole.FUNCTION,
-        }
-
-        # Convert previous messages to ChatMessage instances
-        for msg in st.session_state.storyline[-5:]:
-            role_str = msg['role'].lower()
-            role = role_mapping.get(role_str, MessageRole.USER)
-            messages.append(ChatMessage(role=role, content=msg['content']))
-
-        # Append user's latest input as a ChatMessage
-        if user_input:
-            messages.append(ChatMessage(role=MessageRole.USER, content=user_input))
-
-        # Debugging: Print types of messages
-    for idx, msg in enumerate(messages):
-        print(f"Message {idx} type: {type(msg)}")
-
-        # Call the LLM
-    response = llm_predict_with_retry(messages)
-
-    while True:
-        assistant_message = response.message
-        assistant_content = assistant_message.content.strip()
-
-        # Check if the assistant is making a function call
-        if assistant_message.additional_kwargs.get('function_call'):
-            function_call = assistant_message.additional_kwargs['function_call']
-            function_name = function_call['name']
-            function_args = function_call['arguments']
-
-            # Execute the function
-            function_response = execute_function_call(function_name, function_args)
-
-            # Append the function response to the messages
-            messages.append(ChatMessage(role=MessageRole.FUNCTION, content=function_response))
-
-            # Call the assistant again with the function result
-            response = llm_predict_with_retry(messages)
+        # Handle user's answer
+        user_answer = user_input
+        st.session_state.storyline.append({'role': 'user', 'content': user_answer})
+        feedback = handle_answer(user_answer, st.session_state.current_question, st.session_state.current_question_answer)
+        st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
+        # Check if feedback contains a grade (indicates answer was graded)
+        if "Grade:" in feedback or "grade:" in feedback.lower():
+            # Present choices to the player
+            choices = ["1. Continue your journey", "2. Review the material", "3. Exit the game"]
+            st.session_state.current_choices = choices
+            choices_prompt = player_choice(choices)
+            st.session_state.storyline.append({'role': 'assistant', 'content': choices_prompt})
+            # Update game stage
+            st.session_state.game_stage = 'awaiting_choice'
         else:
-            # Assistant's regular reply
-            st.session_state.storyline.append({'role': 'assistant', 'content': assistant_content})
-            break  # Exit the loop
+            # If the user asked for a hint or input was not understood, stay in the same stage
+            st.session_state.game_stage = 'awaiting_answer'
+            elif st.session_state.game_stage == 'awaiting_choice':
+            print("Game stage: awaiting_choice")
 
-    # Parse function call if any
-    function_name, function_args = parse_function_call(assistant_content)
+            if user_input is None:
+                print("No user input received.")
+                return
 
-    if function_name and function_args:
-        # Execute the function
-        function_response = execute_function_call(function_name, function_args)
+            # Handle player's choice
+            player_choice_input = user_input
+            st.session_state.storyline.append({'role': 'user', 'content': player_choice_input})
 
-        # Append the function response to the storyline
-        function_result_message = json.dumps(function_response)
-        st.session_state.storyline.append({'role': 'function', 'content': function_result_message})
+            # Process the player's choice
+            try:
+                choice_index = int(player_choice_input.strip()) - 1
+                if choice_index < 0 or choice_index >= len(st.session_state.current_choices):
+                    raise ValueError("Invalid choice number.")
+                chosen_option = st.session_state.current_choices[choice_index]
+                print(f"Player chose: {chosen_option}")
+            except ValueError:
+                st.session_state.storyline.append(
+                    {'role': 'assistant', 'content': "Invalid choice. Please enter a valid number."})
+                # Stay in the same stage to prompt for valid input
+                return
 
-        # Prepare messages for LLM continuation
-        messages.append(ChatMessage(role=MessageRole.FUNCTION, content=function_result_message))
+            # Handle the choice
+            if choice_index == 0:
+                # Continue the journey: Generate new setting and question
+                text = st.session_state.selected_textbook_content
+                novel = st.session_state.selected_novel_content
+                setting_description = describe_setting(text, novel)
+                st.session_state.current_setting = setting_description
+                st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
-        # Prompt the assistant to continue the story
-        continuation_prompt = "Please continue the story using the function result."
-        messages.append(ChatMessage(role=MessageRole.USER, content=continuation_prompt))
+                question, question_answer = describe_question(setting_description, text, novel)
+                st.session_state.current_question = question
+                st.session_state.current_question_answer = question_answer
+                st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-        # Debugging: Print types of messages
-        for idx, msg in enumerate(messages):
-            print(f"Continuation Message {idx} type: {type(msg)}")
+                # Update game stage
+                st.session_state.game_stage = 'awaiting_answer'
+            elif choice_index == 1:
+                # Review the material: Provide a summary or hint
+                hint = give_hint(st.session_state.current_question)
+                st.session_state.storyline.append({'role': 'assistant', 'content': hint})
+                # Stay in the same stage
+                st.session_state.game_stage = 'awaiting_answer'
+            elif choice_index == 2:
+                # Exit the game
+                st.session_state.storyline.append(
+                    {'role': 'assistant', 'content': "Thank you for playing! See you next time."})
+                st.session_state.game_stage = 'end'
+            else:
+                # Invalid choice
+                st.session_state.storyline.append({'role': 'assistant', 'content': "Invalid choice. Please try again."})
+                # Stay in the same stage
 
-        # Call the LLM again
-        response = llm_predict_with_retry(messages)
-        assistant_message = response.message
-        assistant_content = assistant_message.content.strip()
-        st.session_state.storyline.append({'role': 'assistant', 'content': assistant_content})
+    else:
+        st.error("Unknown game stage.")
+
+    print("--- generate_next_story_segment ended ---\n")
 
 
 # Initialize session state variables
 if 'storyline' not in st.session_state:
     st.session_state.storyline = []
+if 'game_stage' not in st.session_state:
+    st.session_state.game_stage = 'start'
 if 'chapter' not in st.session_state:
     st.session_state.chapter = 1
 if 'interaction_count' not in st.session_state:
@@ -481,6 +718,14 @@ if 'selected_textbook' not in st.session_state:
     st.session_state.selected_textbook = ''
 if 'selected_novel' not in st.session_state:
     st.session_state.selected_novel = ''
+if 'textbook_index' not in st.session_state:
+    st.session_state.textbook_index = None
+if 'novel_index' not in st.session_state:
+    st.session_state.novel_index = None
+if 'chapter_summary_notes' not in st.session_state:
+    st.session_state.chapter_summary_notes = pd.read_csv('data/chapter_summary_notes.csv')
+# Initialize other variables as needed
+
 
 # Textbook and novel options
 textbook_options = ['Digital Marketing']  # Add more textbooks as needed
@@ -496,12 +741,10 @@ if st.session_state.selected_novel not in novel_options:
 st.title("Interactive RPG Adventure")
 st.write("Embark on a journey that combines fantasy storytelling with educational challenges!")
 
-# Check if the adventure has started
-if not st.session_state.storyline:
-    # The adventure has not started yet
-    st.write("Please set the grade level, select a textbook and a novel, then click 'Go' to start.")
+# Initialize session state variables (as shown earlier)
 
-    # Input for grade level
+# Input for grade level
+if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     st.text_input("Enter the grade level (e.g., 'Grade 5'):", key='grade_level')
 
     # Dropdown for textbook selection
@@ -511,20 +754,25 @@ if not st.session_state.storyline:
     st.selectbox("Select the novel:", novel_options, key='selected_novel')
 
     # Button to start the adventure
-    if st.button("Go", key='go_button'):
+    # After the user selects the textbook and novel and clicks "Start Adventure"
+    if st.button("Start Adventure", key='start_button'):
         if st.session_state.grade_level and st.session_state.selected_textbook and st.session_state.selected_novel:
-            # Initialize the adventure
-            st.session_state.storyline = []
-            st.session_state.interaction_count = 0
-            st.session_state.chapter = 1  # Reset to chapter 1 or as needed
+            # Load the selected textbook and novel content
+            st.session_state.selected_textbook_content = get_textbook_content(
+                st.session_state.selected_textbook, st.session_state.chapter)
+            st.session_state.selected_novel_content = get_novel_content(
+                st.session_state.selected_novel, st.session_state.chapter)
 
-            # Generate the first setting description
-            generate_next_story_segment(st.session_state.chapter)
+            # Create indexes for the selected textbook and novel
+            st.session_state.textbook_index = create_textbook_index(st.session_state.selected_textbook)
+            st.session_state.novel_index = create_novel_index(st.session_state.selected_novel)
+
+            generate_next_story_segment()
             st.rerun()
+
         else:
             st.error("Please fill in all the fields before starting the adventure.")
 else:
-    # The adventure has started
     # Display the storyline so far
     for message in st.session_state.storyline:
         role = message['role']
@@ -533,9 +781,13 @@ else:
             st.markdown(f"**Narrator:** {content}")
         elif role == 'user':
             st.markdown(f"**You:** {content}")
-        elif role == 'function':
-            # Display function outputs in a user-friendly way
-            st.markdown(f"**[Function Result]:** {content}")
+
+    # Restart Adventure button
+    if st.button("Restart Adventure", key='restart_button'):
+        # Reset all relevant session state variables
+        for key in ['storyline', 'interaction_count', 'chapter', 'game_stage', 'current_question', 'current_setting', 'current_choices', 'grade_level', 'selected_textbook', 'selected_novel']:
+            st.session_state.pop(key, None)
+        st.rerun()
 
     # Input box for user response
     user_input = st.text_input("Your response:", key='user_input')
@@ -545,16 +797,6 @@ else:
         # Append user's input to the storyline
         st.session_state.storyline.append({'role': 'user', 'content': user_input})
         # Generate the next part of the story
-        generate_next_story_segment(st.session_state.chapter, user_input)
+        generate_next_story_segment(user_input)
         # Clear the input box
         st.rerun()
-
-    # Restart Adventure button
-    if st.button("Restart Adventure", key='restart_button'):
-        st.session_state.storyline = []
-        st.session_state.interaction_count = 0
-        st.session_state.chapter = 1
-        st.session_state.grade_level = ''
-        st.session_state.selected_textbook = ''
-        st.session_state.selected_novel = ''
-        st.experimental_rerun()

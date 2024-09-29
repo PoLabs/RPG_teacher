@@ -1,0 +1,55 @@
+499
+Direct marketing Email and mobile
+	
+Set a fixed width for your email by specifying 
+the width and spacing of each cell rather 
+than the entire table When these specifics 
+are not declared email clients tend to 
+render the email according to their own 
+defaults and can break the design 
+	
+If you are using a block background colour be sure to include a 100width table to cover 
+the entire email 
+	
+Keep fonts in your email design larger than 16px Anything below that becomes difficult 
+to view in mobile Also bear in mind thatwhile coloured text or lightondark text may 
+look visually impressiveit can be difficult to read an entire email like this and may strain 
+your subscribers eyes Rather limit such visual tricks to smaller sections of your email or 
+to emails that contain less written content 
+	
+Make use of inline CSS Some email clients strip the CSS from the head and body of the email 
+	
+Test your emails in a variety of email clients before you send
+	
+Use responsive design
+Designing for the preview pane 
+Many email users still use desktop clients to manage their email Given the number of emails 
+users receive on a daily basis many still prefer to view emails in their preview panes rather 
+than opening them This has added another challenge for designers who want to ensure that 
+their emails display properly 
+Images and layout should consider the preview pane and be tested for rendering Preview 
+panes can be vertical or horizontal 
+Tips for designing for the preview pane 
+	
+There is no set width Therefore testing is the way to go A width of 600px works best for 
+preview pane display HubSpot 2016 
+	
+Ensure that plain emailfriendly fonts are used toward the top of your email in order to 
+ensure that the first text encountered is properly displayed 
+	
+Consider carefully what images you display in the top section of your email and test displays 
+accordingly 
+	
+Placing your logo prominently at the top left of your email can ensure optimal brand 
+recognition and exposure 
+	
+Try to include your call to action in the area displayed in the preview pane That way even 
+if subscribers choose not to read your emailtheyll still see your primary message 
+	
+Some successful email templates use the area likely to be seen in the preview pane to 
+provide a table of contents for the email Users know what they can look forward to when 
+opening the email
+Naturally your email design should 
+echo your overall corporate identity and 
+personality
+NOTE

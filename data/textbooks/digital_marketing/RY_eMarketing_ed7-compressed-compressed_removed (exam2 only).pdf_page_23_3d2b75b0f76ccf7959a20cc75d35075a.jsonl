@@ -1,0 +1,35 @@
+192
+
+CLAIMING
+Flexible grid
+Typical websites are designed as large centred fixedwidth blocks With responsive design 
+the page elements such as the heading the text or copy the main image and other blocks 
+of information are arranged in a grid of columns that have predefined spacing Each element 
+relates proportionally to the other elements This allows elements to rearrange or resize in 
+relation to each other whether the screen is tiny or huge and the screen quality is high or low 
+Although this system allows for flexibility an extremely narrow screen can cause the design 
+to break down In this case we can make use of media queries
+Figure 79 Flexible grid used in responsive design
+Media queries
+Media queries are bits of code that allow websites to ask devices for information about 
+themselves The website style that will suit the device best is then selected from a list of styles 
+defined in a CSS Media queries ask for information about the devices browser window size 
+orientation landscape or portrait and screen display quality 
+Flexible images
+Images are designed to move and scale with 
+the flexible grid An important consideration 
+is how fast the website loads Highquality 
+images are therefore made available for larger 
+screens and lowerresolution images are made 
+available for smaller screens Parts of images 
+can also be displayed for smaller screens to 
+maintain image quality Images can even be hidden completely Image optimisation is done 
+in CSS which queries the screen height width and pixel ratio of the device and then adjusts 
+the images accordingly MDN 2016 
+Is responsive design right for your 
+company or client See how some 
+companies tackled this question 
+here wwwzdnetcomdoesyour
+companyswebsiteneedresponsive
+design7000021417
+NOTE

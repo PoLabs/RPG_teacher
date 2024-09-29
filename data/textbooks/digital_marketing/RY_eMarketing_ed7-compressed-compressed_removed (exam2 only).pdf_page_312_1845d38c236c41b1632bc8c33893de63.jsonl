@@ -1,0 +1,24 @@
+659
+Conversion optimisation
+AB tests 
+An AB test is one in which each version being tested is different from all the others AB 
+tests always involve just two versions of what is being tested the original and an alternative
+Figure 214 AB testing explained visually 
+AB tests are ideal for an initial foray into conversion optimisation as they can be easy to set 
+up If you are running just one alternate and the original it can also mean that you get a quicker 
+result When conducting AB testing you should only change one element at a time so that 
+you can easily isolate what impact each factor has on your conversion rate
+We can also run multivariate tests sometimes referred to as MVTs Here a number of elements 
+on a page are tested to determine which combination gives the best results For example we may 
+test alternative headlines alternative copyand alternative call to action buttons Two versions 
+of three elements mean that we are testing eight combinations Here is a simple formula to 
+calculate the total number of versions in a multivariate test No of variations of element A  
+No of variations of element B  No of variations of element C   Total no of variations
+Multivariate testing helps avoid the need to conduct several sequential AB tests and easily 
+determines the contribution of each page element to the measured gains
+50 see 
+Version A
+Version A
+Version B
+50 see 
+Version B

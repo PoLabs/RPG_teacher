@@ -1,0 +1,30 @@
+500
+
+UNITING
+Email and images 
+Avoid using images to convey important content Make sure that there is alt text for all images 
+used in the email This ensures that the message of the image will still be communicated even 
+if the image itself is not seen Even though most email clients display images by default some 
+users may still not see them Your email should make sense whether or not the user can see 
+images 
+Tips for using images in email design
+	
+In the past background images did not render well in emails but this is changing A block 
+background colour tends to display well across most email clients Some email clients like 
+Outlook still do not display background images
+	
+When including images in your HTML be sure to declare the height and width for each 
+image to ensure consistent rendering across most email clients 
+Emails that make sense without images and 
+render correctly across all platforms are more 
+likely to persuade a reader to open the email 
+and click through to the website 
+Figure 1614 Good use of clear image alt tags in an email newsletter 
+The call to action 
+Email design should support calls to action For your campaign to be effective your goals and 
+KPIs should be supported by the email layout and design Calls to action can be hyperlinked 
+The images you use in the email should 
+support the overall message rather than 
+convey it directly If the image doesnt 
+appear the message should still be clear
+NOTE

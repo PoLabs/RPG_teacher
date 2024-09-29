@@ -1,0 +1,33 @@
+664
+
+ANALYSING
+2151 Gather data
+The very first step is to gather data about the site you are testing so that you can make smart 
+decisions about what to test and how There are many sources you can use depending on 
+the nature of the site that you are testing Of courseyou also need to know the business for 
+which you are testing in other words what do you want website visitors to do 
+	
+Analytics data Existing web analytics data can be used to determine which pages in your 
+site should be tested You can also gather data about specific pages on your site using 
+tools such as crazyeggcom or contentsquarecom 
+	
+User data User labs or simple site surveys such as kissmetricsio are a useful tool and 
+can also be used to add qualitative data to the quantitative data gathered using web 
+analytics tools 
+Figure 219 A kissmetrics lead funnel report that shows conversion rate 
+	
+Customer service data If you are running 
+tests for a site where users also speak to 
+customer service you can gather data about 
+the site from customer service representa
+tives They should have information on common reasons why visitors make a phone call 
+Your CRM system may also hold some valuable data 
+2152 Analyse
+Having gathered data you need to analyse it intelligently so that you can start designing tests 
+There are some key questions that you need to answer at this stage 
+What should users be doing on the site
+This is where you look at the actual conversion Usually this is an action taken by a user that 
+increases revenue for a business There are obvious conversions to look at such as placing 
+Read more about Customer relationship 
+management CRM in Chapter 15 
+NOTE

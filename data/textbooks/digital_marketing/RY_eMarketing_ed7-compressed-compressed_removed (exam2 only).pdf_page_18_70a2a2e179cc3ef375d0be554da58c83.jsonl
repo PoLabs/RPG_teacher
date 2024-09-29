@@ -1,0 +1,42 @@
+187
+Web development and design 
+smartphones and PDAs MDN 2016 Remember mobile goes beyond just the mobile phone 
+Also consider tablets game consoles netbooks wearables and a range of other webenabled 
+devices
+The constraints with developing for a range of devices 
+Due to the size constraints of mobile device screens various considerations must be taken 
+into account to allow your website to render correctly
+Fluid CSS layouts will allow the site to manipulate its contents based on screen size Additionally 
+CSS media queries can use target styles for a specific screen width height and pixel density 
+Working with a touchscreen means that no 
+hover effects will work Adequate space must 
+be allowed around inputs due to the touch
+area of some users fingers being larger than 
+a mouse cursor
+Images must be optimised for mobile screens and bandwidth restrictions 
+Development approaches 
+Here are some development approaches that you may want to consider
+Specialised mobile development 
+Mobile devices allow users to access information about your brand on the move Because 
+mobile penetration is so heavy and many users worldwide will access the internet first and 
+primarily through mobile Chaffey 2016 every website needs to be designed with the mobile 
+device in mind Mobile website interfaces demand a simpler approach and a consideration of 
+screen size and input method A specific design for various mobile screen sizes in the form of 
+an adaptive design may be an option However Google prefers responsive to adaptive sites 
+so creating an adaptive site may not be in your businesss best interest in terms of SEO
+A native mobile app is software designed to help users perform particular tasks Examples 
+include a tool for checking the weather a fuel calculator or an airlines app to checkin or to 
+track flight progress 
+Mobile apps can be sold or made available for free Many developers create apps to derive an 
+income while free apps that offer users value are often sponsored by brands or advertising 
+An app can be an excellent tool for connecting with your customer 
+The key difference between native applications and mobileoptimised websites is that native 
+applications are designed for particular handsets and operating systems and have to be 
+downloaded to the mobile device Mobileoptimised websites can be accessed using any 
+internetenabled mobile device That said mobile apps can allow for more integration with the 
+device and hence a better user experience depending on the complexity of the functionality 
+A great online JPEGPNG compression 
+tool is tinypngcom Simply upload your 
+images and let them compress it for you 
+MDN 2016
+NOTE

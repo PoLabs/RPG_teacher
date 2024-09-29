@@ -1,0 +1,32 @@
+632
+
+ANALYSING
+Engagement This refers to user activity by event count the time users engage with your site 
+or app as well as the number of times users return to your site or app It contains the
+	
+Engagement overview which summarises data across all the reports in this topic
+	
+User stickiness ratios which compare engagement by active users over a shorter time 
+frame with their engagement over a longer time frame
+	
+User engagement metric which shows the time that your screen was in focus
+	
+Events reports which includes the name of each event linked to Google Analytics This 
+includes the initial automatically collected events the enhanced measurement events 
+enabled any chosen recommended events and your own custom events 
+	
+Conversion reports which display the events marked as conversions 
+Figure 206 An example of an Engagement overview
+Monetisation This refers to the revenue you generate through the website or app It includes 
+reports about
+	
+eCommerce purchases which allow you to measure the revenue from the items for sale 
+and interactions with those items
+	
+Inapp purchases which let you measure revenue grouped by product ID Product ID is a 
+unique code for each product that can be purchased 
+	
+Publisher ads which enable you to measure how much revenue you are generating through 
+ads on your app grouped by ad unit An ad unit is a unique code for each ad on your ads 
+account
+Figure 207 An example of a Monetisation overview
