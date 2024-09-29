@@ -2,17 +2,11 @@ import os
 import streamlit as st
 import re
 import pandas as pd
-from llama_index.core.indices import VectorStoreIndex  # Correct import for VectorStoreIndex
-from llama_index.llms.nvidia import NVIDIA  # Correct NVIDIA class
-from llama_index.embeddings.nvidia import NVIDIAEmbedding  # NVIDIA Embedding model
-from llama_index.prompts import PromptTemplate  # Template for prompt-based queries
-from tenacity import retry, wait_random_exponential, stop_after_attempt  # Retry strategy
-
-# Define a simple Document class if needed
-class Document:
-    def __init__(self, text, doc_id=None):
-        self.text = text
-        self.doc_id = doc_id
+from llama_index import GPTVectorStoreIndex, SimpleDocument  # Updated imports for the latest version
+from llama_index.llms.nvidia import NVIDIA
+from llama_index.embeddings.nvidia import NVIDIAEmbedding
+from llama_index import PromptTemplate
+from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 # Set NVIDIA API Key
 if not os.environ.get("NVIDIA_API_KEY", "").startswith("nvapi-"):
@@ -54,7 +48,7 @@ def load_documents_from_directory(directory_path):
             file_path = os.path.join(directory_path, filename)
             with open(file_path, 'r', encoding='utf-8') as f:
                 text = f.read()
-                doc = Document(text=text, doc_id=filename)  # Use custom Document class
+                doc = SimpleDocument(text=text, doc_id=filename)  # Use SimpleDocument class
                 documents.append(doc)
     return documents
 
@@ -65,10 +59,10 @@ combined_documents = load_documents_from_directory(COMBINED_DOCS_DIR)
 # Split each document's text into chunks
 for doc in combined_documents:
     doc_chunks = split_text(doc.text)
-    # Optionally: Process each chunk (index it, etc.)
 
 # Create the index by passing the LLM and embedding model directly
-index = VectorStoreIndex.from_documents(combined_documents, llm=llm, embed_model=embed_model)
+index = GPTVectorStoreIndex.from_documents(combined_documents, llm=llm, embed_model=embed_model)
+
 
 
 # Initial story prompt template
