@@ -11,8 +11,8 @@ from llama_index.core import VectorStoreIndex
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 import json
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
-
-
+from openai import OpenAI
+from pinecone import Pinecone, ServerlessSpec
 
 
 # set up model, index, embedding, nvidia API -------------------------------------------------------------------------
@@ -30,6 +30,30 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
 # Set the text splitter
 Settings.text_splitter = SentenceSplitter(chunk_size=400)
+
+
+api_key = "d82b0e3a-acd5-4197-a10c-84245c2f9331"  # Replace with your actual Pinecone API key
+pc = Pinecone(api_key=api_key)
+
+openai_api_key = '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'
+client = OpenAI(api_key=openai_api_key)
+
+index_name_textbook = 'digital-marketing-index'
+index_name_novel = 'hobbit-index'
+
+textbook_index = pc.Index(name=index_name_textbook)
+novel_index = pc.Index(name=index_name_novel)
+
+# Function to generate embeddings
+def get_embedding(text):
+    response = client.embeddings.create(model="text-embedding-ada-002", input=text)
+    return response['data'][0]['embedding']
+
+# Function to query Pinecone index
+def query_pinecone(index, embedding, top_k=5):
+    query_results = index.query(vector=embedding, top_k=top_k)
+    return query_results
+
 
 
 def load_textbook_documents(textbook_name):
@@ -480,53 +504,6 @@ def get_novel_content(novel_name, chapter_number):
 
 
 
-
-
-# Initial story prompt template
-initial_story_prompt = """
-You are a storytelling assistant who combines fantasy adventures with educational content.
-
-You have access to the following functions:
-
-1. `describe_setting(text, novel)`: Generates a description of the RPG setting based on the given educational text and novel content.
-2. `describe_question(setting_description, text, novel)`: Creates a question and answer based on the setting description, educational text, and novel content.
-3. `handle_answer(user_text, grade_level, question_answer)`: Evaluates the user's answer and decides whether to give a hint or grade the answer.
-4. `player_choice(previous_choice)`: Determines the next step in the story based on the player's choice.
-
-When you need to perform one of these functions, output a JSON object in the following format:
-
-{"name": "function_name", "parameters": {"arg1": "value1", "arg2": "value2"}}
-
-Do not include any additional text in your response.
-
-Always wait for the player's input before proceeding to the next part of the story.
-
-Given the following information:
-
-Fantasy Chapter Name: {fantasy_chapter_name}
-
-Fantasy Chapter Summary: {fantasy_summary}
-
-Textbook Chapter Name: {textbook_chapter_name}
-
-Textbook Chapter Summary: {textbook_summary}
-
-Sample Questions: {sample_questions}
-
-Create a fun and immersive RPG setting that blends the fantasy narrative with the educational topics. Introduce challenges or puzzles based on the sample questions that the player must solve interactively.
-
-The grade level is {st.session_state.grade_level}.
-
-Please start by calling the `describe_setting` function with the provided textbook and novel content.
-"""
-
-# Continuation prompt template
-continuation_prompt_template = """
-The player responded: "{user_input}"
-
-Continue the story based on the player's response, presenting the next challenge or progressing the narrative accordingly. Introduce one challenge at a time, and wait for the player's next input.
-"""
-
 def parse_function_call(content):
     try:
         function_call = json.loads(content)
@@ -659,7 +636,7 @@ def generate_next_story_segment(user_input=None):
         if choice_index == 0:
             # Continue the journey: Prompt for the next chapter
             st.text("You've completed this chapter. Please select the next chapter to continue.")
-            st.session_state.chapter = st.selectbox("Select the next chapter:", chapter_options, key='next_chapter')
+            #st.session_state.chapter = st.selectbox("Select the next chapter:", chapter_options, key='next_chapter')
 
             # Load the selected textbook and novel content for the new chapter
             st.session_state.selected_textbook_content = get_textbook_content(
