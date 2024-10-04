@@ -44,17 +44,18 @@ index_name_novel = 'hobbit-index'
 textbook_index = pc.Index(name=index_name_textbook)
 novel_index = pc.Index(name=index_name_novel)
 
-# Function to generate embeddings
+
 def get_embedding(text):
+    """Generate embeddings using OpenAI API."""
     response = client.embeddings.create(model="text-embedding-ada-002", input=text)
-    return response['data'][0]['embedding']
+    # Access the first embedding from the response using dot notation
+    embedding = response.data[0].embedding
+    return embedding
 
 # Function to query Pinecone index
 def query_pinecone(index, embedding, top_k=5):
     query_results = index.query(vector=embedding, top_k=top_k)
     return query_results
-
-
 
 def load_textbook_documents(textbook_name):
     directory_path = f"/home/polabs2/Code/RPG_teacher/data/textbooks/{textbook_name}"
@@ -76,86 +77,6 @@ def create_novel_index(novel_name):
     novel_index = VectorStoreIndex.from_documents(documents)
     return novel_index
 
-
-
-
-# set up tool calls for each RPG scenario --------------------------------------------------------------------------
-function_schemas = [
-    {
-        "name": "describe_setting",
-        "description": "Generates a description of the RPG setting based on the given educational text and novel content.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "text": {"type": "string", "description": "The educational text or textbook content."},
-                "novel": {"type": "string", "description": "The fantasy novel content."}
-            },
-            "required": ["text", "novel"]
-        }
-    },
-    {
-        "name": "describe_question",
-        "description": "Creates a question and answer based on the setting description, educational text, and novel content.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "setting_description": {"type": "string", "description": "Description of the current setting."},
-                "text": {"type": "string", "description": "The educational text or textbook content."},
-                "novel": {"type": "string", "description": "The fantasy novel content."}
-            },
-            "required": ["setting_description", "text", "novel"]
-        }
-    },
-    {
-        "name": "handle_answer",
-        "description": "Evaluates the user's answer and decides whether to give a hint or grade the answer.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "user_text": {"type": "string", "description": "The user's response."},
-                "grade_level": {"type": "string", "description": "The educational grade level for grading purposes."},
-                "question_answer": {"type": "string", "description": "The correct answer to the question."}
-            },
-            "required": ["user_text", "question_answer"]
-        }
-    },
-    {
-        "name": "player_choice",
-        "description": "Determines the next step in the story based on the player's choice.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "previous_choice": {"type": "string", "description": "The player's previous choice or action."}
-            },
-            "required": ["previous_choice"]
-        }
-    }
-]
-
-
-
-def execute_function_call(function_name, arguments):
-    if function_name == 'describe_setting':
-        text = arguments.get('text', '')
-        novel = arguments.get('novel', '')
-        # Call the actual function
-        result = describe_setting(text, novel)
-        # Format the result for display
-        formatted_result = result  # `describe_setting` returns a user-friendly string
-        return formatted_result
-    elif function_name == "describe_question":
-        topic = arguments.get('topic', '')
-        difficulty = arguments.get('difficulty', 'medium')
-        return describe_question(topic, difficulty)
-    elif function_name == "handle_answer":
-        user_answer = arguments.get('user_answer', '')
-        question = arguments.get('question', '')
-        return handle_answer(user_answer, question)
-    elif function_name == "player_choice":
-        choices = arguments.get('choices', [])
-        return player_choice(choices)
-    else:
-        return f"Function '{function_name}' not recognized."
 
 
 def describe_setting(text, novel):
@@ -190,11 +111,11 @@ def describe_setting(text, novel):
     # Construct the prompt
     prompt = f"""
     Using the following context from the textbook and novel, create a vivid and immersive setting description for an RPG adventure. Integrate key concepts from the textbook into the world of the novel.
+    First paragraph should be about the setting. Second and third paragraphs should integrate textbook concepts into the setting.
+    Please provide a detailed setting description that blends these elements seamlessly using the context provided below.
 
     Context:
     {context}
-
-    Please provide a detailed setting description that blends these elements seamlessly.
     """
     # Call the LLM
     messages = [
@@ -468,24 +389,6 @@ def extract_topic_from_textbook(text):
         return "General Topic"
 
 
-#def load_chapter_content(chapter_number):
-#    # Create a query engine
-#    query_engine = index.as_query_engine(similarity_top_k=5)#
-
-    # Formulate the query to retrieve the specific chapter's combined document
-#    query_str = f"chapter_{chapter_number}_combined.txt"
-
-    # Retrieve the relevant document
-#    response = query_engine.query(query_str)
-
-    # Check if the response contains source nodes
-#    if not response or not response.source_nodes:
-#        return None
-
-    # Extract the content from the retrieved document
-#    doc_content = response.source_nodes[0].node.get_content()
-#    return doc_content
-
 def get_textbook_content(textbook_name, chapter_number):
     documents = load_textbook_documents(textbook_name)
     for doc in documents:
@@ -502,25 +405,6 @@ def get_novel_content(novel_name, chapter_number):
             return content
     return "Novel content not found."
 
-
-
-def parse_function_call(content):
-    try:
-        function_call = json.loads(content)
-        if 'name' in function_call and 'parameters' in function_call:
-            return function_call['name'], function_call['parameters']
-    except json.JSONDecodeError:
-        # Attempt to extract JSON from the content
-        json_str_match = re.search(r'\{.*\}', content, re.DOTALL)
-        if json_str_match:
-            json_str = json_str_match.group()
-            try:
-                function_call = json.loads(json_str)
-                if 'name' in function_call and 'parameters' in function_call:
-                    return function_call['name'], function_call['parameters']
-            except json.JSONDecodeError:
-                pass
-    return None, None
 
 
 def extract_section(text, section_name):
@@ -776,11 +660,20 @@ else:
     # Input box for user response
     user_input = st.text_input("Your response:", key='user_input')
 
-    # Button to submit the response
-    if st.button("Submit", key='submit_button') and user_input:
-        # Append user's input to the storyline
-        st.session_state.storyline.append({'role': 'user', 'content': user_input})
-        # Generate the next part of the story
-        generate_next_story_segment(user_input)
-        # Clear the input box
-        st.rerun()
+    if st.button("Submit"):
+        if user_input:
+            # Generate embedding for query
+            query_embedding = get_embedding(user_input)
+
+            # Query the textbook and novel indexes
+            textbook_results = query_pinecone(textbook_index, query_embedding)
+            novel_results = query_pinecone(novel_index, query_embedding)
+
+            # Display results
+            st.write("Textbook Results:")
+            st.json(textbook_results)
+
+            st.write("Novel Results:")
+            st.json(novel_results)
+        else:
+            st.error("Please enter a query.")
