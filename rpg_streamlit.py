@@ -1,6 +1,8 @@
 import os
 import streamlit as st
 import re
+import time
+import random
 import pandas as pd
 from llama_index.core import Settings
 from llama_index.llms.nvidia import NVIDIA
@@ -57,36 +59,175 @@ def query_pinecone(index, embedding, top_k=5):
     query_results = index.query(vector=embedding, top_k=top_k)
     return query_results
 
+
+import os
+
+
 def load_textbook_documents(textbook_name):
     directory_path = f"/home/polabs2/Code/RPG_teacher/data/textbooks/{textbook_name}"
-    documents = SimpleDirectoryReader(directory_path).load_data()
-    return documents
+    # Check if the directory exists
+    if not os.path.isdir(directory_path):
+        print(f"Error: Directory '{directory_path}' does not exist.")
+        return []
+    try:
+        documents = SimpleDirectoryReader(directory_path).load_data()
+        if not documents:
+            print(f"Warning: No documents found in '{directory_path}'.")
+        return documents
+    except Exception as e:
+        print(f"Exception occurred while loading textbook documents: {e}")
+        return []
+
 
 def load_novel_documents(novel_name):
     directory_path = f"/home/polabs2/Code/RPG_teacher/data/novels/{novel_name}"
-    documents = SimpleDirectoryReader(directory_path).load_data()
-    return documents
+    # Check if the directory exists
+    if not os.path.isdir(directory_path):
+        print(f"Error: Directory '{directory_path}' does not exist.")
+        return []
+    try:
+        documents = SimpleDirectoryReader(directory_path).load_data()
+        if not documents:
+            print(f"Warning: No documents found in '{directory_path}'.")
+        return documents
+    except Exception as e:
+        print(f"Exception occurred while loading novel documents: {e}")
+        return []
+
 
 def create_textbook_index(textbook_name):
     documents = load_textbook_documents(textbook_name)
-    textbook_index = VectorStoreIndex.from_documents(documents)
-    return textbook_index
+    # Check if documents are loaded
+    if not documents:
+        print("Error: No documents to index for the textbook.")
+        return None
+    try:
+        textbook_index = VectorStoreIndex.from_documents(documents)
+        return textbook_index
+    except Exception as e:
+        print(f"Exception occurred while creating textbook index: {e}")
+        return None
+#now I need to update the describe_setting function similar to the describe_
 
 def create_novel_index(novel_name):
     documents = load_novel_documents(novel_name)
-    novel_index = VectorStoreIndex.from_documents(documents)
-    return novel_index
+    # Check if documents are loaded
+    if not documents:
+        print("Error: No documents to index for the novel.")
+        return None
+    try:
+        novel_index = VectorStoreIndex.from_documents(documents)
+        return novel_index
+    except Exception as e:
+        print(f"Exception occurred while creating novel index: {e}")
+        return None
 
 
+def describe_adventure(textbook_name, textbook_chapter, novel_name):
+    """
+    Generates an adventure description combining themes from the novel with key topics from the textbook.
+    """
+    print("\n--- describe_adventure called ---")
+    print(f"textbook_name: {textbook_name}")
+    print(f"textbook_chapter: {textbook_chapter}")
+    print(f"novel_name: {novel_name}")
 
-def describe_setting(text, novel):
+    # Prepare the system prompt message
+    system_prompt = (
+        "You are an assistant that creates educational RPG adventures that combine fantasy novels with educational textbooks. "
+        "Your task is to generate a few paragraphs describing the adventure setting and characters involved that combine themes from the novel with key topics from the textbook using the additional context provided below. "
+        "Also, provide five places, events, or encounters that can be used to stage questions."
+    )
+
+    # Access the indexes from st.session_state
+    textbook_index = st.session_state.textbook_index
+    novel_index = st.session_state.novel_index
+    top_k = 15  # You can adjust this value as needed
+
+    # Create query engines for both indexes
+    textbook_query_engine = textbook_index.as_query_engine(similarity_top_k=top_k)
+    novel_query_engine = novel_index.as_query_engine(similarity_top_k=top_k)
+
+    # Retrieve content from the textbook related to the chapter
+    start_time = time.time()
+    textbook_query = f"Chapter {textbook_chapter}"
+    textbook_response = textbook_query_engine.query(textbook_query)
+
+    hobbit_chapter_summaries = {
+        "Chapter 1: An Unexpected Party": "Bilbo Baggins, a hobbit, is visited by Gandalf, who invites him to join a group of dwarves on a journey to reclaim their homeland from the dragon Smaug. The dwarves, led by Thorin Oakenshield, arrive at Bilbo’s home and explain their quest to the Lonely Mountain. Bilbo is reluctantly recruited as their burglar.",
+        "Chapter 2: Roast Mutton": "The company sets off and encounters trouble when they find three trolls. The trolls capture them, but Gandalf tricks the trolls into arguing until the sun rises, turning them to stone. The group finds treasure in the trolls’ lair.",
+        "Chapter 3: A Short Rest": "The group travels to Rivendell, the home of the Elves, where they receive guidance and rest. Elrond, the elf lord, helps them decipher the map and runes, revealing the secret entrance to the Lonely Mountain.",
+        "Chapter 4: Over Hill and Under Hill": "The group crosses the Misty Mountains but is captured by goblins in the caves. Gandalf helps them escape, but during the escape, Bilbo gets separated from the others.",
+        "Chapter 5: Riddles in the Dark": "Bilbo encounters Gollum, a strange creature living in the goblin caves. They engage in a riddle contest, and Bilbo wins. He discovers a magical ring that makes him invisible and uses it to escape Gollum and rejoin the dwarves.",
+        "Chapter 6: Out of the Frying-Pan into the Fire": "Bilbo and the dwarves escape the goblins, but they are soon pursued by Wargs (evil wolves). They are rescued by eagles who carry them to safety.",
+        "Chapter 7: Queer Lodgings": "The group seeks shelter with Beorn, a shape-shifter who can turn into a bear. He provides them with provisions and advice for their journey through Mirkwood.",
+        "Chapter 8: Flies and Spiders": "In Mirkwood, the group faces dangers including giant spiders, which capture them. Bilbo uses the ring and his newfound courage to rescue the dwarves. They are later captured by Wood Elves and imprisoned.",
+        "Chapter 9: Barrels Out of Bond": "Bilbo helps the dwarves escape the Wood Elves by hiding them in barrels that are floated down the river to Lake-town (Esgaroth), a human settlement near the Lonely Mountain.",
+        "Chapter 10: A Warm Welcome": "The group arrives in Lake-town, where they are warmly received by the people. The townspeople hope that Thorin will fulfill the prophecy of defeating Smaug and restoring prosperity.",
+        "Chapter 11: On the Doorstep": "The group reaches the Lonely Mountain and locates the secret entrance. They cannot open the door at first but finally figure out how to use the map’s clues to unlock it.",
+        "Chapter 12: Inside Information": "Bilbo enters the dragon’s lair and steals a cup. He later converses with Smaug, learning about the dragon’s vulnerabilities. Smaug becomes enraged and flies off to attack Lake-town.",
+        "Chapter 13: Not at Home": "With Smaug gone, the dwarves explore the treasure hoard in the Lonely Mountain. Bilbo discovers the Arkenstone, a precious gem, but keeps it hidden from Thorin.",
+        "Chapter 14: Fire and Water": "Smaug attacks Lake-town, but Bard, a human archer, kills him with an arrow aimed at a weak spot. The people of Lake-town begin to rebuild, and Bard claims his rightful share of the treasure.",
+        "Chapter 15: The Gathering of the Clouds": "Thorin hears of Smaug’s death and becomes obsessed with defending the treasure. Elves and men approach the mountain, seeking a share of the hoard. Thorin refuses to negotiate, leading to a standoff.",
+        "Chapter 16: A Thief in the Night": "Bilbo, hoping to prevent conflict, secretly gives the Arkenstone to Bard and the Elvenking, hoping they can use it as leverage in negotiations with Thorin.",
+        "Chapter 17: The Clouds Burst": "Thorin refuses to negotiate even after seeing the Arkenstone. A battle seems inevitable, but just then, goblins and Wargs arrive, forcing the men, elves, and dwarves to unite against a common enemy in the Battle of Five Armies.",
+        "Chapter 18: The Return Journey": "Thorin is fatally wounded in battle but reconciles with Bilbo before he dies. After the battle, Bilbo declines a large share of the treasure and returns home with only a small portion.",
+        "Chapter 19: The Last Stage": "Bilbo returns to his hobbit-hole in the Shire to find that he has been presumed dead. He settles back into a quiet life, forever changed by his adventures."
+    }
+
+    # Use the existing hobbit_chapter_summaries dictionary
+    chapter_keys = list(hobbit_chapter_summaries.keys())
+    # Select two random consecutive chapters
+    start_idx = random.randint(0, len(chapter_keys) - 2)  # Ensure there's a next chapter
+    consecutive_chapters = chapter_keys[start_idx:start_idx + 2]
+    # Combine the summaries for the query
+    combined_summary = hobbit_chapter_summaries[consecutive_chapters[0]] + " " + hobbit_chapter_summaries[
+        consecutive_chapters[1]]
+
+    # Simulate querying with the combined summary
+    novel_response = novel_query_engine.query(combined_summary)
+    end_time = time.time()
+    print("Query Pinecone - elapsed time:", end_time - start_time)
+
+    # Extract content from the retrieved documents
+    textbook_context_docs = [node.node.get_content() for node in textbook_response.source_nodes]
+    novel_context_docs = [node.node.get_content() for node in novel_response.source_nodes]
+
+    # Combine the retrieved content
+    retrieved_content = "\n".join(textbook_context_docs + novel_context_docs)
+    print(retrieved_content)
+    # Create the user message
+    user_message = (
+        f"Textbook: {textbook_name}\n"
+        f"Chapter: {textbook_chapter}\n"
+        f"Novel: {novel_name}\n\n"
+        f"Retrieved Content:\n{retrieved_content}"
+    )
+
+    # Prepare messages for the LLM
+    messages = [
+        ChatMessage(role=MessageRole.SYSTEM, content=system_prompt),
+        ChatMessage(role=MessageRole.USER, content=user_message)
+    ]
+
+    # Call the LLM to generate the adventure description
+    response = llm_predict_with_retry(messages)
+    adventure_description = response.message.content.strip()
+
+    print(f"Generated adventure description: {adventure_description[:]}...")
+    print("--- describe_adventure ended ---\n")
+
+    return adventure_description
+
+
+def describe_setting(text, novel, adventure_description):
     """
     Generates a vivid setting description that combines textbook content and novel elements.
     Uses top_k relevant documents from both indexes as context.
     """
     print("\n--- describe_setting called ---")
-    print(f"text: {text[:100]}...")
-    print(f"novel: {novel[:100]}...")
+    print(f"text: {text[:]}...")
+    print(f"novel: {novel[:]}...")
 
     # Access indexes from st.session_state
     textbook_index = st.session_state.textbook_index
@@ -111,7 +252,7 @@ def describe_setting(text, novel):
     # Construct the prompt
     prompt = f"""
     Using the following context from the textbook and novel, create a vivid and immersive setting description for an RPG adventure. Integrate key concepts from the textbook into the world of the novel.
-    First paragraph should be about the setting. Second and third paragraphs should integrate textbook concepts into the setting.
+    First paragraph should be about the setting. Second paragraph should integrate textbook concepts into the setting.
     Please provide a detailed setting description that blends these elements seamlessly using the context provided below.
 
     Context:
@@ -125,7 +266,7 @@ def describe_setting(text, novel):
     response = llm_predict_with_retry(messages)
     setting_description = response.message.content.strip()
 
-    print(f"Generated setting description: {setting_description[:100]}...")
+    print(f"Generated setting description: {setting_description[:]}...")
     print("--- describe_setting ended ---\n")
 
     return setting_description
@@ -450,13 +591,20 @@ def generate_next_story_segment(user_input=None):
         print("Game stage: start")
 
         # Load the selected textbook and novel content
-        text = st.session_state.selected_textbook_content
-        novel = st.session_state.selected_novel_content
+        text = st.session_state.selected_textbook
+        novel = st.session_state.selected_novel
+        chapter = st.session_state.chapter
+
+        adventure_description = describe_adventure(textbook_name=text, textbook_chapter=chapter, novel_name=novel)
+        # Store the adventure description
+        st.session_state.current_setting = adventure_description
+        st.session_state.storyline.append({'role': 'assistant', 'content': adventure_description})
 
         # Describe the initial setting
-        setting_description = describe_setting(text, novel)
-        st.session_state.current_setting = setting_description
+        setting_description = describe_setting(text, novel, adventure_description)
+        st.session_state.current_setting = st.session_state.current_setting + ' ' + setting_description
         st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
+
 
         # Generate the first question
         question, question_answer = describe_question(setting_description, text, novel)
@@ -571,7 +719,7 @@ if 'storyline' not in st.session_state:
 if 'game_stage' not in st.session_state:
     st.session_state.game_stage = 'start'
 if 'chapter' not in st.session_state:
-    st.session_state.chapter = 7
+    st.session_state.chapter = 'Chapter 7: Web Development and Design'
 if 'interaction_count' not in st.session_state:
     st.session_state.interaction_count = 0
 if 'grade_level' not in st.session_state:
@@ -593,17 +741,25 @@ if 'chapter_summary_notes' not in st.session_state:
 textbook_options = ['Digital Marketing']  # Add more textbooks as needed
 novel_options = ['The Hobbit']  # Add more novels as needed
 
+# Chapter options
+chapter_options = [
+    'Chapter 7: Web Development and Design',
+    'Chapter 12: Video Content Creation',
+    'Chapter 13: Social Media'
+]
+
 # Ensure session state values are valid
-if st.session_state.selected_textbook not in textbook_options:
+if 'selected_textbook' not in st.session_state or st.session_state.selected_textbook not in textbook_options:
     st.session_state.selected_textbook = textbook_options[0]
 
-if st.session_state.selected_novel not in novel_options:
+if 'selected_novel' not in st.session_state or st.session_state.selected_novel not in novel_options:
     st.session_state.selected_novel = novel_options[0]
+
+if 'chapter' not in st.session_state or st.session_state.chapter not in chapter_options:
+    st.session_state.chapter = chapter_options[0]
 
 st.title("Interactive RPG Adventure")
 st.write("Embark on a journey that combines fantasy storytelling with educational challenges!")
-
-# Initialize session state variables (as shown earlier)
 
 # Input for grade level
 if st.session_state.game_stage == 'start' and not st.session_state.storyline:
@@ -611,8 +767,7 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
 
     # Dropdown for textbook selection
     st.selectbox("Select the textbook:", textbook_options, key='selected_textbook')
-    # Number of chapters (adjust this to the actual number of chapters in your content)
-    chapter_options = [7,12,13]#list(range(1, 11))  # Chapters 1 to 10
+
     # Dropdown for chapter selection
     st.selectbox("Select the chapter:", chapter_options, key='chapter')
 
@@ -620,25 +775,27 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     st.selectbox("Select the novel:", novel_options, key='selected_novel')
 
     # Button to start the adventure
-    # After the user selects the textbook and novel and clicks "Start Adventure"
     if st.button("Start Adventure", key='start_button'):
         if st.session_state.grade_level and st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
             # Load the selected textbook and novel content for the selected chapter
-            st.session_state.selected_textbook_content = get_textbook_content(
-                st.session_state.selected_textbook, st.session_state.chapter)
-            st.session_state.selected_novel_content = get_novel_content(
-                st.session_state.selected_novel, st.session_state.chapter)
+            # st.session_state.selected_textbook_content = get_textbook_content(
+            #     st.session_state.selected_textbook, st.session_state.chapter)
+            # st.session_state.selected_novel_content = get_novel_content(
+            #     st.session_state.selected_novel, st.session_state.chapter)
 
             # Create indexes for the selected textbook and novel
+            start_time = time.time()
             st.session_state.textbook_index = create_textbook_index(st.session_state.selected_textbook)
             st.session_state.novel_index = create_novel_index(st.session_state.selected_novel)
-
+            end_time = time.time()
+            print("Elapsed time:", end_time - start_time)
             # Start the game
             generate_next_story_segment()
             st.rerun()
 
         else:
             st.error("Please fill in all the fields before starting the adventure.")
+
 
 else:
     # Display the storyline so far
