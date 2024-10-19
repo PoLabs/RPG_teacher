@@ -51,3 +51,51 @@ handle_answer
   - other
 
 player_choice (for next question setup)
+
+- tooltips
+- RPG elements
+- packages and cleanup
+- second example
+
+
+I'm creating a genAI app that constructs a guided fantasy RPG learning experience. The app uses textbooks and fantasy novels for RAG of an immersive setting filled with text book question encounters. 
+For example, on setup might involve teaching a chapter of a Digital Marketing textbook by inserting questions into a RPG story based on the Hobbit. 
+Both books are in a vector database and can augment queries with additional context. I also have a dataset with chapter summary notes and chapter sample questions. 
+I also have chapter summaries for the fantasy novel. I combined the textbook chapter summary points with a fantasy chapters summary to generate fun and descriptive settings that incorporate questions and trivia based on the textbook chapter. 
+I'm using llamaindex, pinecone and nvidia nemo nimm with streamlit as a front end. 
+
+The general flow is user chooses text book, chapter and novel and submits. 
+describe_adventure is called which generates a few paragraphs describing the adventure setting and characters involved that combines themes from the novel with key topics from the textbook using the additional context .
+Also, it generates  five places, events, or encounters that can be used to stage questions.
+
+describe_setting is then called which picks one of the 5 'Places, Events, or Encounters' from the adventure description and describes the setting the characters now find themselves in. 
+Generate 10 sentences that ties in the relevant textbook content.
+
+describe_question is then called which  uses the setting description, context, and sample question to create an engaging question for the player that ties into the RPG adventure. 
+The question should integrate educational content from the textbook. Please provide the question and its answer.
+
+on user input, grade_answer is called to assess the following student's answer to the question based on the provided rubric. 
+It uses the rubric to determine the level (0-4) that best describes the student's answer. Provide the level and an explanation, referencing the student's answer and the rubric.
+
+player_choice is then called which lets the user decide which of the remaning 'Places, Events, or Encounters' they want to travel to next, then repeats the cycle at describe_setting.
+
+
+
+
+
+I want to update the app to use llama guard model from hugging face to check user input and system output. Sample code:
+
+from huggingface_hub import InferenceClient
+
+client = InferenceClient(api_key="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+for message in client.chat_completion(
+	model="meta-llama/LlamaGuard-7b",
+	messages=[{"role": "user", "content": "What is the capital of France?"}],
+	max_tokens=500,
+	stream=True,
+):
+    print(message.choices[0].delta.content, end="")
+
+
+here is my current app code:
