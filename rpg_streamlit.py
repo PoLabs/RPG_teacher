@@ -15,7 +15,8 @@ import json
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
 from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
-
+from huggingface_hub import InferenceClient
+import openai
 
 # set up model, index, embedding, nvidia API -------------------------------------------------------------------------
 TOP_K = 5  # Global constant
@@ -34,17 +35,51 @@ Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
 Settings.text_splitter = SentenceSplitter(chunk_size=400)
 
 
+# Replace with your actual Hugging Face API key
+llama_guard_api_key = "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"
+openai.api_key = llama_guard_api_key
+openai.api_base = "https://api-inference.huggingface.co/models/meta-llama/LlamaGuard-7b"
+#llama_guard_client = OpenAI(
+#    base_url="https://api-inference.huggingface.co/models/meta-llama/LlamaGuard-7b",
+#    api_key=llama_guard_api_key
+#)
+
 api_key = "d82b0e3a-acd5-4197-a10c-84245c2f9331"  # Replace with your actual Pinecone API key
 pc = Pinecone(api_key=api_key)
 
-openai_api_key = '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'
+openai_api_key = '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' # for embeddings
 client = OpenAI(api_key=openai_api_key)
+
+llama_guard_client = OpenAI(
+    base_url="https://kh9pk0hf4f6ruk5r.us-east-1.aws.endpoints.huggingface.cloud/v1/", # for llama-guard
+    api_key="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"  # Replace with your Hugging Face API key
+)
 
 index_name_textbook = 'digital-marketing-index'
 index_name_novel = 'hobbit-index'
 
 textbook_index = pc.Index(name=index_name_textbook)
 novel_index = pc.Index(name=index_name_novel)
+
+
+def check_with_llama_guard(message_content):
+    chat_completion = llama_guard_client.chat.completions.create(
+        model="tgi",
+        messages=[
+            {
+                "role": "user",
+                "content": message_content
+            }
+        ],
+        max_tokens=150,
+        stream=False
+    )
+
+    # Extract and return the content from the response
+    checked_content = chat_completion['choices'][0]['delta']['content']
+    return checked_content.strip()
+
+
 
 
 def get_embedding(text):
@@ -754,18 +789,24 @@ def extract_section(text, section_name):
 @retry(wait=wait_random_exponential(multiplier=1, max=60), stop=stop_after_attempt(3))
 def llm_predict_with_retry(messages):
     try:
-        # Debugging: Confirm all messages are ChatMessage instances
-        for idx, msg in enumerate(messages):
-            if not isinstance(msg, ChatMessage):
-                print(f"Error: Message at index {idx} is not a ChatMessage instance.")
-                print(f"Message content: {msg}")
-                raise TypeError("All messages must be ChatMessage instances.")
+        # Generate the response from your primary LLM
+        response = Settings.llm.chat(messages=messages)
+        response_content = response.message.content.strip()
 
-        response = Settings.llm.chat(messages=messages)#, max_tokens=300)
+        # Check the response content with LlamaGuard
+        checked_response_content = check_with_llama_guard(response_content)
+
+        if checked_response_content != response_content:
+            # Content was flagged or modified
+            response.message.content = "Sorry, the response cannot be displayed due to policy violations."
+        else:
+            response.message.content = checked_response_content
+
         return response
     except Exception as e:
         print(f"Exception: {e}")
         raise e
+
 
 
 def limit_to_two_sentences(text):
@@ -854,19 +895,27 @@ def generate_next_story_segment(user_input=None):
         st.session_state.game_stage = 'awaiting_answer'
 
     elif st.session_state.game_stage == 'awaiting_answer':
-        print("Game stage: awaiting_answer")
-
         if user_input is None:
             print("No user input received.")
             return
 
-        # Handle user's answer
-        user_answer = user_input
+            # Check user input with LlamaGuard
+        checked_user_input = check_with_llama_guard(user_input)
+
+        if checked_user_input != user_input:
+            st.error("Your input contains disallowed content. Please avoid using inappropriate language.")
+            return
+
+        # Proceed to handle the user input
+        user_answer = checked_user_input
         st.session_state.storyline.append({'role': 'user', 'content': user_answer})
 
         # Grade the answer and get structured result
-        grading_result = grade_answer(user_answer, st.session_state.current_question,
-                                      st.session_state.current_question_answer)
+        grading_result = grade_answer(
+            user_answer,
+            st.session_state.current_question,
+            st.session_state.current_question_answer
+        )
 
         # Add feedback to the storyline
         st.session_state.storyline.append({'role': 'assistant', 'content': grading_result['feedback']})
