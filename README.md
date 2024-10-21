@@ -99,3 +99,9 @@ for message in client.chat_completion(
 
 
 here is my current app code:
+
+
+
+- line breaks - after each 
+- lock screen position
+- tool tips
