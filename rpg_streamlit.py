@@ -831,6 +831,7 @@ def generate_next_story_segment(user_input=None):
                     st.markdown(f"**Narrator:** {content}")
                 elif role == 'user':
                     st.markdown(f"**You:** {content}")
+                st.markdown('--------------')
 
         # Proceed with the next step after showing the adventure description
         # Extract the first 'place, event, or encounter' and continue
@@ -935,6 +936,7 @@ def generate_next_story_segment(user_input=None):
                 st.markdown(f"**Narrator:** {content}")
             elif role == 'user':
                 st.markdown(f"**You:** {content}")
+            st.markdown('-------------')
 
     # Update the index
     st.session_state.last_displayed_message_index = len(st.session_state.storyline)
@@ -992,7 +994,7 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     st.selectbox("Select the novel:", novel_options, key='selected_novel')
 
     # Button to start the adventure
-    if st.button("Start Adventure", key='start_button'):
+    if st.button("Start Adventure", key='start_button', help='Takes about 5mins to generate'):
         if st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
             # Start the game
             generate_next_story_segment()
