@@ -21,7 +21,7 @@ from pinecone import Pinecone, ServerlessSpec
 TOP_K = 5  # Global constant
 
 # Set NVIDIA API Key (Hard-coded)
-nvidia_api_key = "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"  # Replace with your actual NVIDIA API key
+nvidia_api_key = "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"#"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"  # Replace with your actual NVIDIA API key
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
 print(f"NVIDIA API key is set: {nvidia_api_key[:5]}...")  # Masking for display
