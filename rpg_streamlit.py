@@ -21,11 +21,10 @@ from pinecone import Pinecone, ServerlessSpec
 TOP_K = 5  # Global constant
 
 # Set NVIDIA API Key (Hard-coded)
-nvidia_api_key = "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"  # Replace with your actual NVIDIA API key
+nvidia_api_key = "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" #"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"  # Replace with your actual NVIDIA API key
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
 print(f"NVIDIA API key is set: {nvidia_api_key[:5]}...")  # Masking for display
-
 # Initialize the NVIDIA LLM using Settings
 Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instruct")
 # Initialize the NVIDIA embedding model
@@ -37,7 +36,7 @@ Settings.text_splitter = SentenceSplitter(chunk_size=400)
 api_key = "d82b0e3a-acd5-4197-a10c-84245c2f9331"  # Replace with your actual Pinecone API key
 pc = Pinecone(api_key=api_key)
 
-openai_api_key = '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'
+openai_api_key = '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'
 client = OpenAI(api_key=openai_api_key)
 
 index_name_textbook = 'digital-marketing-index'
@@ -52,6 +51,7 @@ def get_embedding(text):
     response = client.embeddings.create(model="text-embedding-ada-002", input=text)
     # Access the first embedding from the response using dot notation
     embedding = response.data[0].embedding
+    #print(f'embedding: {embedding}')
     return embedding
 
 # Function to query Pinecone index
@@ -370,7 +370,7 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     return final_description
 
 
-def describe_question(setting_description, text, novel):
+def describe_question(setting_description, text, novel, adventure_description):
     """
     Generates a challenging question based on the setting description, text, and novel content.
     Includes relevant questions from chapter_summary_notes.csv, paired by the 'key' column.
@@ -464,8 +464,12 @@ def describe_question(setting_description, text, novel):
 
     # Combine the context from both indexes and integrate the setting description
     prompt = f"""
-    Using the following setting description, context, and sample question, create an engaging question for the player that ties into the RPG adventure. 
-    The question should integrate educational content from the textbook. Please provide the question and its answer.
+    Using the following adventure description, setting description, context, and sample question, create an engaging question for the player that is deeply integrated into the current RPG adventure storyline. 
+    The question should be directly related to the events, characters, or situations described, and should seamlessly blend educational content from the textbook into the narrative. 
+    Please provide the question and its answer.
+
+    Adventure Description:
+    {adventure_description}
 
     Setting Description:
     {setting_description}
@@ -484,9 +488,11 @@ def describe_question(setting_description, text, novel):
     Answer:
     [The correct answer here]
     """
+
     # Call the LLM
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator crafting questions for students."),
+        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator and storyteller crafting engaging and immersive questions for students within an RPG adventure. "
+                                                     "Your questions should be directly tied to the current storyline and setting, integrating educational content seamlessly into the narrative."),
         ChatMessage(role=MessageRole.USER, content=prompt)
     ]
     response = llm_predict_with_retry(messages)
@@ -754,6 +760,8 @@ def extract_section(text, section_name):
 @retry(wait=wait_random_exponential(multiplier=1, max=60), stop=stop_after_attempt(3))
 def llm_predict_with_retry(messages):
     try:
+        total_length = sum(len(msg.content) for msg in messages)
+        print(f"Total input length to LLM: {total_length} characters")
         # Debugging: Confirm all messages are ChatMessage instances
         for idx, msg in enumerate(messages):
             if not isinstance(msg, ChatMessage):
@@ -777,7 +785,6 @@ def limit_to_two_sentences(text):
     # Return the first two sentences joined back together
     #return ' '.join(sentences[:2])
     return sentences[0]
-
 
 def generate_next_story_segment(user_input=None):
     """
@@ -818,8 +825,17 @@ def generate_next_story_segment(user_input=None):
         chapter = st.session_state.chapter
 
         # Generate the adventure description and store it
-        adventure_description = describe_adventure(textbook_name=text, textbook_chapter=chapter, novel_name=novel)
-        st.session_state.current_setting = adventure_description
+        adventure_description = describe_adventure(
+            textbook_name=text,
+            textbook_chapter=chapter,
+            novel_name=novel
+        )
+        st.session_state.adventure_description = adventure_description
+
+        # Initialize or reset current setting and full adventure description
+        st.session_state.current_setting = ''
+        st.session_state.full_adventure_description = st.session_state.adventure_description
+
         st.session_state.storyline.append({'role': 'assistant', 'content': adventure_description})
 
         # Display the adventure description immediately
@@ -841,12 +857,25 @@ def generate_next_story_segment(user_input=None):
             place_event_encounter = "A generic setting"
 
         # Call describe_setting to describe the first setting
-        setting_description = describe_setting(text, novel, adventure_description, place_event_encounter)
-        st.session_state.current_setting = st.session_state.current_setting + ' ' + setting_description
+        setting_description = describe_setting(
+            text,
+            novel,
+            st.session_state.full_adventure_description,
+            place_event_encounter
+        )
+        st.session_state.current_setting = setting_description
         st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
+        # Update the full adventure description
+        st.session_state.full_adventure_description += '\n' + setting_description
+
         # Generate the first question
-        question, question_answer = describe_question(setting_description, text, novel)
+        question, question_answer = describe_question(
+            setting_description,
+            text,
+            novel,
+            st.session_state.full_adventure_description
+        )
         st.session_state.current_question = question
         st.session_state.current_question_answer = question_answer
         st.session_state.storyline.append({'role': 'assistant', 'content': question})
@@ -866,14 +895,19 @@ def generate_next_story_segment(user_input=None):
         st.session_state.storyline.append({'role': 'user', 'content': user_answer})
 
         # Grade the answer and get structured result
-        grading_result = grade_answer(user_answer, st.session_state.current_question,
-                                      st.session_state.current_question_answer)
+        grading_result = grade_answer(
+            user_answer,
+            st.session_state.current_question,
+            st.session_state.current_question_answer
+        )
 
         # Add feedback to the storyline
         st.session_state.storyline.append({'role': 'assistant', 'content': grading_result['feedback']})
 
         # If a valid grade is returned, present the remaining choices
         if grading_result['grade'] is not None:
+            # Remove the first place since it was already used
+            st.session_state['places_events_encounters'].pop(0)
             # Check if there are any remaining places, events, or encounters
             if st.session_state['places_events_encounters']:
                 # Present remaining choices to the player
@@ -881,7 +915,8 @@ def generate_next_story_segment(user_input=None):
             else:
                 # If no more places left, end the game
                 st.session_state.storyline.append(
-                    {'role': 'assistant', 'content': "You have completed all encounters!"})
+                    {'role': 'assistant', 'content': "You have completed all encounters!"}
+                )
                 st.session_state.game_stage = 'end'
 
     elif st.session_state.game_stage == 'awaiting_choice':
@@ -907,13 +942,27 @@ def generate_next_story_segment(user_input=None):
                 # Use the chosen place in the next setting description
                 text = st.session_state.selected_textbook
                 novel = st.session_state.selected_novel
-                adventure_description = st.session_state.current_setting
-                setting_description = describe_setting(text, novel, adventure_description, chosen_place)
+
+                # Use the accumulated full adventure description
+                setting_description = describe_setting(
+                    text,
+                    novel,
+                    st.session_state.full_adventure_description,
+                    chosen_place
+                )
                 st.session_state.current_setting = setting_description
                 st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
+                # Update the full adventure description
+                st.session_state.full_adventure_description += '\n' + setting_description
+
                 # Generate the next question for this place
-                question, question_answer = describe_question(setting_description, text, novel)
+                question, question_answer = describe_question(
+                    setting_description,
+                    text,
+                    novel,
+                    st.session_state.full_adventure_description
+                )
                 st.session_state.current_question = question
                 st.session_state.current_question_answer = question_answer
                 st.session_state.storyline.append({'role': 'assistant', 'content': question})
@@ -922,11 +971,20 @@ def generate_next_story_segment(user_input=None):
                 st.session_state.game_stage = 'awaiting_answer'
                 st.rerun()  # Rerun to update the UI after choice
 
-        # Keep track of the number of messages already displayed
+    elif st.session_state.game_stage == 'end':
+        print("Game stage: end")
+        st.markdown("**Game Over:** You have completed all encounters!")
+        if st.button("Restart Adventure", key='restart_button'):
+            # Reset all relevant session state variables
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
+            st.experimental_rerun()
+
+    # Keep track of the number of messages already displayed
     if 'last_displayed_message_index' not in st.session_state:
         st.session_state.last_displayed_message_index = 0
 
-        # Display only new messages
+    # Display only new messages
     new_messages = st.session_state.storyline[st.session_state.last_displayed_message_index:]
     with st.container():
         for message in new_messages:
@@ -947,54 +1005,104 @@ if 'storyline' not in st.session_state:
     st.session_state.storyline = []
 if 'game_stage' not in st.session_state:
     st.session_state.game_stage = 'start'
-if 'chapter' not in st.session_state:
-    st.session_state.chapter = 'Chapter 7: Web Development and Design'
 if 'interaction_count' not in st.session_state:
     st.session_state.interaction_count = 0
 if 'selected_textbook' not in st.session_state:
     st.session_state.selected_textbook = ''
 if 'selected_novel' not in st.session_state:
     st.session_state.selected_novel = ''
-if 'textbook_index' not in st.session_state:
-    st.session_state.textbook_index = None
-if 'novel_index' not in st.session_state:
-    st.session_state.novel_index = None
 if 'chapter_summary_notes' not in st.session_state:
     st.session_state.chapter_summary_notes = pd.read_csv('data/chapter_summary_notes.csv')
 
-
 # Textbook and novel options
-textbook_options = ['Digital Marketing']  # Add more textbooks as needed
-novel_options = ['The Hobbit']  # Add more novels as needed
+textbook_options = ['Digital Marketing', 'European History', 'Biology']
+novel_options = ['The Hobbit', 'Peter Pan', 'Harry Potter', 'Sherlock Holmes']
 
-# Chapter options
-chapter_options = [
-    'Chapter 7: Web Development and Design',
-    'Chapter 12: Video Content Creation',
-    'Chapter 13: Social Media'
-]
+# Mapping of textbooks to their chapters
+textbook_chapters = {
+    'Digital Marketing': [
+        'Chapter 7: Web Development and Design',
+        'Chapter 12: Video Content Creation',
+        'Chapter 13: Social Media'
+    ],
+    'European History': [
+        'Labour and Forced Labour',
+        'Science and Technological Change',
+        'Revolutions and Civil Wars'
+    ],
+    'Biology': [
+        'Cell Structure',
+        'Structure and Function of Plasma Membranes',
+        'Metabolism',
+        'Cellular Respiration',
+        'Photosynthesis',
+        'Cell Communication',
+        'Cell Reproduction'
+    ]
+}
+
+def update_chapters():
+    selected_textbook = st.session_state.selected_textbook
+    st.session_state.chapter_options = textbook_chapters.get(selected_textbook, [])
+    if st.session_state.chapter_options:
+        st.session_state.selected_chapter = st.session_state.chapter_options[0]
+    else:
+        st.session_state.selected_chapter = ''
 
 # Ensure session state values are valid
 if 'selected_textbook' not in st.session_state or st.session_state.selected_textbook not in textbook_options:
     st.session_state.selected_textbook = textbook_options[0]
 
+if 'chapter_options' not in st.session_state:
+    st.session_state.chapter_options = textbook_chapters.get(st.session_state.selected_textbook, [])
+
+if 'selected_chapter' not in st.session_state or st.session_state.selected_chapter not in st.session_state.chapter_options:
+    st.session_state.selected_chapter = st.session_state.chapter_options[0] if st.session_state.chapter_options else ''
+
 if 'selected_novel' not in st.session_state or st.session_state.selected_novel not in novel_options:
     st.session_state.selected_novel = novel_options[0]
-
-if 'chapter' not in st.session_state or st.session_state.chapter not in chapter_options:
-    st.session_state.chapter = chapter_options[0]
 
 st.title("Interactive RPG Adventure")
 st.write("Embark on a journey that combines fantasy storytelling with educational challenges!")
 
 # Input for grade level
 if st.session_state.game_stage == 'start' and not st.session_state.storyline:
-    st.selectbox("Select the textbook:", textbook_options, key='selected_textbook')
-    st.selectbox("Select the chapter:", chapter_options, key='chapter')
-    st.selectbox("Select the novel:", novel_options, key='selected_novel')
+    # Textbook selection with callback
+    st.selectbox(
+        "Select the textbook:",
+        textbook_options,
+        key='selected_textbook',
+        help="Choose the textbook for the educational content.",
+        on_change=update_chapters
+    )
+
+    # Retrieve the chapters for the selected textbook
+    chapter_options = st.session_state.chapter_options
+
+    # Chapter selection
+    if chapter_options:
+        st.selectbox(
+            "Select the chapter:",
+            chapter_options,
+            key='selected_chapter',
+            help="Select which chapter's content to include."
+        )
+    else:
+        st.error("No chapters available for the selected textbook.")
+        st.stop()
+
+    st.session_state.chapter = st.session_state.selected_chapter
+
+    # Novel selection
+    st.selectbox(
+        "Select the novel:",
+        novel_options,
+        key='selected_novel',
+        help="Select the fantasy novel to create your adventure with."
+    )
 
     # Button to start the adventure
-    if st.button("Start Adventure", key='start_button', help='Takes about 5mins to generate'):
+    if st.button("Start Adventure", key='start_button', help='Takes ~5mins on NVIDIA NIM w/ llama3.1-70B'):
         if st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
             # Start the game
             generate_next_story_segment()

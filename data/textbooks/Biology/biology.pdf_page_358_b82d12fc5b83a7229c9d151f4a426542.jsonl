@@ -1,0 +1,45 @@
+the proportion of round and yellow F2 offspring is expected to be 34  34  916 and the proportion of
+wrinkled and green offspring is expected to be 14  14  116 These proportions are identical to those
+obtained using a Punnett square Round green and wrinkled yellow offspring can also be calculated using the
+product rule as each of these genotypes includes one dominant and one recessive phenotype Therefore the
+proportion of each is calculated as 34  14  316
+The law of independent assortment also indicates that a cross between yellow wrinkled YYrr and green round
+yyRR parents would yield the same F1 and F2 offspring as in the YYRR x yyrr cross
+The physical basis for the law of independent assortment also lies in meiosis I in which the different homologous
+pairs line up in random orientations Each gamete can contain any combination of paternal and maternal
+chromosomes and therefore the genes on them because the orientation of tetrads on the metaphase plane is
+random
+ForkedLine Method
+When more than two genes are being considered the Punnettsquare method becomes unwieldy For instance
+examining a cross involving four genes would require a 16  16 grid containing 256 boxes It would be extremely
+cumbersome to manually enter each genotype For more complex crosses the forkedline and probability
+methods are preferred
+To prepare a forkedline diagram for a cross between F1 heterozygotes resulting from a cross between AABBCC
+and aabbcc parents we first create rows equal to the number of genes being considered and then segregate
+the alleles in each row on forked lines according to the probabilities for individual monohybrid crosses Figure
+1217 We then multiply the values along each forked path to obtain the F2 offspring probabilities Note that this
+process is a diagrammatic version of the product rule The values along each forked pathway can be multiplied
+because each gene assorts independently For a trihybrid cross the F2 phenotypic ratio is 279993331
+Figure 1217 The forkedline method can be used to analyze a trihybrid cross Here the probability for color in the
+F2 generation occupies the top row 3 yellow1 green The probability for shape occupies the second row 3 round
+1 wrinkled and the probability for height occupies the third row 3 tall1 dwarf The probability for each possible
+combination of traits is calculated by multiplying the probability for each individual trait Thus the probability of F2
+offspring having yellow round and tall traits is 3  3  3 or 27
+Probability Method
+While the forkedline method is a diagrammatic approach to keeping track of probabilities in a cross the
+probability method gives the proportions of offspring expected to exhibit each phenotype or genotype without
+the added visual assistance Both methods make use of the product rule and consider the alleles for each gene
+separately Earlier we examined the phenotypic proportions for a trihybrid cross using the forkedline method
+now we will use the probability method to examine the genotypic proportions for a cross with even more genes
+For a trihybrid cross writing out the forkedline method is tedious albeit not as tedious as using the Punnett
+square method To fully demonstrate the power of the probability method however we can consider specific
+genetic calculations For instance for a tetrahybrid cross between individuals that are heterozygotes for all four
+genes and in which all four genes are sorting independently and in a dominant and recessive pattern what
+proportion of the offspring will be expected to be homozygous recessive for all four alleles Rather than writing
+out every possible genotype we can use the probability method We know that for each gene the fraction of
+homozygous recessive offspring will be 14 Therefore multiplying this fraction for each of the four genes 14
+ 14  14  14 we determine that 1256 of the offspring will be quadruply homozygous recessive
+For the same tetrahybrid cross what is the expected proportion of offspring that have the dominant phenotype
+348
+Chapter 12  Mendels Experiments and Heredity
+This OpenStax book is available for free at httpcnxorgcontentcol2436118

@@ -15,7 +15,7 @@ from nemo_curator.utils.script_utils import add_distributed_args
 
 
 
-# python nemo_curator_tutorial.py --input-data-dir /home/polabs2/Code/RPG_teacher/data/raw --output-clean-dir /home/polabs2/Code/RPG_teacher/data/out --input-file-type pdf --output-file-type jsonl --batch-size 64
+# python nemo_curator_tutorial.py --input-data-dir /home/polabs2/Code/RPG_teacher/data/raw/new --output-clean-dir /home/polabs2/Code/RPG_teacher/data/out --input-file-type pdf --output-file-type jsonl --batch-size 64
 
 # Custom Cleaner: Removes Unicode and special characters
 class CustomTextCleaner(DocumentModifier):

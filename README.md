@@ -1,4 +1,11 @@
 # RPG_teacher
+
+
+python nemo_curator_tutorial.py --input-data-dir /home/polabs2/Code/RPG_teacher/data/raw/new --output-clean-dir /home/polabs2/Code/RPG_teacher/data/out --input-file-type pdf --output-file-type jsonl --batch-size 64
+
+
+
+
 A genAI project to turn lesson plans into an interactive RPG
 
 [assistant]: """welcome to RPG Teacher. To begin, choose a textbook chapter, novel, random and click begin."""

@@ -1,0 +1,48 @@
+at all four loci We can answer this question using phenotypic proportions but lets do it the hard wayusing
+genotypic proportions The question asks for the proportion of offspring that are 1 homozygous dominant at A
+or heterozygous at A and 2 homozygous at B or heterozygous at B and so on Noting the or and and in
+each circumstance makes clear where to apply the sum and product rules The probability of a homozygous
+dominant at A is 14 and the probability of a heterozygote at A is 12 The probability of the homozygote or the
+heterozygote is 14  12  34 using the sum rule The same probability can be obtained in the same way for
+each of the other genes so that the probability of a dominant phenotype at A and B and C and D is using the
+product rule equal to 34  34  34  34 or 2764 If you are ever unsure about how to combine probabilities
+returning to the forkedline method should make it clear
+Rules for Multihybrid Fertilization
+Predicting the genotypes and phenotypes of offspring from given crosses is the best way to test your knowledge
+of Mendelian genetics Given a multihybrid cross that obeys independent assortment and follows a dominant
+and recessive pattern several generalized rules exist you can use these rules to check your results as you
+work through genetics calculations Table 125 To apply these rules first you must determine n the number
+of heterozygous gene pairs the number of genes segregating two alleles each For example a cross between
+AaBb and AaBb heterozygotes has an n of 2 In contrast a cross between AABb and AABb has an n of 1
+because A is not heterozygous
+General Rules for Multihybrid Crosses
+General Rule
+Number of Heterozygous Gene
+Pairs
+Number of different F1 gametes
+2n
+Number of different F2 genotypes
+3n
+Given dominant and recessive inheritance the number of different F2
+phenotypes
+2n
+Table 125
+Linked Genes Violate the Law of Independent Assortment
+Although all of Mendels pea characteristics behaved according to the law of independent assortment we now
+know that some allele combinations are not inherited independently of each other Genes that are located on
+separate nonhomologous chromosomes will always sort independently However each chromosome contains
+hundreds or thousands of genes organized linearly on chromosomes like beads on a string The segregation
+of alleles into gametes can be influenced by linkage in which genes that are located physically close to each
+other on the same chromosome are more likely to be inherited as a pair However because of the process of
+recombination or crossover it is possible for two genes on the same chromosome to behave independently or
+as if they are not linked To understand this lets consider the biological basis of gene linkage and recombination
+Homologous chromosomes possess the same genes in the same linear order The alleles may differ on
+homologous chromosome pairs but the genes to which they correspond do not In preparation for the first
+division of meiosis homologous chromosomes replicate and synapse Like genes on the homologs align with
+each other At this stage segments of homologous chromosomes exchange linear segments of genetic material
+Figure 1218 This process is called recombination or crossover and it is a common genetic process Because
+the genes are aligned during recombination the gene order is not altered Instead the result of recombination
+is that maternal and paternal alleles are combined onto the same chromosome Across a given chromosome
+several recombination events may occur causing extensive shuffling of alleles
+Chapter 12  Mendels Experiments and Heredity
+349
