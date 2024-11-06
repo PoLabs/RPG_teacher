@@ -821,207 +821,116 @@ def generate_next_story_segment(user_input=None):
     Main function to control the flow of the RPG adventure.
     It starts the adventure, handles answers, presents choices, and continues the loop.
     """
-    print("\n--- generate_next_story_segment called ---")
-    print(f"user_input: {user_input}")
-
-    # Debugging session state
-    print(f"Current game stage: {st.session_state.get('game_stage', 'Not set')}")
-    print(f"Places, Events, Encounters: {st.session_state.get('places_events_encounters', [])}")
-
-    # Initialize game state if not already done
+    # Initial setup for game state if not already initialized
     if 'game_stage' not in st.session_state:
         st.session_state.game_stage = 'start'
+        st.session_state.storyline = []  # Stores the narrative log
         st.session_state.current_question = ''
         st.session_state.current_question_answer = ''
         st.session_state.current_setting = ''
-        st.session_state.current_choices = []
         st.session_state.chapter = 1
-        # Initialize the places, events, encounters
-        st.session_state['places_events_encounters'] = ['Forest', 'Ruins', 'Mountain Pass', 'Old Bridge', 'Tavern']
+        st.session_state.places_events_encounters = ['Forest', 'Ruins', 'Mountain Pass', 'Old Bridge', 'Tavern']
 
-    if 'storyline' not in st.session_state:
-        st.session_state.storyline = []
-
-    # Placeholder for the storyline
-    story_placeholder = st.empty()
-
-    # Only update the storyline incrementally
+    # Ensure storyline is updated incrementally
     if st.session_state.game_stage == 'start':
-        print("Game stage: start")
-
-        # Load the selected textbook and novel content
-        text = st.session_state.selected_textbook
-        novel = st.session_state.selected_novel
-        chapter = st.session_state.chapter
-
-        # Generate the adventure description and store it
+        # Generate initial adventure description and first setting
         adventure_description = describe_adventure(
-            textbook_name=text,
-            textbook_chapter=chapter,
-            novel_name=novel
+            st.session_state.selected_textbook,
+            st.session_state.chapter,
+            st.session_state.selected_novel
         )
-        st.session_state.adventure_description = adventure_description
-
-        # Initialize or reset current setting and full adventure description
-        st.session_state.current_setting = ''
-        st.session_state.full_adventure_description = st.session_state.adventure_description
-
         st.session_state.storyline.append({'role': 'assistant', 'content': adventure_description})
 
-        # Display the adventure description immediately
-        with story_placeholder.container():
-            for message in st.session_state.storyline:
-                role = message['role']
-                content = message['content']
-                if role == 'assistant':
-                    st.markdown(f"**Narrator:** {content}")
-                    st.markdown('--------------')
-                elif role == 'user':
-                    st.markdown(f"**You:** {content}")
-                    st.markdown('--------------')
-
-        # Proceed with the next step after showing the adventure description
-        # Extract the first 'place, event, or encounter' and continue
-        if 'places_events_encounters' in st.session_state and st.session_state['places_events_encounters']:
-            place_event_encounter = st.session_state['places_events_encounters'][0]  # Do not pop yet
-        else:
-            place_event_encounter = "A generic setting"
-
-        # Call describe_setting to describe the first setting
+        first_place_event = st.session_state.places_events_encounters[0]
         setting_description = describe_setting(
-            text,
-            novel,
-            st.session_state.full_adventure_description,
-            place_event_encounter
+            st.session_state.selected_textbook,
+            st.session_state.selected_novel,
+            adventure_description,
+            first_place_event
         )
         st.session_state.current_setting = setting_description
         st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
-        # Update the full adventure description
-        st.session_state.full_adventure_description += '\n' + setting_description
-
-        # Generate the first question
-        question, question_answer = describe_question(
+        question, answer = describe_question(
             setting_description,
-            text,
-            novel,
-            st.session_state.full_adventure_description
+            st.session_state.selected_textbook,
+            st.session_state.selected_novel,
+            adventure_description
         )
         st.session_state.current_question = question
-        st.session_state.current_question_answer = question_answer
+        st.session_state.current_question_answer = answer
         st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-        # Update game stage to awaiting_answer
+        # Transition to answer stage
         st.session_state.game_stage = 'awaiting_answer'
 
-    elif st.session_state.game_stage == 'awaiting_answer':
-        print("Game stage: awaiting_answer")
+    elif st.session_state.game_stage == 'awaiting_answer' and user_input:
+        # Display user's answer
+        st.session_state.storyline.append({'role': 'user', 'content': user_input})
 
-        if user_input is None:
-            print("No user input received.")
-            return
-
-        # Process the user input with handle_answer to check if it's a hint request or an answer
+        # Process answer and provide feedback
         feedback = handle_answer(user_input, st.session_state.current_question,
                                  st.session_state.current_question_answer)
         st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
 
-        # Check if the feedback indicates a graded answer
+        # If answer is graded, move to the choice stage if encounters remain
         if "Grade:" in feedback:
-            # Remove the first place since it was already used
-            st.session_state['places_events_encounters'].pop(0)
-
-            # Check if there are any remaining places, events, or encounters
-            if st.session_state['places_events_encounters']:
-                # Set game stage to awaiting_choice after grading an answer
+            st.session_state.places_events_encounters.pop(0)
+            if st.session_state.places_events_encounters:
                 st.session_state.game_stage = 'awaiting_choice'
-                st.rerun()  # Rerun to update the UI after grading
             else:
-                # If no more places left, end the game
                 st.session_state.storyline.append(
-                    {'role': 'assistant', 'content': "You have completed all encounters!"}
-                )
+                    {'role': 'assistant', 'content': "You have completed all encounters!"})
                 st.session_state.game_stage = 'end'
 
     elif st.session_state.game_stage == 'awaiting_choice':
-        print("Game stage: awaiting_choice")
+        # Display and handle encounter choices only once
+        st.markdown("### Choose where to go next:")
+        for idx, choice in enumerate(st.session_state.places_events_encounters):
+            if st.button(choice, key=f"choice_{idx}"):
+                chosen_place = st.session_state.places_events_encounters.pop(idx)
 
-        # Display buttons for the available choices
-        if st.session_state['places_events_encounters']:
-            st.markdown("### Choose where to go next:")
-
-            # Temporary variable to track selected choice
-            selected_choice = None
-
-            for idx, choice in enumerate(st.session_state['places_events_encounters']):
-                if st.button(f"{choice}", key=f"choice_{idx}"):
-                    selected_choice = idx
-                    break  # Exit loop after selection
-
-            # Handle the selected choice after the loop
-            if selected_choice is not None:
-                # Remove the selected place from the list and process it
-                chosen_place = st.session_state['places_events_encounters'].pop(selected_choice)
-
-                # Use the chosen place in the next setting description
-                text = st.session_state.selected_textbook
-                novel = st.session_state.selected_novel
-
-                # Use the accumulated full adventure description
+                # Generate setting for the chosen place
                 setting_description = describe_setting(
-                    text,
-                    novel,
-                    st.session_state.full_adventure_description,
+                    st.session_state.selected_textbook,
+                    st.session_state.selected_novel,
+                    st.session_state.current_setting,
                     chosen_place
                 )
                 st.session_state.current_setting = setting_description
                 st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
 
-                # Update the full adventure description
-                st.session_state.full_adventure_description += '\n' + setting_description
-
-                # Generate the next question for this place
-                question, question_answer = describe_question(
+                question, answer = describe_question(
                     setting_description,
-                    text,
-                    novel,
-                    st.session_state.full_adventure_description
+                    st.session_state.selected_textbook,
+                    st.session_state.selected_novel,
+                    st.session_state.current_setting
                 )
                 st.session_state.current_question = question
-                st.session_state.current_question_answer = question_answer
+                st.session_state.current_question_answer = answer
                 st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-                # Update game stage to awaiting_answer
+                # Return to answer stage and rerun UI
                 st.session_state.game_stage = 'awaiting_answer'
-                st.rerun()  # Rerun to update the UI after choice
+                st.rerun()
 
     elif st.session_state.game_stage == 'end':
-        print("Game stage: end")
         st.markdown("**Game Over:** You have completed all encounters!")
-        if st.button("Restart Adventure", key='restart_button'):
-            # Reset all relevant session state variables
+        if st.button("Restart Adventure"):
+            # Reset session state for a new game
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
 
-    # Keep track of the number of messages already displayed
-    if 'last_displayed_message_index' not in st.session_state:
-        st.session_state.last_displayed_message_index = 0
-
-    # Display only new messages
-    new_messages = st.session_state.storyline[st.session_state.last_displayed_message_index:]
-    with st.container():
-        for message in new_messages:
-            role = message['role']
-            content = message['content']
-            if role == 'assistant':
-                st.markdown(f"**Narrator:** {content}")
-            elif role == 'user':
-                st.markdown(f"**You:** {content}")
-            st.markdown('-------------')
-
-    # Update the index
-    st.session_state.last_displayed_message_index = len(st.session_state.storyline)
+    # Display the Adventure Log only once, in order, without duplications
+    #st.markdown("### Adventure Log")
+    #for message in st.session_state.storyline:
+    #    role = message['role']
+    #    content = message['content']
+    #    if role == 'assistant':
+    #        st.markdown(f"**Narrator:** {content}")
+    #    elif role == 'user':
+    #        st.markdown(f"**You:** {content}")
 
 
 # Initialize session state variables
