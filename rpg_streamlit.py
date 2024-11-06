@@ -626,7 +626,7 @@ def give_hint(question, answer):
     return hint
 
 
-def handle_answer(user_input, question, question_answer):
+def handle_answer(user_input, question, correct_answer):
     """
     Evaluates the user's input and decides whether it's an answer, a hint request, or something else.
     """
@@ -657,15 +657,13 @@ def handle_answer(user_input, question, question_answer):
 
     if 'answer' in classification:
         # User provided an answer, grade it
-        feedback = grade_answer(user_input, st.session_state.current_question, st.session_state.current_question_answer)
+        result = grade_answer(user_input, question, correct_answer)
+        feedback = f"Grade: {result['grade']}\nFeedback: {result['feedback']}"
     elif 'hint' in classification:
         # User requested a hint
-        #if st.session_state.tokens > 0:
         st.session_state.tokens -= 1  # Deduct a token
-        feedback = give_hint(question, question_answer)
+        feedback = give_hint(question, correct_answer)
         feedback += f"\n\nTokens remaining: {st.session_state.tokens}"
-        #else:
-        #    feedback = "You do not have enough tokens to get a hint."
     else:
         feedback = "I'm sorry, I didn't understand your response. Could you please try again?"
 
@@ -673,6 +671,7 @@ def handle_answer(user_input, question, question_answer):
     print("--- handle_answer ended ---\n")
 
     return feedback
+
 
 def grade_answer(user_answer, question, correct_answer):
     """
@@ -927,7 +926,7 @@ def generate_next_story_segment(user_input=None):
                                  st.session_state.current_question_answer)
         st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
 
-        # Check if the feedback is a graded answer
+        # Check if the feedback indicates a graded answer
         if "Grade:" in feedback:
             # Remove the first place since it was already used
             st.session_state['places_events_encounters'].pop(0)
@@ -936,6 +935,7 @@ def generate_next_story_segment(user_input=None):
             if st.session_state['places_events_encounters']:
                 # Set game stage to awaiting_choice after grading an answer
                 st.session_state.game_stage = 'awaiting_choice'
+                st.rerun()  # Rerun to update the UI after grading
             else:
                 # If no more places left, end the game
                 st.session_state.storyline.append(
@@ -1002,7 +1002,7 @@ def generate_next_story_segment(user_input=None):
             # Reset all relevant session state variables
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
-            st.experimental_rerun()
+            st.rerun()
 
     # Keep track of the number of messages already displayed
     if 'last_displayed_message_index' not in st.session_state:

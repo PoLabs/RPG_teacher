@@ -107,7 +107,9 @@ for message in client.chat_completion(
 
 I want to make a few updates to the app:
 
-- easy RPG elements (int for +1 to %  answrs, spirit - not lose hint points, 
+- easy RPG elements (int for +1 to %  answrs, spirit - not lose hint points, stregth)
+- - choose 3 characters from perople palces, assign int, str, spirit to each of them and design a promptr that asks us for their chocie for the new buff
+- - buff methods
 
 
 
