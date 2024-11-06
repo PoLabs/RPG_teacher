@@ -803,11 +803,28 @@ def limit_to_two_sentences(text):
     return sentences[0]
 
 
+def reset_app():
+    """
+    Resets the app back to the initial state for a new adventure.
+    Clears all session state variables related to game progress.
+    """
+    keys_to_reset = [
+        'game_stage', 'storyline', 'current_question', 'current_question_answer',
+        'current_setting', 'chapter', 'places_events_encounters',
+        'selected_textbook', 'selected_chapter', 'selected_novel', 'tokens'
+    ]
+    for key in keys_to_reset:
+        if key in st.session_state:
+            del st.session_state[key]
+    st.rerun()  # Force a rerun to reset the UI
+
+
 def generate_next_story_segment(user_input=None):
     """
     Main function to control the flow of the RPG adventure.
     It starts the adventure, handles answers, presents choices, and continues the loop.
     """
+
     # Initial setup for game state if not already initialized
     if 'game_stage' not in st.session_state:
         st.session_state.game_stage = 'start'
@@ -817,6 +834,7 @@ def generate_next_story_segment(user_input=None):
         st.session_state.current_setting = ''
         st.session_state.chapter = 1
         st.session_state.places_events_encounters = ['Forest', 'Ruins', 'Mountain Pass', 'Old Bridge', 'Tavern']
+        st.session_state.tokens = 5
 
     # Ensure storyline is updated incrementally
     if st.session_state.game_stage == 'start':
@@ -909,16 +927,10 @@ def generate_next_story_segment(user_input=None):
                 del st.session_state[key]
             st.rerun()
 
-    # Display the Adventure Log only once, in order, without duplications
-    #st.markdown("### Adventure Log")
-    #for message in st.session_state.storyline:
-    #    role = message['role']
-    #    content = message['content']
-    #    if role == 'assistant':
-    #        st.markdown(f"**Narrator:** {content}")
-    #    elif role == 'user':
-    #        st.markdown(f"**You:** {content}")
 
+
+
+# main streamlit app ---------------------------------------------------------------------------------------
 
 # Initialize session state variables
 if 'storyline' not in st.session_state:
@@ -934,9 +946,13 @@ if 'selected_novel' not in st.session_state:
 if 'chapter_summary_notes' not in st.session_state:
     st.session_state.chapter_summary_notes = pd.read_csv('data/chapter_summary_notes.csv')
 if 'tokens' not in st.session_state:
-    st.session_state.tokens = 0
+    st.session_state.tokens = 5
 
 #st.sidebar.markdown(f"### Tokens: {st.session_state.tokens}")
+
+st.sidebar.header("Game Controls")
+st.sidebar.write(f"Hint Tokens Remaining: {st.session_state.get('tokens', 0)}")
+st.sidebar.button("Restart Adventure", on_click=reset_app)
 
 # Textbook and novel options
 textbook_options = ['Digital Marketing', 'European History', 'Biology']
@@ -1047,7 +1063,7 @@ else:
 
     # Input box for user response if the game is awaiting an answer
     if st.session_state.game_stage == 'awaiting_answer':
-        user_input = st.text_input("Your response:", key='user_input', help="Type your answer to the question here or ask for a hint.")
+        user_input = st.text_input("Your response:", key='user_input', help="Type your answer to the question here or ask for a hint. For testing, you can find the correct answer printed to command line or google the question without the novel context.")
 
         if st.button("Submit"):
             if user_input:
