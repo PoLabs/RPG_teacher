@@ -69,11 +69,9 @@ jupyterlab_server==2.27.3
 jupyterlab_widgets==3.0.13
 llama-cloud==0.0.6
 llama-index==0.11.14
-llama-index-agent-openai==0.3.4
-llama-index-cli==0.3.1
-llama-index-core
 
-llama-parse==0.5.6
+
+
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 marshmallow==3.22.0
