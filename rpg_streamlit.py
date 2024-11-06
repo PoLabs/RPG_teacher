@@ -1,7 +1,3 @@
-
-!pip install --upgrade pip
-!pip install llama-index==0.11.14
-
 import os
 import streamlit as st
 import re
