@@ -1,9 +1,6 @@
-import subprocess
 
-# List of packages with versions
-packages = ["llama-index==0.11.14"] # "llama-cloud==0.0.6",  "llama-index-agent-openai==0.3.4", "llama-index-core==0.10.68.post1"]
-for package in packages:
-    subprocess.check_call(["pip", "install", package])
+!pip install --upgrade pip
+!pip install llama-index==0.11.14
 
 import os
 import streamlit as st
