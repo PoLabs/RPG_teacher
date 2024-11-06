@@ -4,14 +4,7 @@ import subprocess
 
 # List of packages with versions
 packages = ["llama-cloud==0.0.6", "llama-index==0.11.14",
-    "llama-index-agent-openai==0.3.4", "llama-index-cli==0.3.1", "llama-index-core==0.10.68.post1",
-    "llama-index-embeddings-nvidia==0.1.4", "llama-index-embeddings-openai==0.2.5",
-    "llama-index-indices-managed-llama-cloud==0.4.0", "llama-index-legacy==0.9.48.post3",
-    "llama-index-llms-nvidia==0.1.3", "llama-index-llms-openai==0.1.31",
-    "llama-index-llms-openai-like==0.1.3", "llama-index-multi-modal-llms-openai==0.2.1",
-    "llama-index-postprocessor-nvidia-rerank==0.1.2", "llama-index-program-openai==0.2.0",
-    "llama-index-question-gen-openai==0.2.0", "llama-index-readers-file==0.1.25",
-    "llama-index-readers-llama-parse==0.3.0", "llama-parse==0.5.6"
+    "llama-index-agent-openai==0.3.4", "llama-index-core==0.10.68.post1",
 ]
 
 # Install each package using pip
