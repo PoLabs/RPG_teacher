@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import re
+import random
 import time
 import random
 import pandas as pd
@@ -101,6 +102,7 @@ def load_novel_documents(novel_name):
 def describe_adventure(textbook_name, textbook_chapter, novel_name):
     """
     Generates an adventure description combining themes from the novel with key topics from the textbook.
+    Includes at least 3 characters, each assigned a trait.
     """
     print("\n--- describe_adventure called ---")
     print(f"textbook_name: {textbook_name}")
@@ -112,9 +114,12 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
     system_prompt = (
         "You are an assistant that creates educational RPG adventures that combine fantasy novels with educational textbooks. "
         "Your task is to generate a few paragraphs describing the adventure setting and characters involved that combine themes from the novel with key topics from the textbook using the additional context provided below. "
+        "Include at least three characters, each assigned one of the traits: 'intellect', 'spirit', or 'strength'. "
+        "Intellect: additional 10% chance of adding +1 to any grade. Spirit: 10% chance of not losing a hint token. Strength: additional 5% chance of adding +2 to any grade. "
         "Also, provide five places, events, or encounters that can be used to stage questions, listed separately under 'Places, Events, or Encounters'. "
         "Please format your response as:\n\n"
         "Adventure Description:\n[Your description here]\n\n"
+        "Characters:\n1. [Character name] - [Trait]\n2. [Character name] - [Trait]\n3. [Character name] - [Trait]\n\n"
         "Places, Events, or Encounters:\n1. [First place]\n2. [Second place]\n3. [Third place]\n4. [Fourth place]\n5. [Fifth place]"
     )
 
@@ -246,16 +251,28 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
 
     response_content = response.message.content.strip()
     adventure_match = re.search(r"Adventure Description:\s*(.*?)\s*Places, Events, or Encounters:", response_content,re.DOTALL)
+    characters_match = re.search(r"Characters:\s*(.*?)\s*Places, Events, or Encounters:", response_content, re.DOTALL)
     places_match = re.search(r"Places, Events, or Encounters:\s*(.*)", response_content, re.DOTALL)
 
-    if adventure_match and places_match:
+    if adventure_match and characters_match and places_match:
         adventure_description = adventure_match.group(1).strip()
+        characters_text = characters_match.group(1).strip()
         places_text = places_match.group(1).strip()
-        places_list = re.findall(r"\d+\.\s*(.*)", places_text)# Extract the list of places
+        # Extract characters and their traits
+        characters_list = re.findall(r"\d+\.\s*(.*?)\s*-\s*(.*)", characters_text)
+        # characters_list will be list of tuples: [(Character name, Trait), ...]
+        places_list = re.findall(r"\d+\.\s*(.*)", places_text)
     else:
-        adventure_description = response_content        # Handle parsing error
+        adventure_description = response_content
+        characters_list = []
         places_list = []
 
+    st.session_state['character_stats'] = {}
+    for name, trait in characters_list:
+        st.session_state['character_stats'][name.strip()] = {
+            'trait': trait.strip().lower(),
+            'upgrade_level': 0
+        }
     # Store the places_list in session state for later use
     st.session_state['places_events_encounters'] = places_list
     st.session_state['places_events_encounters'] = [
@@ -263,6 +280,7 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
     ]
 
     print(f"Generated adventure description: {adventure_description}")
+    print(f"Characters: {characters_list}")
     print("--- describe_adventure ended ---\n")
     return adventure_description
 
@@ -645,12 +663,38 @@ def handle_answer(user_input, question, correct_answer):
     if 'answer' in classification:
         # User provided an answer, grade it
         result = grade_answer(user_input, question, correct_answer)
-        feedback = f"Grade: {result['grade']}\nFeedback: {result['feedback']}"
+        grade = result['grade']
+        feedback = result['feedback']
+        if grade == 4:
+            st.session_state['upgrade_event'] = True
+            st.session_state['feedback'] = feedback  # Store feedback to display later
+        else:
+            st.session_state['feedback'] = feedback
+
     elif 'hint' in classification:
         # User requested a hint
-        st.session_state.tokens -= 1  # Deduct a token
-        feedback = give_hint(question, correct_answer)
-        feedback += f"\n\nTokens remaining: {st.session_state.tokens}"
+        # Apply spirit trait
+        total_spirit_chance = 0
+        for stats in st.session_state['character_stats'].values():
+            if stats['trait'] == 'spirit':
+                total_spirit_chance += stats['upgrade_level'] * 10  # Each upgrade point is +10% chance
+
+        lose_token = True
+        if total_spirit_chance > 0:
+            chance = random.randint(1, 100)
+            if chance <= total_spirit_chance:
+                lose_token = False
+                feedback = "Your spirit trait has saved you from losing a hint token!"
+
+        if lose_token:
+            st.session_state.tokens -= 1  # Deduct a token
+
+        hint = give_hint(question, correct_answer)
+        feedback = hint
+        if lose_token:
+            feedback += f"\n\nTokens remaining: {st.session_state.tokens}"
+
+        st.session_state['feedback'] = feedback
     else:
         feedback = "I'm sorry, I didn't understand your response. Could you please try again?"
 
@@ -719,6 +763,33 @@ def grade_answer(user_answer, question, correct_answer):
         "grade": grade,
         "feedback": feedback_text
     })
+
+    # Adjust grade based on character traits
+    total_intellect_chance = 0
+    total_strength_chance = 0
+    for stats in st.session_state['character_stats'].values():
+        if stats['trait'] == 'intellect':
+            total_intellect_chance += stats['upgrade_level'] * 10  # Each upgrade point is +10% chance
+        elif stats['trait'] == 'strength':
+            total_strength_chance += stats['upgrade_level'] * 5  # Each upgrade point is +5% chance
+
+    # Apply intellect trait
+    if total_intellect_chance > 0:
+        chance = random.randint(1, 100)
+        if chance <= total_intellect_chance:
+            grade = min(4, grade + 1)
+            feedback_text += "\n\nYour intellect trait has increased your grade by 1!"
+
+    # Apply strength trait
+    if total_strength_chance > 0:
+        chance = random.randint(1, 100)
+        if chance <= total_strength_chance:
+            grade = min(4, grade + 2)
+            feedback_text += "\n\nYour strength trait has increased your grade by 2!"
+
+    # Ensure grade does not exceed 4
+    grade = min(4, grade)
+
     # Return structured result
     return {
         "grade": grade,
@@ -818,13 +889,11 @@ def reset_app():
             del st.session_state[key]
     st.rerun()  # Force a rerun to reset the UI
 
-
 def generate_next_story_segment(user_input=None):
     """
     Main function to control the flow of the RPG adventure.
     It starts the adventure, handles answers, presents choices, and continues the loop.
     """
-
     # Initial setup for game state if not already initialized
     if 'game_stage' not in st.session_state:
         st.session_state.game_stage = 'start'
@@ -878,18 +947,41 @@ def generate_next_story_segment(user_input=None):
                                  st.session_state.current_question_answer)
         st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
 
-        # If answer is graded, move to the choice stage if encounters remain
-        if "Grade:" in feedback:
-            st.session_state.places_events_encounters.pop(0)
-            if st.session_state.places_events_encounters:
-                st.session_state.game_stage = 'awaiting_choice'
-            else:
-                st.session_state.storyline.append(
-                    {'role': 'assistant', 'content': "You have completed all encounters!"})
-                st.session_state.game_stage = 'end'
+        # Check if upgrade event was triggered
+        if st.session_state.get('upgrade_event', False):
+            st.session_state.game_stage = 'upgrade_character'
+        else:
+            # Move to choice stage if encounters remain, otherwise end game
+            if "Grade:" in feedback:
+                st.session_state.places_events_encounters.pop(0)
+                if st.session_state.places_events_encounters:
+                    st.session_state.game_stage = 'awaiting_choice'
+                else:
+                    st.session_state.storyline.append(
+                        {'role': 'assistant', 'content': "You have completed all encounters!"})
+                    st.session_state.game_stage = 'end'
+
+    elif st.session_state.game_stage == 'upgrade_character':
+        # Prompt the user to choose a character to upgrade
+        st.markdown("### Congratulations! You have the opportunity to upgrade a character's trait.")
+        for idx, (name, stats) in enumerate(st.session_state['character_stats'].items()):
+            if st.button(f"Upgrade {name} ({stats['trait'].capitalize()})", key=f"upgrade_{idx}"):
+                stats['upgrade_level'] += 1
+                st.session_state.storyline.append({'role': 'assistant', 'content': f"{name}'s {stats['trait']} trait has been upgraded by 1!"})
+                st.session_state.upgrade_event = False  # Reset the upgrade event flag
+
+                # Move to choice stage or end game after upgrade
+                st.session_state.places_events_encounters.pop(0)
+                if st.session_state.places_events_encounters:
+                    st.session_state.game_stage = 'awaiting_choice'
+                else:
+                    st.session_state.storyline.append(
+                        {'role': 'assistant', 'content': "You have completed all encounters!"})
+                    st.session_state.game_stage = 'end'
+                st.rerun()  # Rerun to update the UI after upgrading
 
     elif st.session_state.game_stage == 'awaiting_choice':
-        # Display and handle encounter choices only once
+        # Display and handle encounter choices
         st.markdown("### Choose where to go next:")
         for idx, choice in enumerate(st.session_state.places_events_encounters):
             if st.button(choice, key=f"choice_{idx}"):
@@ -915,18 +1007,15 @@ def generate_next_story_segment(user_input=None):
                 st.session_state.current_question_answer = answer
                 st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-                # Return to answer stage and rerun UI
+                # Transition to answer stage
                 st.session_state.game_stage = 'awaiting_answer'
-                st.rerun()
+                st.rerun()  # Rerun to display new setting and question
 
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
         if st.button("Restart Adventure"):
             # Reset session state for a new game
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
-            st.rerun()
-
+            reset_app()
 
 
 
@@ -953,6 +1042,14 @@ if 'tokens' not in st.session_state:
 st.sidebar.header("Game Controls")
 st.sidebar.write(f"Hint Tokens Remaining: {st.session_state.get('tokens', 0)}")
 st.sidebar.button("Restart Adventure", on_click=reset_app)
+
+if 'character_stats' in st.session_state:
+    st.sidebar.header("Character Stats")
+    for name, stats in st.session_state['character_stats'].items():
+        st.sidebar.write(f"**{name}**")
+        st.sidebar.write(f"Trait: {stats['trait'].capitalize().split(':')[0]}")
+        st.sidebar.write(f"Upgrade Level: {stats['upgrade_level']}")
+        st.sidebar.write("---")
 
 # Textbook and novel options
 textbook_options = ['Digital Marketing', 'European History', 'Biology']
@@ -1002,7 +1099,7 @@ if 'selected_chapter' not in st.session_state or st.session_state.selected_chapt
 if 'selected_novel' not in st.session_state or st.session_state.selected_novel not in novel_options:
     st.session_state.selected_novel = novel_options[0]
 
-st.title("Interactive RPG Adventure")
+st.title("Educational RPG Adventure")
 st.write("Embark on a journey that combines fantasy storytelling with educational challenges!")
 
 # Input for grade level
@@ -1064,7 +1161,6 @@ else:
     # Input box for user response if the game is awaiting an answer
     if st.session_state.game_stage == 'awaiting_answer':
         user_input = st.text_input("Your response:", key='user_input', help="Type your answer to the question here or ask for a hint. For testing, you can find the correct answer printed to command line or google the question without the novel context.")
-
         if st.button("Submit"):
             if user_input:
                 # Process the user's answer
@@ -1072,9 +1168,15 @@ else:
                 st.rerun()
             else:
                 st.error("Please enter a response.")
+
     elif st.session_state.game_stage == 'awaiting_choice':
         # Call generate_next_story_segment without user input to display choices
         generate_next_story_segment()
+
+    elif st.session_state.game_stage == 'upgrade_character':
+        # Directly manage the upgrade choice
+        generate_next_story_segment()
+
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
         if st.button("Restart Adventure", key='restart_button'):
