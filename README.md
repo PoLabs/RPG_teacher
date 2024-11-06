@@ -107,11 +107,26 @@ for message in client.chat_completion(
 
 I want to make a few updates to the app:
 
-- line breaks - after each generated segement, output some sort of break or repeated dash so that the wall of text is broken up. 
-- lock screen position - when a new segement is generated it should not reset or move the current text on the screen
-- tool tips - i would like mouse over tool tips and or right margin tool tips for different input fields and after each new segment is generated
+- easy RPG elements (int for +1 to %  answrs, spirit - not lose hint points, 
 
-- questions not related to story
+
+
+- clean dir branch --> to master 
+- program description (200 words)
+- hosting / launch 
+
 
 here is my current app code:
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -21,7 +21,7 @@ from pinecone import Pinecone, ServerlessSpec
 TOP_K = 5  # Global constant
 
 # Set NVIDIA API Key (Hard-coded)
-nvidia_api_key = "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" #"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"  # Replace with your actual NVIDIA API key
+nvidia_api_key = "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" #"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"  # Replace with your actual NVIDIA API key
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
 print(f"NVIDIA API key is set: {nvidia_api_key[:5]}...")  # Masking for display
@@ -135,6 +135,12 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
     index_name_mappings = {
         'Digital Marketing': 'digital-marketing-index',
         'The Hobbit': 'hobbit-index',
+        'European History': 'european-history-index',
+        'Biology':'biology-index',
+        'Peter Pan':'peter-pan-index',
+        'Harry Potter':'harry-potter-index',
+        'Sherlock Holmes':'sherlock-holmes-index'
+
         # Add more mappings as needed
     }
 
@@ -288,6 +294,13 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     index_name_mappings = {
         'Digital Marketing': 'digital-marketing-index',
         'The Hobbit': 'hobbit-index',
+        'European History': 'european-history-index',
+        'Biology':'biology-index',
+        'Peter Pan':'peter-pan-index',
+        'Harry Potter':'harry-potter-index',
+        'Sherlock Holmes':'sherlock-holmes-index'
+
+        # Add more mappings as needed
     }
 
     # Get the textbook and novel names from session state
@@ -382,6 +395,13 @@ def describe_question(setting_description, text, novel, adventure_description):
     index_name_mappings = {
         'Digital Marketing': 'digital-marketing-index',
         'The Hobbit': 'hobbit-index',
+        'European History': 'european-history-index',
+        'Biology':'biology-index',
+        'Peter Pan':'peter-pan-index',
+        'Harry Potter':'harry-potter-index',
+        'Sherlock Holmes':'sherlock-holmes-index'
+
+        # Add more mappings as needed
     }
 
     # Get the textbook and novel names from session state
@@ -525,6 +545,13 @@ def give_hint(question, answer):
     # Mapping between textbook names and index names
     index_name_mappings = {
         'Digital Marketing': 'digital-marketing-index',
+        'The Hobbit': 'hobbit-index',
+        'European History': 'european-history-index',
+        'Biology':'biology-index',
+        'Peter Pan':'peter-pan-index',
+        'Harry Potter':'harry-potter-index',
+        'Sherlock Holmes':'sherlock-holmes-index'
+
         # Add more mappings as needed
     }
 
@@ -633,7 +660,12 @@ def handle_answer(user_input, question, question_answer):
         feedback = grade_answer(user_input, st.session_state.current_question, st.session_state.current_question_answer)
     elif 'hint' in classification:
         # User requested a hint
-        feedback = give_hint(question)
+        #if st.session_state.tokens > 0:
+        st.session_state.tokens -= 1  # Deduct a token
+        feedback = give_hint(question, question_answer)
+        feedback += f"\n\nTokens remaining: {st.session_state.tokens}"
+        #else:
+        #    feedback = "You do not have enough tokens to get a hint."
     else:
         feedback = "I'm sorry, I didn't understand your response. Could you please try again?"
 
@@ -706,8 +738,6 @@ def grade_answer(user_answer, question, correct_answer):
         "grade": grade,
         "feedback": feedback_text
     }
-
-
 
 
 def player_choice(choices):
@@ -786,6 +816,7 @@ def limit_to_two_sentences(text):
     #return ' '.join(sentences[:2])
     return sentences[0]
 
+
 def generate_next_story_segment(user_input=None):
     """
     Main function to control the flow of the RPG adventure.
@@ -845,9 +876,10 @@ def generate_next_story_segment(user_input=None):
                 content = message['content']
                 if role == 'assistant':
                     st.markdown(f"**Narrator:** {content}")
+                    st.markdown('--------------')
                 elif role == 'user':
                     st.markdown(f"**You:** {content}")
-                st.markdown('--------------')
+                    st.markdown('--------------')
 
         # Proceed with the next step after showing the adventure description
         # Extract the first 'place, event, or encounter' and continue
@@ -890,28 +922,20 @@ def generate_next_story_segment(user_input=None):
             print("No user input received.")
             return
 
-        # Handle user's answer
-        user_answer = user_input
-        st.session_state.storyline.append({'role': 'user', 'content': user_answer})
+        # Process the user input with handle_answer to check if it's a hint request or an answer
+        feedback = handle_answer(user_input, st.session_state.current_question,
+                                 st.session_state.current_question_answer)
+        st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
 
-        # Grade the answer and get structured result
-        grading_result = grade_answer(
-            user_answer,
-            st.session_state.current_question,
-            st.session_state.current_question_answer
-        )
-
-        # Add feedback to the storyline
-        st.session_state.storyline.append({'role': 'assistant', 'content': grading_result['feedback']})
-
-        # If a valid grade is returned, present the remaining choices
-        if grading_result['grade'] is not None:
+        # Check if the feedback is a graded answer
+        if "Grade:" in feedback:
             # Remove the first place since it was already used
             st.session_state['places_events_encounters'].pop(0)
+
             # Check if there are any remaining places, events, or encounters
             if st.session_state['places_events_encounters']:
-                # Present remaining choices to the player
-                st.session_state.game_stage = 'awaiting_choice'  # Set the state to awaiting_choice
+                # Set game stage to awaiting_choice after grading an answer
+                st.session_state.game_stage = 'awaiting_choice'
             else:
                 # If no more places left, end the game
                 st.session_state.storyline.append(
@@ -1013,6 +1037,10 @@ if 'selected_novel' not in st.session_state:
     st.session_state.selected_novel = ''
 if 'chapter_summary_notes' not in st.session_state:
     st.session_state.chapter_summary_notes = pd.read_csv('data/chapter_summary_notes.csv')
+if 'tokens' not in st.session_state:
+    st.session_state.tokens = 0
+
+#st.sidebar.markdown(f"### Tokens: {st.session_state.tokens}")
 
 # Textbook and novel options
 textbook_options = ['Digital Marketing', 'European History', 'Biology']
@@ -1102,7 +1130,7 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     )
 
     # Button to start the adventure
-    if st.button("Start Adventure", key='start_button', help='Takes ~5mins on NVIDIA NIM w/ llama3.1-70B'):
+    if st.button("Start Adventure", key='start_button', help='Takes ~20s on NVIDIA NIM w/ llama3.1-70B'):
         if st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
             # Start the game
             generate_next_story_segment()
@@ -1116,12 +1144,14 @@ else:
         content = message['content']
         if role == 'assistant':
             st.markdown(f"**Narrator:** {content}")
+            #with st.expander("More info"):                st.write(                    "This segment advances the story based on your previous choices and integrates educational content.")
+            st.markdown('--------------')
         elif role == 'user':
             st.markdown(f"**You:** {content}")
 
     # Input box for user response if the game is awaiting an answer
     if st.session_state.game_stage == 'awaiting_answer':
-        user_input = st.text_input("Your response:", key='user_input')
+        user_input = st.text_input("Your response:", key='user_input', help="Type your answer to the question here or ask for a hint.")
 
         if st.button("Submit"):
             if user_input:
