@@ -6,10 +6,7 @@ import random
 import pandas as pd
 from llama_index.core import Settings
 from llama_index.llms.nvidia import NVIDIA
-from llama_index.embeddings.nvidia import NVIDIAEmbedding
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core import SimpleDirectoryReader
-from llama_index.core import VectorStoreIndex
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 import json
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
@@ -26,8 +23,8 @@ assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a v
 # Initialize the NVIDIA LLM using Settings
 Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instruct")
 # Initialize the NVIDIA embedding model
-Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
-Settings.text_splitter = SentenceSplitter(chunk_size=400)
+#Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
+#Settings.text_splitter = SentenceSplitter(chunk_size=400)
 
 # for pinecone VectorDB
 pc = Pinecone(api_key=pinecone_api_key)
