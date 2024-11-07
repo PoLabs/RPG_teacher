@@ -22,7 +22,7 @@ from pinecone import Pinecone, ServerlessSpec
 nvidia_api_key = st.secrets["nvidia_api_key"]
 nvidia_stability_api_key = st.secrets["nvidia_stability_api_key"]
 pinecone_api_key = st.secrets["pinecone_api_key"]
-openai_api_key = st.secrets["openai_api_key"] 
+openai_api_key = st.secrets["openai_api_key"]
 
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
@@ -390,8 +390,8 @@ def describe_question(setting_description, text, novel, adventure_description):
     #print(f"Setting description: {setting_description[:100]}...")
 
     # Get the textbook and novel names from session state
-    textbook_name = st.session_state.selected_textbook
-    novel_name = st.session_state.selected_novel
+    textbook_name = st.session_state.get('selected_textbook','')
+    novel_name = st.session_state.get('selected_novel','')
 
     # Get the index names from the mappings
     index_name_textbook = index_name_mappings.get(textbook_name)
@@ -546,7 +546,7 @@ def give_hint(question, answer):
 
 
     # Get the textbook name from session state
-    textbook_name = st.session_state.selected_textbook
+    textbook_name = st.session_state.get('selected_textbook','')
 
     # Get the index name from the mappings
     index_name_textbook = index_name_mappings.get(textbook_name)
@@ -949,16 +949,16 @@ def generate_next_story_segment(user_input=None):
     if st.session_state.game_stage == 'start':
         # Generate initial adventure description and first setting
         adventure_description = describe_adventure(
-            st.session_state.selected_textbook,
-            st.session_state.chapter,
-            st.session_state.selected_novel
+            st.session_state.get('selected_textbook',''),
+            st.session_state.get('chapter',''),
+            st.session_state.get('selected_novel','')
         )
         st.session_state.storyline.append({'role': 'assistant', 'content': adventure_description})
 
         first_place_event = st.session_state.places_events_encounters[0]
         setting_description = describe_setting(
-            st.session_state.selected_textbook,
-            st.session_state.selected_novel,
+            st.session_state.get('selected_textbook',''),
+            st.session_state.get('selected_novel',''),
             adventure_description,
             first_place_event
         )
@@ -967,8 +967,8 @@ def generate_next_story_segment(user_input=None):
 
         question, answer = describe_question(
             setting_description,
-            st.session_state.selected_textbook,
-            st.session_state.selected_novel,
+            st.session_state.get('selected_textbook',''),
+            st.session_state.get('selected_novel',''),
             adventure_description
         )
         st.session_state.current_question = question
@@ -1025,9 +1025,9 @@ def generate_next_story_segment(user_input=None):
 
                 # Generate setting for the chosen place
                 setting_description = describe_setting(
-                    st.session_state.selected_textbook,
-                    st.session_state.selected_novel,
-                    st.session_state.current_setting,
+                    st.session_state.get('selected_textbook',''),
+                    st.session_state.get('selected_novel',''),
+                    st.session_state.get('current_setting',''),
                     chosen_place
                 )
                 st.session_state.current_setting = setting_description
@@ -1035,9 +1035,9 @@ def generate_next_story_segment(user_input=None):
 
                 question, answer = describe_question(
                     setting_description,
-                    st.session_state.selected_textbook,
-                    st.session_state.selected_novel,
-                    st.session_state.current_setting
+                    st.session_state.get('selected_textbook',''),
+                    st.session_state.get('selected_novel',''),
+                    st.session_state.get('current_setting','')
                 )
                 st.session_state.current_question = question
                 st.session_state.current_question_answer = answer
@@ -1117,7 +1117,7 @@ textbook_chapters = {
 }
 
 def update_chapters():
-    selected_textbook = st.session_state.selected_textbook
+    selected_textbook = st.session_state.get('selected_textbook','')
     st.session_state.chapter_options = textbook_chapters.get(selected_textbook, [])
     if st.session_state.chapter_options:
         st.session_state.selected_chapter = st.session_state.chapter_options[0]
@@ -1173,7 +1173,7 @@ def choose_next_place(place_idx):
     setting_description = describe_setting(
         selected_textbook,
         selected_novel,
-        st.session_state.current_setting,
+        st.session_state.get('current_setting',''),
         chosen_place
     )
     st.session_state.current_setting = setting_description
@@ -1181,9 +1181,9 @@ def choose_next_place(place_idx):
 
     question, answer = describe_question(
         setting_description,
-        st.session_state.selected_textbook,
-        st.session_state.selected_novel,
-        st.session_state.current_setting
+        st.session_state.get('selected_textbook',''),
+        st.session_state.get('selected_novel',''),
+        st.session_state.get('current_setting','')
     )
     st.session_state.current_question = question
     st.session_state.current_question_answer = answer
