@@ -302,8 +302,8 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     #print(f"novel: {novel[:100]}...")
 
     # Get the textbook and novel names from session state
-    textbook_name = st.session_state.selected_textbook
-    novel_name = st.session_state.selected_novel
+    textbook_name = st.session_state.get('selected_textbook', '')
+    novel_name = st.session_state.get('selected_novel', '')
 
     # Get the index names from the mappings
     index_name_textbook = index_name_mappings.get(textbook_name)
