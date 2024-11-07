@@ -19,8 +19,8 @@ from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
 
-nvidia_api_key = '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'
-nvidia_stability_api_key =  "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"
+nvidia_api_key = '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' # live: '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'
+nvidia_stability_api_key =  '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' #"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"
 pinecone_api_key = 'd82b0e3a-acd5-4197-a10c-84245c2f9331'
 openai_api_key = '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'
 
@@ -265,6 +265,7 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
         places_text = places_match.group(1).strip()
         # Extract characters and their traits
         characters_list = re.findall(r"\d+\.\s*(.*?)\s*-\s*(.*)", characters_text)
+        st.session_state['character_names'] = [name.strip() for name, _ in characters_list]
         # characters_list will be list of tuples: [(Character name, Trait), ...]
         places_list = re.findall(r"\d+\.\s*(.*)", places_text)
     else:
@@ -343,7 +344,7 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
         f"Your task is to seamlessly continue the story from the adventure's current point, describing the following place, event, or encounter: '{place_event_encounter}'. "
         "Ensure that the narrative flows naturally from the end of the provided adventure description. Do not repeat any content from the adventure description, but instead pick up from where it left off. "
         "Provide a vivid description of the setting, characters, and action in exactly 5 sentences. Integrate key concepts from the textbook into the scene without explicitly stating the number of sentences."
-        " Avoid phrases such as 'Here are exactly 5 sentences' or 'Narrator says...'. Simply provide the descriptive text."
+        "Avoid phrases such as 'Here are exactly 5 sentences' or 'Narrator says...'. Simply provide the descriptive text."
     )
 
     # Construct the prompt
@@ -516,10 +517,19 @@ def describe_question(setting_description, text, novel, adventure_description):
         answer = ""
 
     #print('image gen')
-    #image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
-    #setting_image_bytes = generate_image(image_prompt)
-    #image = Image.open(BytesIO(setting_image_bytes))
-    #st.session_state['setting_image'] = image
+    image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
+    image_file = None
+    try:
+        pass
+        #image_file = generate_image(adventure_description, setting_description, question)
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise e
+
+    if image_file:
+        st.image(image_file, caption="Generated Image")
+    else:
+        st.error("Failed to generate image.")
 
     return question, answer
 
@@ -876,39 +886,48 @@ def reset_app():
     #st.rerun()  # Force a rerun to reset the UI
 
 
-def generate_image(prompt):
+def generate_image(adventure_description, setting_description, question):
     try:
-        # Set up the request
+        print('try image gen')
+        import requests
+
         invoke_url = "https://ai.api.nvidia.com/v1/genai/stabilityai/sdxl-turbo"
+
         headers = {
             "Authorization": f"Bearer {nvidia_stability_api_key}",
             "Accept": "application/json",
         }
+
         payload = {
-            "text_prompts": [{"text": prompt}],
+            "text_prompts": [{
+                                 "text": question}],
             "seed": 0,
             "sampler": "K_EULER_ANCESTRAL",
             "steps": 2
         }
 
-        # Send the request
         response = requests.post(invoke_url, headers=headers, json=payload)
-        response.raise_for_status()  # Raise an error for bad status codes
 
-        # Decode the response
+        response.raise_for_status()
         response_body = response.json()
-        base64_image = response_body['artifacts'][0]['base64']
-        img_bytes = base64.b64decode(base64_image)
-        print(img_bytes)
+        print('Response received:', response_body)
 
-        # Convert the binary data to an image and display it in Streamlit
+        # Extract the base64 image string
+        img_base64 = response_body['artifacts'][0]['base64']
+
+        # Decode the base64 image to bytes
+        img_bytes = base64.b64decode(img_base64)
+
+        # Convert bytes to an image using PIL and return it
         image = Image.open(BytesIO(img_bytes))
-        #st.image(image, caption="Generated Image")
-        return(img_bytes)
+        return image
 
     except Exception as e:
-        st.error(f"Image generation failed: {e}")
+        print(f"Image generation failed: {e}")
         return None
+
+
+
 
 
 def generate_next_story_segment(user_input=None):
