@@ -19,7 +19,7 @@ from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
 
-nvidia_api_key = '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'
+nvidia_api_key = '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'
 nvidia_stability_api_key =  "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"
 pinecone_api_key = 'd82b0e3a-acd5-4197-a10c-84245c2f9331'
 openai_api_key = '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'
