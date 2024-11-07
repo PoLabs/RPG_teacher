@@ -15,7 +15,8 @@ from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
 
-nvidia_api_key = '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'
+nvidia_api_key = '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'
+nvidia_consistory_api_key = "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"
 pinecone_api_key = 'd82b0e3a-acd5-4197-a10c-84245c2f9331'
 openai_api_key = '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'
 
@@ -510,6 +511,11 @@ def describe_question(setting_description, text, novel, adventure_description):
         question = question_and_answer
         answer = ""
 
+    print('image gen')
+    image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
+    setting_image_bytes = generate_image(image_prompt)
+    st.session_state['setting_image'] = setting_image_bytes
+
     return question, answer
 
 
@@ -864,6 +870,40 @@ def reset_app():
     st.session_state['upgrade_event'] = False
     #st.rerun()  # Force a rerun to reset the UI
 
+
+def generate_image(prompt):
+    try:
+        import requests
+        import base64
+
+        invoke_url = "https://ai.api.nvidia.com/v1/genai/nvidia/consistency"
+        headers = {
+            "Authorization": f"Bearer {nvidia_consistory_api_key}",
+            "Accept": "application/json",
+        }
+
+        payload = {
+            "prompt": prompt,
+            "negative_prompt": "",
+            "guidance_scale": 7.5,
+            "num_images": 1,
+            "seed": random.randint(1, 100000),
+        }
+
+        response = requests.post(invoke_url, headers=headers, json=payload)
+        response.raise_for_status()
+
+        data = response.json()
+        img_base64 = data['artifacts'][0]["base64"]
+        img_bytes = base64.b64decode(img_base64)
+        return img_bytes
+
+    except Exception as e:
+        print(f"Image generation failed: {e}")
+        return None
+
+
+
 def generate_next_story_segment(user_input=None):
     """
     Main function to control the flow of the RPG adventure.
@@ -1018,6 +1058,10 @@ if 'character_stats' in st.session_state:
         st.sidebar.write(f"Trait: {stats['trait'].capitalize().split(':')[0]}")
         st.sidebar.write(f"Upgrade Level: {stats['upgrade_level']}")
         st.sidebar.write("---")
+
+if 'question_image' in st.session_state:
+    st.image(st.session_state['question_image'], caption="Question Illustration")
+
 
 # Textbook and novel options
 textbook_options = ['Biology', 'European History', 'Digital Marketing']
@@ -1186,6 +1230,8 @@ else:
         role, content = message['role'], message['content']
         if role == 'assistant':
             st.markdown(f"**Narrator:** {content}")
+            if 'adventure_image' in st.session_state:
+                st.image(st.session_state['adventure_image'], caption="Adventure Scene")
         elif role == 'user':
             st.markdown(f"**You:** {content}")
 
