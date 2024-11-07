@@ -115,10 +115,10 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
     Generates an adventure description combining themes from the novel with key topics from the textbook.
     Includes at least 3 characters, each assigned a trait.
     """
-    print("\n--- describe_adventure called ---")
-    print(f"textbook_name: {textbook_name}")
-    print(f"textbook_chapter: {textbook_chapter}")
-    print(f"novel_name: {novel_name}")
+    #print("\n--- describe_adventure called ---")
+    #print(f"textbook_name: {textbook_name}")
+    #print(f"textbook_chapter: {textbook_chapter}")
+    #print(f"novel_name: {novel_name}")
 
     # Prepare the system prompt message
     # In describe_adventure
@@ -228,7 +228,7 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
 
     # Combine the retrieved content
     retrieved_content = "\n".join(textbook_context_docs + novel_context_docs)
-    print(f'combined content length: {len(retrieved_content)}')
+    #print(f'combined content length: {len(retrieved_content)}')
 
     # Create the user message
     user_message = (
@@ -277,9 +277,9 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
         limit_to_two_sentences(desc) for desc in st.session_state['places_events_encounters']
     ]
 
-    print(f"Generated adventure description: {adventure_description}")
-    print(f"Characters: {characters_list}")
-    print("--- describe_adventure ended ---\n")
+    #print(f"Generated adventure description: {adventure_description}")
+    #print(f"Characters: {characters_list}")
+    #print("--- describe_adventure ended ---\n")
     return adventure_description
 
 
@@ -289,9 +289,9 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     Uses top_k relevant documents from both indexes as context.
     Limits the description to exactly 10 sentences, split into two paragraphs.
     """
-    print("\n--- describe_setting called ---")
-    print(f"text: {text[:100]}...")
-    print(f"novel: {novel[:100]}...")
+    #print("\n--- describe_setting called ---")
+    #print(f"text: {text[:100]}...")
+    #print(f"novel: {novel[:100]}...")
 
     # Get the textbook and novel names from session state
     textbook_name = st.session_state.selected_textbook
@@ -367,8 +367,8 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
 
     final_description = f"{paragraph_1}\n\n{paragraph_2}"  # Two paragraphs with a line break
 
-    print(f"Final setting description (10 sentences in two paragraphs): {final_description}")
-    print("--- describe_setting ended ---\n")
+    #print(f"Final setting description (10 sentences in two paragraphs): {final_description}")
+    #print("--- describe_setting ended ---\n")
 
     return final_description
 
@@ -378,8 +378,8 @@ def describe_question(setting_description, text, novel, adventure_description):
     Generates a challenging question based on the setting description, text, and novel content.
     Includes relevant questions from chapter_summary_notes.csv, paired by the 'key' column.
     """
-    print("\n--- describe_question called ---")
-    print(f"Setting description: {setting_description[:100]}...")
+    #print("\n--- describe_question called ---")
+    #print(f"Setting description: {setting_description[:100]}...")
 
     # Get the textbook and novel names from session state
     textbook_name = st.session_state.selected_textbook
@@ -457,7 +457,7 @@ def describe_question(setting_description, text, novel, adventure_description):
         sample_question = "No questions available for this chapter."
         sample_answer = "No answer available."
 
-    print(f'sample q: {sample_question}')
+    #print(f'sample q: {sample_question}')
 
     # Combine the context from both indexes and integrate the setting description
     prompt = f"""
@@ -495,8 +495,8 @@ def describe_question(setting_description, text, novel, adventure_description):
     response = llm_predict_with_retry(messages)
     question_and_answer = response.message.content.strip()
 
-    print(f"Generated question and answer: {question_and_answer}")
-    print("--- describe_question ended ---\n")
+    #print(f"Generated question and answer: {question_and_answer}")
+    #print("--- describe_question ended ---\n")
 
     # Parse the response to separate question and answer
     match = re.search(r'Question:\s*(.*?)\s*Answer:\s*(.*)', question_and_answer, re.DOTALL)
@@ -516,8 +516,8 @@ def give_hint(question, answer):
     Provides a hint to the user using RAG results from the textbook index.
     Uses the answer to point the user in the correct direction without directly giving them the answer.
     """
-    print("\n--- give_hint called ---")
-    print(f"Question: {question}")
+    #print("\n--- give_hint called ---")
+    #print(f"Question: {question}")
 
     # Mapping between textbook names and index names
 
@@ -587,8 +587,8 @@ def give_hint(question, answer):
     response = llm_predict_with_retry(messages)
     hint = response.message.content.strip()
 
-    print(f"Hint: {hint}")
-    print("--- give_hint ended ---\n")
+    #print(f"Hint: {hint}")
+    #print("--- give_hint ended ---\n")
 
     return hint
 
@@ -597,9 +597,9 @@ def handle_answer(user_input, question, correct_answer):
     """
     Evaluates the user's input and decides whether it's an answer, a hint request, or something else.
     """
-    print("\n--- handle_answer called ---")
-    print(f"user_input: {user_input}")
-    print(f"question: {question}")
+    #print("\n--- handle_answer called ---")
+    #print(f"user_input: {user_input}")
+    #print(f"question: {question}")
 
     # Use LLM to analyze the user's input
     prompt = f"""
@@ -620,7 +620,7 @@ def handle_answer(user_input, question, correct_answer):
     response = llm_predict_with_retry(messages)
     classification = response.message.content.strip().lower()
 
-    print(f"Classification: {classification}")
+    #print(f"Classification: {classification}")
 
     if 'answer' in classification:
         # User provided an answer, grade it
@@ -631,7 +631,7 @@ def handle_answer(user_input, question, correct_answer):
             st.session_state['upgrade_event'] = True
             st.session_state['feedback'] = feedback  # Store feedback to display later
         else:
-            st.session_state['feedback'] = feedback
+            st.session_state['feedback'] = f'{grade} {feedback}'
 
     elif 'hint' in classification:
         # User requested a hint
@@ -660,8 +660,8 @@ def handle_answer(user_input, question, correct_answer):
     else:
         feedback = "I'm sorry, I didn't understand your response. Could you please try again?"
 
-    print(f"Feedback: {feedback}")
-    print("--- handle_answer ended ---\n")
+    #print(f"Feedback: {feedback}")
+    #print("--- handle_answer ended ---\n")
 
     return feedback
 
@@ -670,10 +670,10 @@ def grade_answer(user_answer, question, correct_answer):
     """
     Assesses the user's answer based on the provided rubric and provides feedback.
     """
-    print("\n--- grade_answer called ---")
-    print(f"user_answer: {user_answer}")
-    print(f"question: {question}")
-    print(f"correct_answer: {correct_answer}")
+    #print("\n--- grade_answer called ---")
+    #print(f"user_answer: {user_answer}")
+    #print(f"question: {question}")
+    #print(f"correct_answer: {correct_answer}")
 
     # Define the rubric
     rubric = """
@@ -721,10 +721,10 @@ def grade_answer(user_answer, question, correct_answer):
     else:
         grade = None
         feedback_text = "Unable to parse feedback."
-    print({
-        "grade": grade,
-        "feedback": feedback_text
-    })
+    #print({
+    #    "grade": grade,
+    #    "feedback": feedback_text
+    #})
 
     # Adjust grade based on character traits
     total_intellect_chance = 0
@@ -810,7 +810,7 @@ def extract_section(text, section_name):
 def llm_predict_with_retry(messages):
     try:
         total_length = sum(len(msg.content) for msg in messages)
-        print(f"Total input length to LLM: {total_length} characters")
+        #print(f"Total input length to LLM: {total_length} characters")
         # Debugging: Confirm all messages are ChatMessage instances
         for idx, msg in enumerate(messages):
             if not isinstance(msg, ChatMessage):
