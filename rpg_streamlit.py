@@ -5,6 +5,10 @@ import random
 import time
 import random
 import pandas as pd
+import base64
+import requests
+from PIL import Image
+from io import BytesIO
 from llama_index.core import Settings
 from llama_index.llms.nvidia import NVIDIA
 from llama_index.core import SimpleDirectoryReader
@@ -15,8 +19,8 @@ from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
 
-nvidia_api_key = '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'
-nvidia_consistory_api_key = "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"
+nvidia_api_key = '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'
+nvidia_stability_api_key =  "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"
 pinecone_api_key = 'd82b0e3a-acd5-4197-a10c-84245c2f9331'
 openai_api_key = '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'
 
@@ -873,35 +877,35 @@ def reset_app():
 
 def generate_image(prompt):
     try:
-        import requests
-        import base64
-
-        invoke_url = "https://ai.api.nvidia.com/v1/genai/nvidia/consistency"
+        # Set up the request
+        invoke_url = "https://ai.api.nvidia.com/v1/genai/stabilityai/sdxl-turbo"
         headers = {
-            "Authorization": f"Bearer {nvidia_consistory_api_key}",
+            "Authorization": f"Bearer {nvidia_stability_api_key}",
             "Accept": "application/json",
         }
-
         payload = {
-            "prompt": prompt,
-            "negative_prompt": "",
-            "guidance_scale": 7.5,
-            "num_images": 1,
-            "seed": random.randint(1, 100000),
+            "text_prompts": [{"text": prompt}],
+            "seed": 0,
+            "sampler": "K_EULER_ANCESTRAL",
+            "steps": 2
         }
 
+        # Send the request
         response = requests.post(invoke_url, headers=headers, json=payload)
-        response.raise_for_status()
+        response.raise_for_status()  # Raise an error for bad status codes
 
-        data = response.json()
-        img_base64 = data['artifacts'][0]["base64"]
-        img_bytes = base64.b64decode(img_base64)
-        return img_bytes
+        # Decode the response
+        response_body = response.json()
+        base64_image = response_body['artifacts'][0]['base64']
+        img_bytes = base64.b64decode(base64_image)
+
+        # Convert the binary data to an image and display it in Streamlit
+        image = Image.open(BytesIO(img_bytes))
+        st.image(image, caption="Generated Image")
 
     except Exception as e:
-        print(f"Image generation failed: {e}")
+        st.error(f"Image generation failed: {e}")
         return None
-
 
 
 def generate_next_story_segment(user_input=None):
