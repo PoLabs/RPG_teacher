@@ -1166,11 +1166,13 @@ def select_upgrade(character_name):
 
 def choose_next_place(place_idx):
     chosen_place = st.session_state.places_events_encounters.pop(place_idx)
+    selected_textbook = st.session_state.get("selected_textbook", "")
+    selected_novel = st.session_state.get("selected_novel", "")
 
     # Generate the setting for the chosen place
     setting_description = describe_setting(
-        st.session_state.selected_textbook,
-        st.session_state.selected_novel,
+        selected_textbook,
+        selected_novel,
         st.session_state.current_setting,
         chosen_place
     )
