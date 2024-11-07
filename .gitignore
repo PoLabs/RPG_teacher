@@ -2,3 +2,5 @@
 /venv_llamaindex
 /venv_llamaindex2
 /data/raw
+/.streamlit/secrets.toml
+/.streamlit/secrets.toml.swp

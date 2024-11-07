@@ -19,10 +19,10 @@ from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
 
-nvidia_api_key = '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' # live: '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'
-nvidia_stability_api_key =  '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' #"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"
-pinecone_api_key = 'd82b0e3a-acd5-4197-a10c-84245c2f9331'
-openai_api_key = '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'
+nvidia_api_key = st.secrets["nvidia_api_key"]
+nvidia_stability_api_key = st.secrets["nvidia_stability_api_key"]
+pinecone_api_key = st.secrets["pinecone_api_key"]
+openai_api_key = st.secrets["openai_api_key"] 
 
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
