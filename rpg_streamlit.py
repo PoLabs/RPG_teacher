@@ -515,10 +515,11 @@ def describe_question(setting_description, text, novel, adventure_description):
         question = question_and_answer
         answer = ""
 
-    print('image gen')
-    image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
-    setting_image_bytes = generate_image(image_prompt)
-    st.session_state['setting_image'] = setting_image_bytes
+    #print('image gen')
+    #image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
+    #setting_image_bytes = generate_image(image_prompt)
+    #image = Image.open(BytesIO(setting_image_bytes))
+    #st.session_state['setting_image'] = image
 
     return question, answer
 
@@ -898,10 +899,12 @@ def generate_image(prompt):
         response_body = response.json()
         base64_image = response_body['artifacts'][0]['base64']
         img_bytes = base64.b64decode(base64_image)
+        print(img_bytes)
 
         # Convert the binary data to an image and display it in Streamlit
         image = Image.open(BytesIO(img_bytes))
-        st.image(image, caption="Generated Image")
+        #st.image(image, caption="Generated Image")
+        return(img_bytes)
 
     except Exception as e:
         st.error(f"Image generation failed: {e}")
