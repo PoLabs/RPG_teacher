@@ -34,6 +34,17 @@ client = OpenAI(api_key=openai_api_key)
 
 TOP_K = 5  # Global constant
 
+index_name_mappings = {
+    'Digital Marketing': 'digital-marketing-index',
+    'The Hobbit': 'hobbit-index',
+    'European History': 'european-history-index',
+    'Biology': 'biology-index',
+    'Peter Pan': 'peter-pan-index',
+    'Harry Potter': 'harry-potter-index',
+    'Sherlock Holmes': 'sherlock-holmes-index'
+
+    # Add more mappings as needed
+}
 
 def get_embedding(text):
     """Generate embeddings using OpenAI API."""
@@ -122,19 +133,6 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
         "Characters:\n1. [Character name] - [Trait]\n2. [Character name] - [Trait]\n3. [Character name] - [Trait]\n\n"
         "Places, Events, or Encounters:\n1. [First place]\n2. [Second place]\n3. [Third place]\n4. [Fourth place]\n5. [Fifth place]"
     )
-
-    # Mapping between textbook/novel names and index names
-    index_name_mappings = {
-        'Digital Marketing': 'digital-marketing-index',
-        'The Hobbit': 'hobbit-index',
-        'European History': 'european-history-index',
-        'Biology':'biology-index',
-        'Peter Pan':'peter-pan-index',
-        'Harry Potter':'harry-potter-index',
-        'Sherlock Holmes':'sherlock-holmes-index'
-
-        # Add more mappings as needed
-    }
 
     # Get the index names from the mappings
     index_name_textbook = index_name_mappings.get(textbook_name)
@@ -295,19 +293,6 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     print(f"text: {text[:100]}...")
     print(f"novel: {novel[:100]}...")
 
-    # Mapping between textbook/novel names and index names
-    index_name_mappings = {
-        'Digital Marketing': 'digital-marketing-index',
-        'The Hobbit': 'hobbit-index',
-        'European History': 'european-history-index',
-        'Biology':'biology-index',
-        'Peter Pan':'peter-pan-index',
-        'Harry Potter':'harry-potter-index',
-        'Sherlock Holmes':'sherlock-holmes-index'
-
-        # Add more mappings as needed
-    }
-
     # Get the textbook and novel names from session state
     textbook_name = st.session_state.selected_textbook
     novel_name = st.session_state.selected_novel
@@ -395,19 +380,6 @@ def describe_question(setting_description, text, novel, adventure_description):
     """
     print("\n--- describe_question called ---")
     print(f"Setting description: {setting_description[:100]}...")
-
-    # Mapping between textbook/novel names and index names
-    index_name_mappings = {
-        'Digital Marketing': 'digital-marketing-index',
-        'The Hobbit': 'hobbit-index',
-        'European History': 'european-history-index',
-        'Biology':'biology-index',
-        'Peter Pan':'peter-pan-index',
-        'Harry Potter':'harry-potter-index',
-        'Sherlock Holmes':'sherlock-holmes-index'
-
-        # Add more mappings as needed
-    }
 
     # Get the textbook and novel names from session state
     textbook_name = st.session_state.selected_textbook
@@ -548,17 +520,7 @@ def give_hint(question, answer):
     print(f"Question: {question}")
 
     # Mapping between textbook names and index names
-    index_name_mappings = {
-        'Digital Marketing': 'digital-marketing-index',
-        'The Hobbit': 'hobbit-index',
-        'European History': 'european-history-index',
-        'Biology':'biology-index',
-        'Peter Pan':'peter-pan-index',
-        'Harry Potter':'harry-potter-index',
-        'Sherlock Holmes':'sherlock-holmes-index'
 
-        # Add more mappings as needed
-    }
 
     # Get the textbook name from session state
     textbook_name = st.session_state.selected_textbook
@@ -877,17 +839,28 @@ def limit_to_two_sentences(text):
 def reset_app():
     """
     Resets the app back to the initial state for a new adventure.
-    Clears all session state variables related to game progress.
+    Clears all session state variables related to game progress, including tokens, character upgrades, and storyline.
     """
-    keys_to_reset = [
-        'game_stage', 'storyline', 'current_question', 'current_question_answer',
-        'current_setting', 'chapter', 'places_events_encounters',
-        'selected_textbook', 'selected_chapter', 'selected_novel', 'tokens'
-    ]
-    for key in keys_to_reset:
-        if key in st.session_state:
-            del st.session_state[key]
-    st.rerun()  # Force a rerun to reset the UI
+    # Reset key variables in session state
+    st.session_state['game_stage'] = 'start'
+    st.session_state['storyline'] = []
+    st.session_state['current_question'] = ''
+    st.session_state['current_question_answer'] = ''
+    st.session_state['current_setting'] = ''
+    st.session_state['chapter'] = 1
+    st.session_state['places_events_encounters'] = ['Forest', 'Ruins', 'Mountain Pass', 'Old Bridge', 'Tavern']
+    st.session_state['tokens'] = 5  # Reset hint tokens
+
+    # Reset character stats and upgrades
+    st.session_state['character_stats'] = {
+        'Character1': {'trait': 'intellect', 'upgrade_level': 0},
+        'Character2': {'trait': 'spirit', 'upgrade_level': 0},
+        'Character3': {'trait': 'strength', 'upgrade_level': 0},
+    }
+
+    # Reset flags
+    st.session_state['upgrade_event'] = False
+    #st.rerun()  # Force a rerun to reset the UI
 
 def generate_next_story_segment(user_input=None):
     """
@@ -905,7 +878,6 @@ def generate_next_story_segment(user_input=None):
         st.session_state.places_events_encounters = ['Forest', 'Ruins', 'Mountain Pass', 'Old Bridge', 'Tavern']
         st.session_state.tokens = 5
 
-    # Ensure storyline is updated incrementally
     if st.session_state.game_stage == 'start':
         # Generate initial adventure description and first setting
         adventure_description = describe_adventure(
@@ -935,7 +907,7 @@ def generate_next_story_segment(user_input=None):
         st.session_state.current_question_answer = answer
         st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-        # Transition to answer stage
+        # Move to answer stage
         st.session_state.game_stage = 'awaiting_answer'
 
     elif st.session_state.game_stage == 'awaiting_answer' and user_input:
@@ -943,11 +915,10 @@ def generate_next_story_segment(user_input=None):
         st.session_state.storyline.append({'role': 'user', 'content': user_input})
 
         # Process answer and provide feedback
-        feedback = handle_answer(user_input, st.session_state.current_question,
-                                 st.session_state.current_question_answer)
+        feedback = handle_answer(user_input, st.session_state.current_question, st.session_state.current_question_answer)
         st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
 
-        # Check if upgrade event was triggered
+        # Check if an upgrade event was triggered
         if st.session_state.get('upgrade_event', False):
             st.session_state.game_stage = 'upgrade_character'
         else:
@@ -957,31 +928,28 @@ def generate_next_story_segment(user_input=None):
                 if st.session_state.places_events_encounters:
                     st.session_state.game_stage = 'awaiting_choice'
                 else:
-                    st.session_state.storyline.append(
-                        {'role': 'assistant', 'content': "You have completed all encounters!"})
+                    st.session_state.storyline.append({'role': 'assistant', 'content': "You have completed all encounters!"})
                     st.session_state.game_stage = 'end'
 
     elif st.session_state.game_stage == 'upgrade_character':
-        # Prompt the user to choose a character to upgrade
+        # Display upgrade options for the user to select
         st.markdown("### Congratulations! You have the opportunity to upgrade a character's trait.")
         for idx, (name, stats) in enumerate(st.session_state['character_stats'].items()):
             if st.button(f"Upgrade {name} ({stats['trait'].capitalize()})", key=f"upgrade_{idx}"):
                 stats['upgrade_level'] += 1
                 st.session_state.storyline.append({'role': 'assistant', 'content': f"{name}'s {stats['trait']} trait has been upgraded by 1!"})
-                st.session_state.upgrade_event = False  # Reset the upgrade event flag
+                st.session_state.upgrade_event = False  # Reset upgrade event flag
 
                 # Move to choice stage or end game after upgrade
                 st.session_state.places_events_encounters.pop(0)
                 if st.session_state.places_events_encounters:
                     st.session_state.game_stage = 'awaiting_choice'
                 else:
-                    st.session_state.storyline.append(
-                        {'role': 'assistant', 'content': "You have completed all encounters!"})
+                    st.session_state.storyline.append({'role': 'assistant', 'content': "You have completed all encounters!"})
                     st.session_state.game_stage = 'end'
-                st.rerun()  # Rerun to update the UI after upgrading
 
     elif st.session_state.game_stage == 'awaiting_choice':
-        # Display and handle encounter choices
+        # Display choices for the next encounter
         st.markdown("### Choose where to go next:")
         for idx, choice in enumerate(st.session_state.places_events_encounters):
             if st.button(choice, key=f"choice_{idx}"):
@@ -1007,16 +975,14 @@ def generate_next_story_segment(user_input=None):
                 st.session_state.current_question_answer = answer
                 st.session_state.storyline.append({'role': 'assistant', 'content': question})
 
-                # Transition to answer stage
+                # Move to answer stage
                 st.session_state.game_stage = 'awaiting_answer'
-                st.rerun()  # Rerun to display new setting and question
 
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
         if st.button("Restart Adventure"):
             # Reset session state for a new game
             reset_app()
-
 
 
 # main streamlit app ---------------------------------------------------------------------------------------
@@ -1052,8 +1018,8 @@ if 'character_stats' in st.session_state:
         st.sidebar.write("---")
 
 # Textbook and novel options
-textbook_options = ['Digital Marketing', 'European History', 'Biology']
-novel_options = ['The Hobbit', 'Peter Pan', 'Harry Potter', 'Sherlock Holmes']
+textbook_options = ['Biology', 'European History', 'Digital Marketing']
+novel_options = ['Harry Potter', 'The Hobbit', 'Peter Pan', 'Sherlock Holmes']
 
 # Mapping of textbooks to their chapters
 textbook_chapters = {
@@ -1085,6 +1051,72 @@ def update_chapters():
         st.session_state.selected_chapter = st.session_state.chapter_options[0]
     else:
         st.session_state.selected_chapter = ''
+
+
+def submit_answer():
+    user_input = st.session_state.get('user_input', '')
+    if user_input:
+        st.session_state.storyline.append({'role': 'user', 'content': user_input})
+
+        # Process the answer
+        feedback = handle_answer(user_input, st.session_state.current_question,
+                                 st.session_state.current_question_answer)
+        st.session_state.storyline.append({'role': 'assistant', 'content': feedback})
+
+        # Check if upgrade event was triggered
+        if st.session_state.get('upgrade_event', False):
+            st.session_state.game_stage = 'upgrade_character'
+        else:
+            # Move to choice stage if encounters remain, otherwise end game
+            st.session_state.places_events_encounters.pop(0)
+            if st.session_state.places_events_encounters:
+                st.session_state.game_stage = 'awaiting_choice'
+            else:
+                st.session_state.storyline.append(
+                    {'role': 'assistant', 'content': "You have completed all encounters!"})
+                st.session_state.game_stage = 'end'
+    else:
+        st.error("Please enter a response.")
+
+
+def select_upgrade(character_name):
+    # Increase upgrade level for selected character
+    st.session_state['character_stats'][character_name]['upgrade_level'] += 1
+    trait = st.session_state['character_stats'][character_name]['trait']
+    st.session_state.storyline.append(
+        {'role': 'assistant', 'content': f"{character_name}'s {trait} trait has been upgraded by 1!"})
+
+    # Reset upgrade event flag and move to the next stage
+    st.session_state.upgrade_event = False
+    st.session_state.places_events_encounters.pop(0)
+    st.session_state.game_stage = 'awaiting_choice' if st.session_state.places_events_encounters else 'end'
+
+
+def choose_next_place(place_idx):
+    chosen_place = st.session_state.places_events_encounters.pop(place_idx)
+
+    # Generate the setting for the chosen place
+    setting_description = describe_setting(
+        st.session_state.selected_textbook,
+        st.session_state.selected_novel,
+        st.session_state.current_setting,
+        chosen_place
+    )
+    st.session_state.current_setting = setting_description
+    st.session_state.storyline.append({'role': 'assistant', 'content': setting_description})
+
+    question, answer = describe_question(
+        setting_description,
+        st.session_state.selected_textbook,
+        st.session_state.selected_novel,
+        st.session_state.current_setting
+    )
+    st.session_state.current_question = question
+    st.session_state.current_question_answer = answer
+    st.session_state.storyline.append({'role': 'assistant', 'content': question})
+
+    # Transition to answer stage
+    st.session_state.game_stage = 'awaiting_answer'
 
 # Ensure session state values are valid
 if 'selected_textbook' not in st.session_state or st.session_state.selected_textbook not in textbook_options:
@@ -1139,7 +1171,7 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
     )
 
     # Button to start the adventure
-    if st.button("Start Adventure", key='start_button', help='Takes ~20s on NVIDIA NIM w/ llama3.1-70B'):
+    if st.button("Start Adventure", key='start_button', help='Takes ~10s on NVIDIA NIM w/ llama3.1-70B'):
         if st.session_state.selected_textbook and st.session_state.selected_novel and st.session_state.chapter:
             # Start the game
             generate_next_story_segment()
@@ -1147,40 +1179,31 @@ if st.session_state.game_stage == 'start' and not st.session_state.storyline:
         else:
             st.error("Please fill in all the fields before starting the adventure.")
 else:
-    # Display the storyline so far
+    # Main display of story progression and stage-based UI
     for message in st.session_state.storyline:
-        role = message['role']
-        content = message['content']
+        role, content = message['role'], message['content']
         if role == 'assistant':
             st.markdown(f"**Narrator:** {content}")
-            #with st.expander("More info"):                st.write(                    "This segment advances the story based on your previous choices and integrates educational content.")
-            st.markdown('--------------')
         elif role == 'user':
             st.markdown(f"**You:** {content}")
 
-    # Input box for user response if the game is awaiting an answer
+    # Stage-specific UI based on `game_stage`
     if st.session_state.game_stage == 'awaiting_answer':
-        user_input = st.text_input("Your response:", key='user_input', help="Type your answer to the question here or ask for a hint. For testing, you can find the correct answer printed to command line or google the question without the novel context.")
-        if st.button("Submit"):
-            if user_input:
-                # Process the user's answer
-                generate_next_story_segment(user_input=user_input)
-                st.rerun()
-            else:
-                st.error("Please enter a response.")
-
-    elif st.session_state.game_stage == 'awaiting_choice':
-        # Call generate_next_story_segment without user input to display choices
-        generate_next_story_segment()
+        st.text_input("Your response:", key='user_input')
+        st.button("Submit", on_click=submit_answer)
 
     elif st.session_state.game_stage == 'upgrade_character':
-        # Directly manage the upgrade choice
-        generate_next_story_segment()
+        st.markdown("### Choose a character to upgrade:")
+        for character_name, stats in st.session_state['character_stats'].items():
+            trait = stats['trait'].capitalize()
+            st.button(f"Upgrade {character_name} ({trait})", on_click=select_upgrade, args=(character_name,))
+
+    elif st.session_state.game_stage == 'awaiting_choice':
+        st.markdown("### Choose where to go next:")
+        for idx, choice in enumerate(st.session_state.places_events_encounters):
+            st.button(choice, on_click=choose_next_place, args=(idx,))
 
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
-        if st.button("Restart Adventure", key='restart_button'):
-            # Reset all relevant session state variables
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
-            st.rerun()
+        if st.button("Restart Adventure"):
+            reset_app()
