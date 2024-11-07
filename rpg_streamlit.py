@@ -209,12 +209,14 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
     if not textbook_response.matches:
         print("No matches found in textbook_response.")
     else:
-        print(f"Found {len(textbook_response.matches)} matches in textbook_response.")
+        pass
+        #print(f"Found {len(textbook_response.matches)} matches in textbook_response.")
 
     if not novel_response.matches:
         print("No matches found in novel_response.")
     else:
-        print(f"Found {len(novel_response.matches)} matches in novel_response.")
+        pass
+        #print(f"Found {len(novel_response.matches)} matches in novel_response.")
 
     # Extract content from the retrieved documents
     textbook_context_docs = [
@@ -495,7 +497,7 @@ def describe_question(setting_description, text, novel, adventure_description):
     response = llm_predict_with_retry(messages)
     question_and_answer = response.message.content.strip()
 
-    #print(f"Generated question and answer: {question_and_answer}")
+    print(f"Generated question and answer: {question_and_answer}")
     #print("--- describe_question ended ---\n")
 
     # Parse the response to separate question and answer
@@ -755,7 +757,7 @@ def grade_answer(user_answer, question, correct_answer):
     # Return structured result
     return {
         "grade": grade,
-        "feedback": feedback_text
+        "feedback": f'{grade} {feedback_text}'
     }
 
 
