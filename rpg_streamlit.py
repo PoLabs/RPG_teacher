@@ -32,6 +32,7 @@ nvidia_api_key = st.secrets["nvidia_api_key"]
 nvidia_stability_api_key = st.secrets["nvidia_stability_api_key"]
 pinecone_api_key = st.secrets["pinecone_api_key"]
 openai_api_key = st.secrets["openai_api_key"]
+os.environ["OPENAI_API_KEY"] = st.secrets["openai_api_key"]
 
 os.environ["NVIDIA_API_KEY"] = nvidia_api_key
 assert nvidia_api_key.startswith("nvapi-"), f"{nvidia_api_key[:5]}... is not a valid key"
@@ -46,11 +47,12 @@ config = RailsConfig.from_path("./config")
 # Initialize your custom NVIDIA LLM
 custom_llm = CustomNvidiaLLM(model_name="meta/llama-3.1-70b-instruct")
 # Initialize NeMo Guardrails with your custom LLM
-rails = LLMRails(config, llm=custom_llm)
+print(openai_api_key)
+rails = LLMRails(config)#, openai_api_key=str(openai_api_key))
 
 
-USER_ROLE = "user"
-ASSISTANT_ROLE = "assistant"
+USER_ROLE = "human"
+ASSISTANT_ROLE = "ai"
 SYSTEM_ROLE = "system"
 
 # for pinecone VectorDB
@@ -856,35 +858,31 @@ def extract_section(text, section_name):
 
 def llm_predict_with_retry(messages):
     try:
-        # Convert messages to LangChain's BaseMessage format
-        langchain_messages = []
+        # Convert all messages to dictionaries with 'role' and 'content'
+        guardrails_messages = []
         for message in messages:
-            if message.role == SYSTEM_ROLE:
-                langchain_messages.append(SystemMessage(content=message.content))
-            elif message.role == USER_ROLE:
-                langchain_messages.append(HumanMessage(content=message.content))
-            elif message.role == ASSISTANT_ROLE:
-                langchain_messages.append(AIMessage(content=message.content))
+            if isinstance(message, SystemMessage):
+                role = "system"
+            elif isinstance(message, HumanMessage):
+                role = "user"
+            elif isinstance(message, AIMessage):
+                role = "assistant"
             else:
-                # Default to HumanMessage if role is unrecognized
-                langchain_messages.append(HumanMessage(content=message.content))
+                # Handle unexpected message types
+                role = "user"
+            guardrails_messages.append({"role": role, "content": message.content})
 
         # Use NeMo Guardrails to generate the response
-        response = rails.generate(messages=langchain_messages)
+        response = rails.generate(messages=guardrails_messages)
 
         # Extract the assistant's reply from the response
-        if isinstance(response, BaseMessage):
-            assistant_message = AIMessage(content=response.content)
-        else:
-            # Handle other possible return types
-            assistant_message = AIMessage(content=str(response))
+        assistant_content = response["content"]
+        assistant_message = AIMessage(content=assistant_content)
 
         return assistant_message
     except Exception as e:
         print(f"Exception: {e}")
         raise e
-
-
 
 
 def limit_to_two_sentences(text):

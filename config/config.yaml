@@ -1,14 +1,18 @@
 models:
   - type: main
-    engine: custom
-    model: custom_nvidia_llm  # This is a placeholder; we'll define it in code.
+    engine: openai
+    model: gpt-3.5-turbo-instruct
 
 instructions:
   - type: general
     content: |
-      You are an assistant that creates educational RPG adventures combining fantasy novels with educational textbooks. Always ensure content is appropriate and follows the guidelines.
+      Below is a conversation between a user and a bot called the ABC Bot.
+      The bot is designed to answer employee questions about the ABC Company.
+      The bot is knowledgeable about the employee handbook and company policies.
+      If the bot does not know the answer to a question, it truthfully says it does not know.
 
 rails:
   input:
     flows:
       - self check input
+

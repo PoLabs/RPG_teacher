@@ -1,23 +1,15 @@
-# custom_nvidia_llm.py
-from llama_index.llms.nvidia import NVIDIA
+from typing import Any, Optional, List, Mapping, Dict
 from langchain.chat_models.base import BaseChatModel
-from typing import Optional, List, Mapping, Any
+from langchain.schema import AIMessage, ChatResult, ChatGeneration
 from langchain.callbacks.manager import CallbackManagerForLLMRun
-from langchain.schema import (
-    AIMessage,
-    HumanMessage,
-    SystemMessage,
-    BaseMessage,
-    ChatResult,
-    ChatGeneration,
-)
+from llama_index.llms.nvidia import NVIDIA
 
 class CustomNvidiaLLM(BaseChatModel):
     model_name: str
     llm: Any = None  # Declare llm with a default value
 
     class Config:
-        arbitrary_types_allowed = True  # Allow arbitrary types for llm
+        arbitrary_types_allowed = True  # Allows arbitrary types like custom classes
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -30,31 +22,20 @@ class CustomNvidiaLLM(BaseChatModel):
 
     def _generate(
         self,
-        messages: List[BaseMessage],
+        messages: List[Dict[str, str]],
         stop: Optional[List[str]] = None,
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any
     ) -> ChatResult:
-        # Convert messages to the format expected by self.llm.chat()
-        nvidia_messages = []
-        for message in messages:
-            if isinstance(message, HumanMessage):
-                role = "user"
-            elif isinstance(message, AIMessage):
-                role = "assistant"
-            elif isinstance(message, SystemMessage):
-                role = "system"
-            else:
-                role = message.role
-            nvidia_messages.append({"role": role, "content": message.content})
-
         # Call the NVIDIA LLM
-        response = self.llm.chat(messages=nvidia_messages)
+        response = self.llm.chat(messages=messages)
 
-        # Construct the ChatResult
-        ai_message = AIMessage(content=response.message.content)
+        # Extract the assistant's reply
+        assistant_content = response.message.content  # Adjust based on your LLM's response
+        ai_message = AIMessage(content=assistant_content)
         generations = [ChatGeneration(message=ai_message)]
-        llm_output = {"token_usage": {}}
+        llm_output = {"token_usage": {}}  # Include any additional info if available
+
         return ChatResult(generations=generations, llm_output=llm_output)
 
     @property
