@@ -1,0 +1,14 @@
+models:
+  - type: main
+    engine: custom
+    model: custom_nvidia_llm  # This is a placeholder; we'll define it in code.
+
+instructions:
+  - type: general
+    content: |
+      You are an assistant that creates educational RPG adventures combining fantasy novels with educational textbooks. Always ensure content is appropriate and follows the guidelines.
+
+rails:
+  input:
+    flows:
+      - self check input

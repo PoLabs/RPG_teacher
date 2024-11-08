@@ -1,0 +1,15 @@
+prompts:
+  - task: self_check_input
+    content: |
+      Your task is to check if the user message below complies with the content policy.
+
+      Content policy:
+      - Should not contain harmful content.
+      - Should not include explicit or inappropriate language.
+      - Should not encourage illegal activities.
+      - Should not disclose personal or sensitive information.
+
+      User message: "{{ user_input }}"
+
+      Question: Should the assistant comply with this request (Yes or No)?
+      Answer:

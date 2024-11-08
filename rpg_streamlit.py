@@ -17,6 +17,15 @@ import json
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
 from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
+from nemoguardrails import RailsConfig, LLMRails
+from custom_nvidia_llm import CustomNvidiaLLM  # Make sure to adjust the import path
+from langchain.schema import AIMessage, HumanMessage, SystemMessage, BaseMessage
+from langchain.schema import (
+    BaseMessage,
+    HumanMessage,
+    AIMessage,
+    SystemMessage,
+)
 
 
 nvidia_api_key = st.secrets["nvidia_api_key"]
@@ -32,12 +41,24 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 #Settings.embed_model = NVIDIAEmbedding(model="NV-Embed-QA", truncate="END")
 #Settings.text_splitter = SentenceSplitter(chunk_size=400)
 
+# Load the configuration
+config = RailsConfig.from_path("./config")
+# Initialize your custom NVIDIA LLM
+custom_llm = CustomNvidiaLLM(model_name="meta/llama-3.1-70b-instruct")
+# Initialize NeMo Guardrails with your custom LLM
+rails = LLMRails(config, llm=custom_llm)
+
+
+USER_ROLE = "user"
+ASSISTANT_ROLE = "assistant"
+SYSTEM_ROLE = "system"
+
 # for pinecone VectorDB
 pc = Pinecone(api_key=pinecone_api_key)
 # for openAI ADA embeddings
 client = OpenAI(api_key=openai_api_key)
 
-TOP_K = 5  # Global constant
+TOP_K = 1  # Global constant
 
 index_name_mappings = {
     'Digital Marketing': 'digital-marketing-index',
@@ -247,14 +268,14 @@ def describe_adventure(textbook_name, textbook_chapter, novel_name):
 
     # Prepare messages for the LLM
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content=system_prompt),
-        ChatMessage(role=MessageRole.USER, content=user_message)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=user_message)
     ]
 
     # Call the LLM to generate the adventure description
     response = llm_predict_with_retry(messages)
 
-    response_content = response.message.content.strip()
+    response_content = response.content.strip()#response_content = response.message.content.strip()
     adventure_match = re.search(r"Adventure Description:\s*(.*?)\s*Places, Events, or Encounters:", response_content,re.DOTALL)
     characters_match = re.search(r"Characters:\s*(.*?)\s*Places, Events, or Encounters:", response_content, re.DOTALL)
     places_match = re.search(r"Places, Events, or Encounters:\s*(.*)", response_content, re.DOTALL)
@@ -321,7 +342,7 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     textbook_index = pc.Index(name=index_name_textbook)
     novel_index = pc.Index(name=index_name_novel)
 
-    top_k = 5  # Default value
+    top_k = 1  # Default value
 
     # Generate embeddings for the queries
     textbook_embedding = get_embedding(text)
@@ -360,13 +381,13 @@ def describe_setting(text, novel, adventure_description, place_event_encounter):
     """
 
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content=system_prompt),
-        ChatMessage(role=MessageRole.USER, content=prompt)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=prompt)
     ]
 
     # Call the LLM and set the max_tokens limit
     response = llm_predict_with_retry(messages)#, max_tokens=max_tokens)
-    setting_description = response.message.content.strip()
+    setting_description = response.content.strip()#response.message.content.strip()
 
     sentences = re.split(r'(?<=[.!?]) +', setting_description)  # Split by sentence boundaries
     # Split into two paragraphs (5 sentences per paragraph)
@@ -409,7 +430,7 @@ def describe_question(setting_description, text, novel, adventure_description):
     textbook_index = pc.Index(name=index_name_textbook)
     novel_index = pc.Index(name=index_name_novel)
 
-    top_k = 5  # Default value
+    top_k = 1  # Default value
 
     # Generate embeddings for the queries
     textbook_embedding = get_embedding(text)
@@ -494,16 +515,17 @@ def describe_question(setting_description, text, novel, adventure_description):
     [The correct answer here]
     """
 
+    system_prompt = "You are an expert educator and storyteller crafting engaging and immersive questions for students within an RPG adventure. Your questions should be directly tied to the current storyline and setting, integrating educational content seamlessly into the narrative."
     # Call the LLM
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator and storyteller crafting engaging and immersive questions for students within an RPG adventure. "
-                                                     "Your questions should be directly tied to the current storyline and setting, integrating educational content seamlessly into the narrative."),
-        ChatMessage(role=MessageRole.USER, content=prompt)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=prompt)
     ]
-    response = llm_predict_with_retry(messages)
-    question_and_answer = response.message.content.strip()
 
-    print(f"Generated question and answer: {question_and_answer}")
+    response = llm_predict_with_retry(messages)
+    question_and_answer = response.content.strip()#response.message.content.strip()
+
+    #print(f"Generated question and answer: {question_and_answer}")
     #print("--- describe_question ended ---\n")
 
     # Parse the response to separate question and answer
@@ -559,7 +581,7 @@ def give_hint(question, answer):
     # Initialize the index
     textbook_index = pc.Index(name=index_name_textbook)
 
-    top_k = 5  # Default value
+    top_k = 1  # Default value
 
     # Generate embedding for the question
     question_embedding = get_embedding(question)
@@ -601,14 +623,14 @@ def give_hint(question, answer):
 
     Please provide a helpful hint without giving away the answer.
     """
-
+    system_prompt = "You are an expert educator providing hints to students."
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator providing hints to students."),
-        ChatMessage(role=MessageRole.USER, content=prompt)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=prompt)
     ]
 
     response = llm_predict_with_retry(messages)
-    hint = response.message.content.strip()
+    hint = response.content.strip()#response.message.content.strip()
 
     #print(f"Hint: {hint}")
     #print("--- give_hint ended ---\n")
@@ -636,12 +658,13 @@ def handle_answer(user_input, question, correct_answer):
 
     Please respond with one of the following options: 'answer', 'hint_request', or 'other'.
     """
+    system_prompt = "You are an assistant that classifies user input."
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an assistant that classifies user input."),
-        ChatMessage(role=MessageRole.USER, content=prompt)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=prompt)
     ]
     response = llm_predict_with_retry(messages)
-    classification = response.message.content.strip().lower()
+    classification = response.content.strip().lower()#response.message.content.strip().lower()
 
     #print(f"Classification: {classification}")
 
@@ -728,12 +751,14 @@ def grade_answer(user_answer, question, correct_answer):
     Feedback: [Your feedback here]
     """
 
+    system_prompt = "You are an expert educator assessing a student's answer."
+
     messages = [
-        ChatMessage(role=MessageRole.SYSTEM, content="You are an expert educator assessing a student's answer."),
-        ChatMessage(role=MessageRole.USER, content=prompt)
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=prompt)
     ]
     response = llm_predict_with_retry(messages)
-    feedback = response.message.content.strip()
+    feedback = response.content.strip()#response.message.content.strip()
 
     grade_match = re.search(r"Grade:\s*(\d+)", feedback)
     feedback_match = re.search(r"Feedback:\s*(.*)", feedback, re.DOTALL)
@@ -829,23 +854,37 @@ def extract_section(text, section_name):
     return match.group(1).strip() if match else ''
 
 
-@retry(wait=wait_random_exponential(multiplier=1, max=60), stop=stop_after_attempt(3))
 def llm_predict_with_retry(messages):
     try:
-        total_length = sum(len(msg.content) for msg in messages)
-        #print(f"Total input length to LLM: {total_length} characters")
-        # Debugging: Confirm all messages are ChatMessage instances
-        for idx, msg in enumerate(messages):
-            if not isinstance(msg, ChatMessage):
-                print(f"Error: Message at index {idx} is not a ChatMessage instance.")
-                print(f"Message content: {msg}")
-                raise TypeError("All messages must be ChatMessage instances.")
+        # Convert messages to LangChain's BaseMessage format
+        langchain_messages = []
+        for message in messages:
+            if message.role == SYSTEM_ROLE:
+                langchain_messages.append(SystemMessage(content=message.content))
+            elif message.role == USER_ROLE:
+                langchain_messages.append(HumanMessage(content=message.content))
+            elif message.role == ASSISTANT_ROLE:
+                langchain_messages.append(AIMessage(content=message.content))
+            else:
+                # Default to HumanMessage if role is unrecognized
+                langchain_messages.append(HumanMessage(content=message.content))
 
-        response = Settings.llm.chat(messages=messages)#, max_tokens=300)
-        return response
+        # Use NeMo Guardrails to generate the response
+        response = rails.generate(messages=langchain_messages)
+
+        # Extract the assistant's reply from the response
+        if isinstance(response, BaseMessage):
+            assistant_message = AIMessage(content=response.content)
+        else:
+            # Handle other possible return types
+            assistant_message = AIMessage(content=str(response))
+
+        return assistant_message
     except Exception as e:
         print(f"Exception: {e}")
         raise e
+
+
 
 
 def limit_to_two_sentences(text):
@@ -955,7 +994,7 @@ def generate_next_story_segment(user_input=None):
         )
         st.session_state.storyline.append({'role': 'assistant', 'content': adventure_description})
 
-        first_place_event = st.session_state.places_events_encounters[0]
+        first_place_event = st.session_state.get('places_events_encounters','')
         setting_description = describe_setting(
             st.session_state.get('selected_textbook',''),
             st.session_state.get('selected_novel',''),
