@@ -518,18 +518,18 @@ def describe_question(setting_description, text, novel, adventure_description):
 
     #print('image gen')
     image_prompt = f'Adventure and characters: {adventure_description} Setting: {setting_description}  Question: {question}'
-    image_file = None
-    try:
-        pass
-        #image_file = generate_image(adventure_description, setting_description, question)
-    except Exception as e:
-        print(f"Exception: {e}")
-        raise e
+    #image_file = None
+    #try:
+    #    pass
+    #    #image_file = generate_image(adventure_description, setting_description, question)
+    #except Exception as e:
+    #    print(f"Exception: {e}")
+    #    raise e
 
-    if image_file:
-        st.image(image_file, caption="Generated Image")
-    else:
-        st.error("Failed to generate image.")
+    #if image_file:
+    #    st.image(image_file, caption="Generated Image")
+    #else:
+    #    st.error("Failed to generate image.")
 
     return question, answer
 

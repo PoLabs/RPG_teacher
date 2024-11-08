@@ -138,7 +138,7 @@ By turning learning into a gamified adventure, it supports diverse academic need
 
 
 
-
+- hint tooltip (how to use)
 
 
 
