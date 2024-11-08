@@ -1,145 +1,89 @@
-# RPG_teacher
+# RPG-Based Educational App
 
+This project is an RPG-style educational app that combines textbook content with fantasy adventure themes, creating an immersive, interactive learning experience. Users can explore fantasy settings filled with educational challenges and trivia based on chosen textbook material.
 
-python nemo_curator_tutorial.py --input-data-dir /home/polabs2/Code/RPG_teacher/data/raw/new --output-clean-dir /home/polabs2/Code/RPG_teacher/data/out --input-file-type pdf --output-file-type jsonl --batch-size 64
+---
 
+## Demo Links
+- **[RPG Teacher](https://rpg-teacher.streamlit.app/)**: Live app hosted on streamlit.
+- **[Google Drive - Download Repository](https://drive.google.com/drive/folders/1t2hQd7eYWozDv-BpTJ-pVMc8D4lbyq-m?usp=sharing)**: Download the project repository.
+- **[LinkedIn Post](https://www.linkedin.com/posts/vincent-pisano-78674634_not-found-activity-7260403151684407296-Toka?utm_source=share&utm_medium=member_desktop)**: Learn more about the project and community feedback.
+- **[Video Tutorial](https://www.veed.io/view/eafe6942-63e6-4fdd-bd00-d70e30e27e64?panel=share)**: Watch a full walkthrough of the app and its features.
 
+---
 
+## Installation Instructions
 
-A genAI project to turn lesson plans into an interactive RPG
+To set up the app, follow these steps:
 
-[assistant]: """welcome to RPG Teacher. To begin, choose a textbook chapter, novel, random and click begin."""
-
-[system]: initial_story_prompt = """
-You are a storyteller who combines fantasy adventures with educational content.
-
-Given the following information:
-
-**Fantasy Chapter Name:**
-{fantasy_chapter_name}
-
-**Fantasy Chapter Summary:**
-{fantasy_summary}
-
-**Textbook Chapter Name:**
-{textbook_chapter_name}
-
-**Textbook Chapter Summary:**
-{textbook_summary}
-
-**Sample Questions:**
-{sample_questions}
-
-Create a fun and immersive RPG setting that blends the fantasy narrative with the educational topics. Introduce challenges or puzzles based on the sample questions that the player must solve interactively. Present one challenge at a time, and wait for the player's input before proceeding to the next part of the story.
-
-Please start the story now.
-"""
-
-
-Functions
-
-describe_setting
-- input: text, novel
-- output: description of setting
-
-describe_question
-- input: setting description, text, novel
-- output: {question, answer}
-
-handle_answer
-- input: user text
-- LLM decides:
-  - give_hint
-    - input:
-    - output: hint text
-  - grade_answer
-    - input: user text, grade level, {question_answer}
-    - output: grade, reason, outcome
-  - other
-
-player_choice (for next question setup)
-
-- tooltips
-- RPG elements
-- packages and cleanup
-- second example
-
-
-I'm creating a genAI app that constructs a guided fantasy RPG learning experience. The app uses textbooks and fantasy novels for RAG of an immersive setting filled with text book question encounters. 
-For example, on setup might involve teaching a chapter of a Digital Marketing textbook by inserting questions into a RPG story based on the Hobbit. 
-Both books are in a vector database and can augment queries with additional context. I also have a dataset with chapter summary notes and chapter sample questions. 
-I also have chapter summaries for the fantasy novel. I combined the textbook chapter summary points with a fantasy chapters summary to generate fun and descriptive settings that incorporate questions and trivia based on the textbook chapter. 
-I'm using llamaindex, pinecone and nvidia nemo nimm with streamlit as a front end. 
-
-The general flow is user chooses text book, chapter and novel and submits. 
-describe_adventure is called which generates a few paragraphs describing the adventure setting and characters involved that combines themes from the novel with key topics from the textbook using the additional context .
-Also, it generates  five places, events, or encounters that can be used to stage questions.
-
-describe_setting is then called which picks one of the 5 'Places, Events, or Encounters' from the adventure description and describes the setting the characters now find themselves in. 
-Generate 10 sentences that ties in the relevant textbook content.
-
-describe_question is then called which  uses the setting description, context, and sample question to create an engaging question for the player that ties into the RPG adventure. 
-The question should integrate educational content from the textbook. Please provide the question and its answer.
-
-on user input, grade_answer is called to assess the following student's answer to the question based on the provided rubric. 
-It uses the rubric to determine the level (0-4) that best describes the student's answer. Provide the level and an explanation, referencing the student's answer and the rubric.
-
-player_choice is then called which lets the user decide which of the remaning 'Places, Events, or Encounters' they want to travel to next, then repeats the cycle at describe_setting.
+### Step 1: Download and Unpack
+1. Download the zip file from the Google Drive link provided.
+2. Unpack the zip file:
+```bash
+unzip RPG_Teacher.zip -d RPG_Teacher
+```
+3. Navigate to the project directory:
+```bash
+cd RPG_Teacher
+```
+### Step 2:  Set Up a Virtual Environment
+1. Create and activate a virtual environment:
+```bash
+python3 -m venv venv_app
+source venv_app/bin/activate  # On Windows, use venv_app\Scripts\activate
+pip install -r requirements.txt
+```
+### Step 3: Configure API Keys
+1. Edit the API keys in .streamlit/secrets.toml if needed:
+```bash
+nano .streamlit/secrets.toml
+```
+### Step 4: Run the App
+1. Start the app using Streamlit:
+```bash
+streamlit run rpg_streamlit.py
+```
 
 
 
+## Adding New Documents
 
+To add a new textbook or novel, follow these steps:
 
-I want to update the app to use llama guard model from hugging face to check user input and system output. Sample code:
+### Step 1: Set Up Curator Environment
+Create and activate a new virtual environment for the curator:
+```bash
+python3 -m venv venv_curator
+source venv_curator/bin/activate
+```
+Install the dependencies from requirements_curator.txt:
+```bash
+pip install -r requirements_curator.txt
+```
+### Step 2: Convert Raw PDF Document
+Place your raw PDF document in data/raw.
+Run the conversion script:
+```bash
+python nemo_curator_tutorial.py --input-data-dir /data/raw --output-clean-dir /data/out --input-file-type pdf --output-file-type jsonl --batch-size 64
+```
+### Step 3: Organize Processed Files
+Create new folders in data/novels or data/textbooks for each new document.
+Manually copy the JSONL files from data/out into the newly created folder. Note that data/out will contain JSONL files from all processed documents.
+### Step 4: Upload Data to Pinecone
+Open and run the Jupyter notebook load_pinecone.ipynb.
+Modify lines 14-15 and lines 70/72 to specify the names of your new document indexes.
+If you’re only uploading either a textbook or a novel, comment out the relevant lines (70 or 72) in the notebook.
+Note: For large documents, this upload process may take 15-20 minutes.
 
-from huggingface_hub import InferenceClient
+### Step 5: Update the Application Code
+Open rpg_streamlit.py.
+Update the index_name_mappings dictionary (line 42) with the new document index names.
+Add the new documents to the Streamlit UI section (lines 1093-1117).
 
-client = InferenceClient(api_key="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-
-for message in client.chat_completion(
-	model="meta-llama/LlamaGuard-7b",
-	messages=[{"role": "user", "content": "What is the capital of France?"}],
-	max_tokens=500,
-	stream=True,
-):
-    print(message.choices[0].delta.content, end="")
-
-
-I want to make a few updates to the app:
-
-- easy RPG elements (int for +1 to %  answrs, spirit - not lose hint points, stregth)
-- - choose 3 characters from perople palces, assign int, str, spirit to each of them and design a promptr that asks us for their chocie for the new buff
-- - buff methods
----- restart button / clear button
-
-
-- clean dir branch --> to master 
-- program description (200 words)
-- hosting / launch 
-
-
-here is my current app code:
-
-
-
-
-The RPG Teacher app is a transformative educational tool that gamifies learning by blending fantasy storytelling with academic content, similar to the engaging experience of Duolingo. 
-It captivates students by weaving textbook material into a personalized fantasy adventure, creating an immersive and fun approach to studying. 
-The app’s flexibility allows it to meet the interests of any student: whether they’re passionate about literature, science, history, or technology, the app adapts and enhances the learning experience.
-
-Students begin by uploading any document, PDF, or text file containing the material they want to learn, selecting a topic and a fantasy setting. 
-Using powerful GenAI tools like llamaindex, Pinecone, and NVIDIA NeMo, the app dynamically retrieves and integrates educational content into an adventure storyline. 
-With each encounter, students face questions related to their material, receiving instant, tailored feedback on their answers. 
-This structured, game-like learning journey is made accessible through an intuitive Streamlit interface.
-
-The RPG Teacher empowers students by making educational content relatable and memorable. 
-By turning learning into a gamified adventure, it supports diverse academic needs and engages students across interests, effectively transforming any subject into an exciting educational experience.
-
-
-
-
-- hint tooltip (how to use)
-
-
+### Step 6: Switch back to venv_app and run
+```bash
+source venv_curator/bin/activate
+streamlit run rpg_streamlit.py
+```
 
 
