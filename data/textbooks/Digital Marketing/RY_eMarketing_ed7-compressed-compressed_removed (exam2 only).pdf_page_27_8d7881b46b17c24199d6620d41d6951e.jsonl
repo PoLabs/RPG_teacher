@@ -1,0 +1,49 @@
+196
+
+CLAIMING
+At the same time consider what content you 
+want to include on your site Will it be a 
+relatively static site that doesnt change often 
+or will you need an editable CMS to regularly 
+add and update content such as blog posts 
+images and products
+Should the website be large enough to 
+require it a functional specification document 
+should be created using all the information 
+compiled so far This document should detail 
+the development requirements for the website 
+and can be used to communicate any specific design constraints 
+Its now time to move on from planning to building 
+Search engine visibility 
+Search engine traffic is vital to a website without it the chances are that the site will never 
+fulfil its marketing functions It is essential that the search engines can see the entire publicly 
+visible website index it fully and consider its relevance for its chosen keywords 
+Search engine optimisation SEO has its own chapter in this textbook Chapter 5 but here 
+are the key considerations for web development and design 
+In web developmentthe copy that is shown on the web page needs to be kept separate 
+from the code that tells the browser how to display the web page This means that the search 
+engine spider will be able to discern easily what content is to be read and therefore scanned 
+by the spider and what text is an instruction to the browser Cascading Style Sheets CSS 
+can take care of that 
+If the search engine cannot see the text on the page it means that it cannot crawl and index 
+that page 
+Step 2 Design 
+Design usually happens before development According to the steps explained earlier in this 
+chapter the designer will transform the wireframes and basic planning materials into beautifully 
+designed layouts These are static images that show how the website will look once its coded 
+Step 3 Development 
+The development phase usually kicks in once the design is finished Developers will sometimes 
+start their involvement as early as the wireframe stage by creating lowfidelity prototypes to 
+support the usertesting process Normallythe developer uses the design templates to code the 
+actual website using the frontend language that you have chosen Serverside development 
+and CMS considerations may also be part of this phase 
+See this link designmodocom
+wireframingprototypingmockuping 
+for a good explanation about the 
+differences between wireframing 
+prototyping and mocking up 
+NOTE
+Have a look at the discussion on 
+choosing a static versus a CMS website 
+earlier in this chapter 
+NOTE

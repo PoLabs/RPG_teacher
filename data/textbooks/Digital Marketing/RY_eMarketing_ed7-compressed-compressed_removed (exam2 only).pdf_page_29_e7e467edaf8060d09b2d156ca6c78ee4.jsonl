@@ -1,0 +1,50 @@
+198
+
+CLAIMING
+The Agile method is a series of sprints and involves working through iterative incremental 
+cycles Agile methodology is more collaborative less rigid and requires incremental investments 
+It often results in being able to release the final product to the market faster The collaborative 
+approach means that instead of handing over the project to the next person in the chain you 
+work together catching any issues and working on each iteration as you move through each 
+process The Agile method often involves scrum 
+methodology and requires or at least tries for 
+each sprint to produce something that has an 
+increment of product functionality Joel 2015 
+Figure 715 The Agile method
+Careful consideration of the specific project the goals and ultimately the clients needs will 
+decide which of these methods is appropriate for a specific project The method chosen should 
+be the one that will best fit the required project goals 
+77 QUALITY ASSURANCE 
+The software development cycle has one 
+final step before the website goes live quality 
+assurance This is often referred to as QA It is 
+a crucial step to ensure that website delivery 
+is of the highest standard and that the client 
+expectation is in line with the agreed Statement 
+of Work This step is independent of the design and development phases and involves various 
+enduser test cases Test cases ensure that the graphical user interface GUI promotes a 
+great user experience UX QA involves two steps functional and userinterface testing 
+Thompson 2015
+Read more about scrum methodology 
+here wwwscrumallianceorgwhyscrum
+NOTE
+Discover
+Design
+Develop
+Test
+Sprint 1
+Discover
+Design
+Develop
+Test
+Sprint 2
+Discover
+Design
+Develop
+Test
+Sprint 3
+Be sure to factor in enough time to do 
+QA at various points in the development 
+process This will prevent a bottleneck of 
+issues at the end of the line
+NOTE

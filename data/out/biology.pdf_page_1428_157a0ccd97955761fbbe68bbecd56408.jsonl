@@ -1,0 +1,45 @@
+is decreasing in size or zero where the populations size is unchanging a condition known as zero population
+growth A further refinement of the formula recognizes that different species have inherent differences in
+their intrinsic rate of increase often thought of as the potential for reproduction even under ideal conditions
+Obviously a bacterium can reproduce more rapidly and have a higher intrinsic rate of growth than a human The
+maximal growth rate for a species is its biotic potential or rmax thus changing the equation to
+dN
+dT  rmax N
+Figure 459 When resources are unlimited populations exhibit exponential growth resulting in a Jshaped curve
+When resources are limited populations exhibit logistic growth In logistic growth population expansion decreases as
+resources become scarce and it levels off when the carrying capacity of the environment is reached resulting in an
+Sshaped curve
+Logistic Growth
+Exponential growth is possible only when infinite natural resources are available this is not the case in the real
+world Charles Darwin recognized this fact in his description of the struggle for existence which states that
+individuals will compete with members of their own or other species for limited resources The successful ones
+will survive to pass on their own characteristics and traits which we know now are transferred by genes to
+the next generation at a greater rate natural selection To model the reality of limited resources population
+ecologists developed the logistic growth model
+Carrying Capacity and the Logistic Model
+In the real world with its limited resources exponential growth cannot continue indefinitely Exponential growth
+may occur in environments where there are few individuals and plentiful resources but when the number of
+individuals gets large enough resources will be depleted slowing the growth rate Eventually the growth rate
+will plateau or level off Figure 459 This population size which represents the maximum population size that
+a particular environment can support is called the carrying capacity or K
+The formula we use to calculate logistic growth adds the carrying capacity as a moderating force in the growth
+rate The expression K  N indicates how many individuals may be added to a population at a given stage and
+K  N divided by K is the fraction of the carrying capacity available for further growth Thus the exponential
+growth model is restricted by this factor to generate the logistic growth equation
+dN
+dT  rmax dN
+dT  rmax NK   N
+K
+Notice that when N is very small KNK becomes close to KK or 1 and the right side of the equation reduces
+to rmaxN which means the population is growing exponentially and is not influenced by carrying capacity On the
+other hand when N is large KNK comes close to zero which means that population growth will be slowed
+greatly or even stopped Thus population growth is greatly slowed in large populations by the carrying capacity
+K This model also allows for the population of a negative population growth or a population decline This occurs
+when the number of individuals in the population exceeds the carrying capacity because the value of KNK is
+negative
+A graph of this equation yields an Sshaped curve Figure 459 and it is a more realistic model of population
+growth than exponential growth There are three different sections to an Sshaped curve Initially growth is
+exponential because there are few individuals and ample resources available Then as resources begin to
+1418
+Chapter 45  Population and Community Ecology
+This OpenStax book is available for free at httpcnxorgcontentcol2436118

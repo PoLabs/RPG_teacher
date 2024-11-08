@@ -1,0 +1,52 @@
+633
+Tracking and analysis
+Retention How effectively you are able to turn new users into returning users and the number 
+of users who keep returning It contains these reports and charts
+	
+New users which refer to new users who have been identified as users who dont have 
+both a Google Analytics cookie Client ID or App Instance ID 
+	
+Returning users which refer to any user that already has a Google Analytics cookie Client 
+ID or App Instance ID 
+	
+Cohorts which refer to groups of users that share a common characteristic set out by an 
+Analytics dimension 
+	
+User retention by cohort chart shows the percentage of new users who return on the 
+second and eighth day
+	
+User engagement by cohort chart shows the average engagement time of returning users
+	
+User retention chart shows the percentage of users returning every day for their first 42 
+days It starts at 100 and decreases as users drop off 
+	
+User engagement chart shows the average engagement time of users returning in the 
+first 42 days
+	
+Lifetime value chart illustrating the average revenue from new users over their first 120 days
+Figure 208 An example of a Retention overview
+User collections
+Under the User collection you will find the 
+following reports that help you understand the 
+people who use your site or app
+	
+Demographics This topic allows you 
+to classify your users by age location 
+language gender and the interests they 
+express through their online activity Google 
+Analytics may apply a data threshold that 
+will cause reports or exploration to have 
+missing data These thresholds are system 
+defined and exist to prevent anyone from 
+Google signals can help you get better 
+demographic and interest data Google 
+signals is data from users who are 
+signed into Google Analytics links 
+event data from users with the Google 
+accounts of users that have signed in 
+and consented to share information You 
+can find out more about how to activate 
+this here supportgooglecomanalytics
+answer9445345zippy2Cinthisar
+ticle
+NOTE

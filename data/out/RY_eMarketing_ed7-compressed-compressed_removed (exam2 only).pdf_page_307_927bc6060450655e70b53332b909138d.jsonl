@@ -1,0 +1,43 @@
+654
+
+ANALYSING
+211 INTRODUCTION
+Lets look at a realworld example to help explain what conversion optimisation is Think of a 
+shoe store When laying out the store a lot of care is taken to determine where to place displays 
+mirrors chairs and the checkout counters However there is no way of easily determining if 
+the current layout is the best option 
+For example the checkout counter may be at the front of the store It may however be worth 
+testing to see if moving it to the middle of the store affects sales This would require tracking 
+sales over a period of time with the checkout counters in the front of the storethen shutting 
+down for a few days while the store is reorganised and tracking sales with the new layout 
+But this is all a little impractical 
+In contrast if you have an online store you can just show slightly or very different versions of 
+web pages to visitors and track how different versions affect sales You would not need to shut 
+down your website to create new versions and you can watch results emerge in real time as 
+hundreds of customers pass through the store The cycle of tweaking and testing websites 
+in this way is called conversion optimisation This chapter will take you through the steps in 
+a conversion optimisation processhelping you understand how to make things work better 
+212 KEY TERMS AND CONCEPTS
+Table 211
+Term
+Description
+AB test
+Also known as a split test Involves testing two versions of the same page 
+or site to see which performs better
+Ad Server
+The technology that places ads on websites
+Call to action
+A phrase written to motivate the reader to take action such as sign up for 
+our newsletter or book car hire today
+Click path
+The journey a user takes through a website
+Conversion
+Completing an action that the website wants the user to take A 
+conversion usually results in revenue for the brand in some way 
+Conversions include signing for a newsletter or purchasing a product 
+Conversion rate
+The number of conversions divided by the number of visitors expressed as 
+a percentage
+Funnel
+In web analytics or conversion optimisation an established set of steps a 
+user should take in reaching a goal such as making a purchase 

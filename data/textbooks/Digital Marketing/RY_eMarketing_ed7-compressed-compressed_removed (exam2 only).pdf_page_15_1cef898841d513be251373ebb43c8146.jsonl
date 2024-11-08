@@ -1,0 +1,33 @@
+184
+
+CLAIMING
+HTML5 
+HTML is the language for creating websites and HTML5 is the fifth iteration of the language 
+It is also the name for a range of technologies that enable modern web browsing features 
+Its a specification published by the web standards body W3Cdescribing what features are 
+available and how to use them HTML5 is different from proprietary web software such as 
+Adobe Flash in that the specification is the result of contributions from many organisations 
+and can be implemented by anyone without having to pay for royalties or licensing fees You 
+do however pay for the development tools provided by the companies 
+Figure 76 The HTML5  JavaScript and CSS logos
+HTML5 simplifies many common tasks when building a web page such as including multimedia 
+content validating forms caching information and capturing user input data such as date 
+and time 
+HTML5 allows browsers to play multimedia content without the use of Flash or a similar plugin 
+There is also a technology called Canvas which allows developers to create rich interactive 
+experiences without the constraints that came with previous versions of HTML For example 
+a 3D animated video can now be playedsomething that used to require the use of Flash or 
+Silverlight 
+The goal is a website that just works without the need for particular browsers or plugins to 
+enable certain functionality Having a standardised way of implementing common features 
+means that the web is open and accessible to allregardless of competency
+CSS 
+CSS stands for Cascading Style Sheets and is a style sheet language used to instruct the 
+browser how to render the HTML code For example the plain text on a web page is included 
+in the HTML code and CSS defines how it will appear CSS can set many properties including 
+the size colour and spacing around the text as well as the placement of images and other 
+designrelated items CSS preprocessors such as LESS SASS and Stylus are also available 
+to make CSS more easily maintainable and scalable They allow for more functional CSS 
+compilation The latest standard of CSS is CSS3 It is backwards compatible with all versions 
+of CSS and provides many more useful features such as text effects 2D3D transformations 
+and animations w3schools nd 

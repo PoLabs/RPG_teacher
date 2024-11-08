@@ -1,0 +1,15 @@
+# LlamaIndex core and extensions for Nvidia RAG
+llama-index-core==0.10.50
+llama-index-readers-file==0.1.25
+llama-index-llms-nvidia==0.1.3
+llama-index-embeddings-nvidia==0.1.4
+llama-index-postprocessor-nvidia-rerank==0.1.2
+
+# ipywidgets for Jupyter Notebook interface
+ipywidgets==8.1.3
+
+# Basic utilities
+pandas
+
+# Streamlit
+streamlit

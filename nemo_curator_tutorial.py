@@ -47,8 +47,6 @@ def generate_unique_filename(filename, page_number, content, index):
 
 # Main function: reads data from disk, processes, and writes back in NeMo Curator format
 def main(args):
-    client = get_client(args, args.device)
-
     # Make the output directories
     output_clean_dir = expand_outdir_and_mkdir(args.output_clean_dir)
 
@@ -83,12 +81,14 @@ def main(args):
                     "filename": unique_filename  # Ensure unique filename
                 })
 
-        # Convert the Pandas DataFrame to a Dask DataFrame
+        # Convert the dataset to a Pandas DataFrame
         df = pd.DataFrame(dataset)
-        dask_df = dd.from_pandas(df, npartitions=len(df)//10 + 1)  # Convert to Dask DataFrame
 
-        # Write the cleaned dataset back to disk using Dask
-        write_to_disk(dask_df, output_clean_dir, write_to_filename=True, output_type=args.output_file_type)
+        # Write each row to a separate JSONL file
+        for _, row in df.iterrows():
+            output_file = os.path.join(output_clean_dir, row['filename'])
+            with open(output_file, 'w') as f:
+                f.write(row['text'])
         print(f"Finished reformatting {len(files)} files")
 
     print("Finished reformatting all files")

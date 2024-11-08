@@ -1,0 +1,31 @@
+647
+Tracking and analysis
+Figure 2021 Word clouds where the size of the word represents its 
+importance are becoming popular ways to visualise data
+207 TOOLS OF THE TRADE 
+The first thing you need is a web analytics tool to gather data Some are free and some need 
+to be paid for You will need to determine which package best suits your needs Bear in mind 
+that if you switch vendors you may lose historical data 
+Below are some of the leading providers 
+	
+Google Analytics supportgooglecomanalyticsanswer10089681hlen
+	
+AWStats awstatssourceforgeio 
+	
+Hotjar hotjarcom 
+	
+GoSquared gosquaredcom 
+	
+Neil Patel Inc neilpatelcom 
+	
+Clicky clickycom
+When it comes to running split tests if you dont have the technical capacity to run these 
+inhouse there are thirdparty services that can host them for you Google Optimize is one 
+platform for running tests and assessing your websites performance 
+To test the significance of basic split tests view a splittest calculator on drpeteco
+splittestcalculator
+When you use cookiebased tracking you need to add code tags to your web pages that need 
+to be maintained updated and occasionally changed Google Tag Manager marketingplat
+formgooglecomabouttagmanager makes it easy to add and work with tags without the 
+need for any coding knowledge Other professional tag management tools include Ensighten 
+ensightencom and Tealium tealiumcom 

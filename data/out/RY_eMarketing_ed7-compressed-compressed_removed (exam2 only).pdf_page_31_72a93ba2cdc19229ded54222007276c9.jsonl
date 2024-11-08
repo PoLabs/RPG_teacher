@@ -1,0 +1,35 @@
+200
+
+CLAIMING
+773 Cross browser and device testing 
+With the myriad of browsers and devices available developers need to ensure that their 
+websites render acceptably across all of them Perfection is extremely difficult as each browser 
+and device renders a website slightly differently To ensure compatibility developers write 
+crossbrowser code If a feature is not supported a fallback must be in place to ensure that it 
+degrades gracefully 
+If you are deploying your site across a range of devices each version needs to be checked 
+And if the site is designed to be responsive check the GUI across a range of devices to test 
+the responsiveness of the design and that all the elements work across the various devices 
+and possible views 
+Test websites on different browsers and operating systems for example Google Chrome on IOS 
+and Google Chrome on Android devices Various tools are available to assist in this process 
+one being BrowserStack browserstackcom BrowserStack allows you to test various operating 
+systems and devices from within your browser MDN 2016 
+78 CASE STUDY OFFSPRING
+Offspring is a UKbased shoe retailer
+Oneline summary
+Offspring a UKbased sneaker store wanted to increase mobile conversion and mobile 
+revenue and to achieve this they moved to a responsive design website
+The problem
+Offspring had no mobile website and mobile users were having a poor user experience 
+when accessing the site on their devices This caused poor conversion rates and low 
+revenue for mobile 
+Mobile users are the largest growing online market and Offspring witnessed a consistent 
+increase in mobile traffic to their website Their current site was not mobile friendly and 
+was not providing a good user experience This was also impacting their SEO score 
+Offspring knew they needed ensure that mobile users had a good user experience to 
+improve conversions revenue and SEO
+The solution
+Offspring considered a mobilefriendly site but decided to opt for a fully responsive site 
+to provide an optimised viewing experience irrespective of the device used to access 
+the site Offspring wanted to ensure that tablet users were also catered for in the design

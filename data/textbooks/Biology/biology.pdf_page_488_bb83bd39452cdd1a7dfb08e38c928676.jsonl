@@ -1,0 +1,51 @@
+The person then mixes all of the pieces together and asks you to reconstruct the photograph In one of the
+smaller pieces you see a mountain In a larger piece you see that the same mountain is behind a lake A third
+fragment shows only the lake but it reveals that there is a cabin on the shore of the lake Therefore from looking
+at the overlapping information in these three fragments you know that the picture contains a mountain behind
+a lake that has a cabin on its shore This is the principle behind reconstructing entire DNA sequences using
+shotgun sequencing
+Originally shotgun sequencing only analyzed one end of each fragment for overlaps This was sufficient for
+sequencing small genomes However the desire to sequence larger genomes such as that of a human led
+to developing doublebarrel shotgun sequencing or pairwiseend sequencing In pairwiseend sequencing
+scientists analyze each fragments end for overlap Pairwiseend sequencing is therefore more cumbersome
+than shotgun sequencing but it is easier to reconstruct the sequence because there is more available
+information
+Nextgeneration Sequencing
+Since 2005 automated sequencing techniques used by laboratories are under the umbrella of nextgeneration
+sequencing which is a group of automated techniques used for rapid DNA sequencing These automated low
+cost sequencers can generate sequences of hundreds of thousands or millions of short fragments 25 to 500
+base pairs in the span of one day These sequencers use sophisticated software to get through the cumbersome
+process of putting all the fragments in order
+Comparing Sequences
+A sequence alignment is an arrangement of proteins DNA or RNA Scientists use it to identify similar
+regions between cell types or species which may indicate function or structure conservation We can use
+sequence alignments to construct phylogenetic trees The following website uses a software program called
+BLAST basic local alignment search tool httpblastncbinlmnihgovBlastcgi 
+Under Basic Blast click Nucleotide Blast Input the following sequence into the large query sequence
+box ATTGCTTCGATTGCA Below the box locate the Species field and type human or Homo sapiens
+Then click BLAST to compare the inputted sequence against the human genomes known sequences
+The result is that this sequence occurs in over a hundred places in the human genome Scroll down below
+the graphic with the horizontal bars and you will see a short description of each of the matching hits Pick
+one of the hits near the top of the list and click on Graphics This will bring you to a page that shows the
+sequences location within the entire human genome You can move the slider that looks like a green flag
+back and forth to view the sequences immediately around the selected gene You can then return to your
+selected sequence by clicking the ATG button
+Use of WholeGenome Sequences of Model Organisms
+British biochemist and Nobel Prize winner Fred Sanger used a bacterial virus the bacteriophage fx174 5368
+base pairs to completely sequence the first genome Other scientists later sequenced several other organelle
+and viral genomes American biotechnologist biochemist geneticist and businessman Craig Venter sequenced
+the bacterium Haemophilus influenzae in the 1980s Approximately 74 different laboratories collaborated on
+sequencing the genome of the yeast Saccharomyces cerevisiae which began in 1989 and was completed in
+1996 because it was 60 times bigger than any other genome sequencing By 1997 the genome sequences
+of two important model organisms were available the bacterium Escherichia coli K12 and the yeast
+Saccharomyces cerevisiae We now know the genomes of other model organisms such as the mouse Mus
+musculus the fruit fly Drosophila melanogaster the nematode Caenorhabditis elegans and humans Homo
+sapiens Researchers perform extensive basic research in model organisms because they can apply the
+information to genetically similar organisms A model organism is a species that researchers use as a model
+to understand the biological processes in other species that the model organism represents Having entire
+genomes sequenced helps with the research efforts in these model organisms The process of attaching
+biological information to gene sequences is genome annotation Annotating gene sequences helps with basic
+experiments in molecular biology such as designing PCR primers and RNA targets
+478
+Chapter 17  Biotechnology and Genomics
+This OpenStax book is available for free at httpcnxorgcontentcol2436118

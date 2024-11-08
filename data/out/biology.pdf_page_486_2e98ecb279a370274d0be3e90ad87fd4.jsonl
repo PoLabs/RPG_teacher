@@ -1,0 +1,40 @@
+How to Use a Genome Map Viewer
+Problem statement Do the human macaque and mouse genomes contain common DNA sequences
+Develop a hypothesis
+To test the hypothesis click this link httpwwwncbinlmnihgovmapview 
+In Search box on the left panel type any gene name or phenotypic characteristic such as iris pigmentation
+eye color Select the species you want to study and then press Enter The genome map viewer will
+indicate which chromosome encodes the gene in your search Click each hit in the genome viewer for more
+detailed information This type of search is the most basic use of the genome viewer You can also use it to
+compare sequences between species as well as many other complicated tasks
+Is the hypothesis correct Why or why not
+Online Mendelian Inheritance in Man OMIM is a searchable online catalog of human genes and genetic
+disorders This website shows genome mapping information and also details the history and research of
+each trait and disorder Click this link httpopenstaxcollegeorglOMIM to search for traits such as
+handedness and genetic disorders such as diabetes
+173  WholeGenome Sequencing
+By the end of this section you will be able to do the following
+
+Describe three types of sequencing
+
+Define wholegenome sequencing
+Although there have been significant advances in the medical sciences in recent years doctors are still
+confounded by some diseases and they are using wholegenome sequencing to discover the root of the
+problem Wholegenome sequencing is a process that determines an entire genomes DNA sequence Whole
+genome sequencing is a bruteforce approach to problem solving when there is a genetic basis at the core of a
+disease Several laboratories now provide services to sequence analyze and interpret entire genomes
+For example wholeexome sequencing is a lowercost alternative to whole genome sequencing In exome
+sequencing the doctor sequences only the DNAs coding exonproducing regions In 2010 doctors used
+wholeexome sequencing to save a young boy whose intestines had multiple mysterious abscesses The child
+had several colon operations with no relief Finally they performed wholeexome sequencing which revealed
+a defect in a pathway that controls apoptosis programmed cell death The doctors used a bonemarrow
+transplant to overcome this genetic disorder leading to a cure for the boy He was the first person to receive
+successful treatment based on a wholeexome sequencing diagnosis Today human genome sequencing is
+more readily available and results are available within two days for about 1000
+Strategies Used in Sequencing Projects
+The basic sequencing technique used in all modern day sequencing projects is the chain termination method
+also known as the dideoxy method which Fred Sanger developed in the 1970s The chain termination method
+involves DNA replication of a singlestranded template by using a primer and a regular deoxynucleotide
+476
+Chapter 17  Biotechnology and Genomics
+This OpenStax book is available for free at httpcnxorgcontentcol2436118

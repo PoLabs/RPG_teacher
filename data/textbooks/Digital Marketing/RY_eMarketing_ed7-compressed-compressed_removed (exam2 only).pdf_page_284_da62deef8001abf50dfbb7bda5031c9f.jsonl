@@ -1,0 +1,34 @@
+631
+Tracking and analysis
+Figure 204 An example of a Realtime report 
+Life cycle collections
+A collection is a set of reports Life cycle and 
+User appear in the navigation by default 
+Under the Life cycle collection you will find 
+the following reports that help you understand 
+user activity from acquisition to conversion 
+Acquisition This refers to information about 
+new and returning users and the method of 
+acquisition It shows you which sources drive the most traffic to your site By default it contains
+	
+Acquisition overview which summarises your data to help you understand where your 
+traffic comes from
+	
+User acquisition which provides data on where new users come from In this report the 
+prefix First user means the data is about new users 
+	
+Traffic acquisition shows you where new sessions come from In this report the suffix 
+Session tells you that the data is about new sessions
+	
+Google Ads campaigns gives you information about which campaigns drove traffic to your 
+app or website Your Google Ads account must be linked for this to work
+To populate these reports with the necessary data integrate with an ads platform and use 
+the available autotagging
+Figure 205 An example of an Acquistions overview
+When your industry is set to Games 
+or at least 50 of your app streams 
+are associated with apps that are 
+categorised as Games Analytics 
+replaces the Life cycle collection with 
+the Games reporting collection
+NOTE

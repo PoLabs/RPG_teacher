@@ -1,0 +1,37 @@
+629
+Tracking and analysis
+Google Analytics 4 tags
+Tags allow you to quickly and easily update measurement codes and related code fragments  
+collectively known as tags  on your website or mobile app Google Analytics 4 makes use of 
+two tag types instead of the one used by Universal Analytics This is how Google explains it
+The GA4 Configuration tag initialises Google Analytics for your Google Analytics 4 property 
+on a particular page It handles behaviour such as setting of Google Analytics cookies sending 
+automatic and enhanced measurement events and declaring common settings The Config
+uration tag should be fired on every page where you want to collect data for a Google Analytics4 
+property and should be triggered to fire as soon as possible before any other Google Analytics4 
+event tags You can configure Fields to Set in the GA4 Configuration tag to set parameters 
+that need to remain consistent across all events on a page GA4 Event tags inherit the parameters 
+of the GA4 Configuration tag Parameters set by the GA4 Configuration tag remain static for 
+all events occurring on a page The parameters are refreshed only when the Configuration tag 
+fires again typically the next time the page is loaded
+The Google Analytics 4 Event tag lets you 
+send custom events to Analytics in addition 
+to the events that are sent automatically or 
+through enhanced measurement If you 
+schedule the configuration tag with an Initial
+ization trigger event tags can fire with any other 
+triggers and the sequencing will be automat
+ically guaranteed
+2042 Gathering data
+Google Analytics can measure almost anything about the customers who visit your website To 
+gather the kind of data that can help you optimise your site youll need to know where to look 
+Navigation panel
+When you log into your analytics account you will see a navigation panel on the left 
+Figure 201 The navigation panel
+You can find out more about tags by  
+visiting supportgooglecom 
+tagmanageranswer9442095hl 
+entextGoogle20Analytics20
+420properties20bridgeGoogle20
+Analytics3A20GA420Event
+NOTE

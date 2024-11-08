@@ -1,0 +1,47 @@
+637
+Tracking and analysis
+These reports can help you answer important questions such as specifying which ads had a 
+role in conversion In addition it can help you identify the paths customers take to conversion 
+showing you how much time passed between a customers first interest and conversion
+Attribution is the act of assigning credit for conversions to different ads clicks and 
+factors along a users path to completing a conversion An attribution model can be a 
+rule a set of rules or a datadriven algorithm that determines how credit for conversions 
+is assigned to touchpoints on conversion paths Read more here supportgooglecom
+analyticsanswer10607798hlenref_topic10604827zippy2Cinthisarticle
+Configuration
+The last button on the navigation panel is Configuration From this panel you can access
+	
+Events to create or modify website and app events All data in GA4 reports come from 
+events triggered by users when they interact with your site or app
+	
+Conversions events to measure the most important events Set up the most important 
+events for your business as conversion events
+	
+Audiences to create edit and archive audiences This allows you to segment your users 
+based on parameters that are important to your business 
+2043 The type of information captured
+By now you know the difference between objectives goals KPIs and targets You will be 
+focussing on KPIs when you measure data that has been captured 
+KPIs are the metrics that help you understand how well you are meeting your objectives 
+A metric is a defined unit of measurement Definitions can vary between various analytics 
+vendors depending on their approach to gathering data
+Analytics metrics are divided into 
+	
+Counts These are the raw figures that will be used for analysis
+	
+Ratios These are interpretations of the data that is counted
+Metrics can be applied to three different groupings
+1	 Aggregate All traffic to the website for a 
+defined period
+2	 Segmented A subset of all traffic according 
+to a specific filter such as by campaign 
+PPC or visitor type new user vs returning 
+user
+3	 Individual The activity of a single visitor 
+for a defined period
+One can easily be overwhelmed by data 
+Read this overview of the metrics that 
+can help you to understand your users 
+and help you to elevate your business 
+measureschoolcomga4metrics
+NOTE

@@ -1,0 +1,35 @@
+636
+
+ANALYSING
+Figure 2012 An example of an Exploration 
+Differences between Reports and Explorations
+Reports and Explorations may seem similar 
+since they both provide insights that can lead 
+to action Usually the data will be the same in 
+both Reports and Explorations but sometimes 
+they are different Typically when they differ 
+Explorations tend to be more accurate That 
+happens for the following reasons
+1	 Support different fields These two parts of GA4 give you different views at different levels 
+of granularity The same dimensions and metrics may not be supported in both 
+2	 Segments and comparisons differences Comparisons from Reports are converted to 
+segments in Explorations and any of those that are not supported will be dropped 
+3	 Date differences If you create a report with a date range outside your settings all other 
+data outside of that will be eliminated 
+4	 Amount of data If a property is collecting a lot of data Analytics can use different meth
+odologies between the two which can cause inconsistencies 
+5	 Processing time differences Since data comes from multiple different systems you may 
+notice differences over 48 hours 
+Advertising
+The third button on the navigation panel is Advertising These reports look slightly different to 
+the others Currently there are three types of reports you can access
+1	 Advertising snapshot which summarises the business metrics
+2	 Model comparison which compares how different attribution models impact the value of 
+marketing channels
+3	 Conversion paths which show the paths customers take to conversion as well as how 
+different attribution models can credit those paths 
+You can learn more about creating 
+explorations here supportgoogle
+comanalyticsanswer7579450zip
+py2Cinthisarticle
+NOTE

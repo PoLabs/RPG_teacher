@@ -1,0 +1,34 @@
+626
+
+ANALYSING
+These combinations came from 35 touchpoints including the website campaigns and other 
+marketing channels and 37 analytics points including auto buyers and smartphone users 
+The brand was able to spot relevant patterns eg consumers who bought a certain brand 
+of car were more likely to download brochures but not more likely to request test drives 
+This allowed them to segment the consumers who bought cars into those who started 
+the purchase process by downloading a brochure and those who started with a test drive
+The first group was detailoriented so ads featuring specific models with links to the 
+specifications page helped to drive conversions
+The second group wanted to know how driving the car felt they were targeted with ads 
+that appealed to their senses and included a call to action about scheduling a test drive 
+This helped to drive media efficiency and campaign performance
+204 TRACKING AND COLLECTING DATA
+Data tracking is the process of selecting specific metrics and events to track then collecting 
+organising and analysing the resulting data Once youve analysed the data you can apply 
+your insights to improve business performance and customer experience Baker 2021
+A key problem with tracking users on websites used to be that it was impossible to track 
+individual users  only individual browsers or devices  since this was done through cookies 
+If for example Levi visits the website from Chrome on his home computer and Safari on his 
+work laptop the website will think hes two different users If Nosipho visits the site from the 
+home computer also using Chromethe website will think shes the same user as Levi because 
+the cookie set when Levi visited the site will still be there
+Email opens arent tracked with cookies Instead when the images in the email load 
+a tiny 11 pixel also loads and tracks open rate This means that if the user is blocking 
+images their activity will not be tracked 
+To track if those who did open your email then visited your page or eventually converted 
+links within the email also include UTM tags UTM tags are codes in the URL that enable 
+your analytics software to track where a user has come from 
+In this link httpswwwredandyellowcoza5waysdesigncanusedempowerwomen 
+utm_sourcenewsletterutm_mediumemailutm_campaignAugNewsletter
+The campaign tracking tag appended on the end of the URL is utm_sourcenewsletter 
+utm_mediumemailutm_campaignAugNewsletter

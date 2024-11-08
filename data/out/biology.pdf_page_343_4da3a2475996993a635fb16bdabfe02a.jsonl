@@ -1,0 +1,52 @@
+Twelve Equally Likely Outcomes of Rolling a Die and Flipping a Penny
+Rolling Die
+Flipping Penny
+D5
+PH
+D5
+PT
+D6
+PH
+D6
+PT
+Table 122
+Of the 12 possible outcomes the die has a 212 or 16 probability of rolling a two and the penny has a 612
+or 12 probability of coming up heads By the product rule the probability that you will obtain the combined
+outcome 2 and heads is D2 x PH  16 x 12 or 112 Table 123 Notice the word and in the description
+of the probability The and is a signal to apply the product rule For example consider how the product rule is
+applied to the dihybrid cross the probability of having both dominant traits in the F2 progeny is the product of the
+probabilities of having the dominant trait for each characteristic as shown here
+3
+4  3
+4   9
+16
+On the other hand the sum rule of probability is applied when considering two mutually exclusive outcomes
+that can come about by more than one pathway The sum rule states that the probability of the occurrence of
+one event or the other event of two mutually exclusive events is the sum of their individual probabilities Notice
+the word or in the description of the probability The or indicates that you should apply the sum rule In this
+case lets imagine you are flipping a penny P and a quarter Q What is the probability of one coin coming
+up heads and one coin coming up tails This outcome can be achieved by two cases the penny may be heads
+PH and the quarter may be tails QT or the quarter may be heads QH and the penny may be tails PT Either
+case fulfills the outcome By the sum rule we calculate the probability of obtaining one head and one tail as
+PH  QT  QH  PT  12  12  12  12  12 Table 123 You should also notice that we
+used the product rule to calculate the probability of PH and QT and also the probability of PT and QH before we
+summed them Again the sum rule can be applied to show the probability of having just one dominant trait in the
+F2 generation of a dihybrid cross
+3
+16   3
+4   15
+16
+The Product Rule and Sum Rule
+Product Rule
+Sum Rule
+For independent events A and B the probability P
+of them both occurring A and B is PA  PB
+For mutually exclusive events A and B the probability
+P that at least one occurs A or B is PA  PB
+Table 123
+To use probability laws in practice we must work with large sample sizes because small sample sizes are prone
+to deviations caused by chance The large quantities of pea plants that Mendel examined allowed him calculate
+the probabilities of the traits appearing in his F2 generation As you will learn this discovery meant that when
+parental traits were known the offsprings traits could be predicted accurately even before fertilization
+Chapter 12  Mendels Experiments and Heredity
+333

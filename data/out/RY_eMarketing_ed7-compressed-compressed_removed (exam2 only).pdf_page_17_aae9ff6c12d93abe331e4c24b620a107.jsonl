@@ -1,0 +1,46 @@
+186
+
+CLAIMING
+Customisable navigation 
+A good CMS will allow for flexibility when creating the information architecture for a website 
+For the purposes of adding additional content for search engines a CMS should not require 
+that all content pages be linked to from the homepage navigation Responsive considerations 
+also need to be in place for mobile devices
+The CMS needs to have good support for managing SEO considerationssuch as URL 
+rewriting and avoiding duplicate content issues 
+Customisable image naming and alt tags for images A good CMS will allow you to create 
+custom alt tags and title attributes 
+robotstxt management robottxt files are txt files that restrict search engines from indexing 
+certain pages of information Ensure that you are able to customise the robotstxt to your needs 
+or that this can at least be managed using the meta tags 
+Finally using a CMS that supports standards compliant HTML and CSS is very important 
+as without it inconsistencies may be rendered across various browsers It also ensures faster 
+loading time and reduced bandwidth makes markup easier to maintain supports SEO efforts 
+and ensures that every visitor to a website no matter what browser they are using will be able 
+to see everything on the site
+745 Developing for multiple screens 
+Accessing the internet has changed drastically 
+over the last few years Desktop is no longer the 
+only or even primary means of accessing the 
+web Mobile internet usage surpassed desktop 
+in 2014 and continues to grow year on year 
+while desktop usage is declining Chaffey 2016 
+Because of this its important for all brands 
+to be accessible on mobile devices As you learnt in Chapter 6 User experience design 
+mobile devices can fall into a range of categories and not all mobile devices have the same 
+features and screen size This means that websites need to be designed to be accessible and 
+are optimised for a variety of screen sizes and devices 
+Developing for a variety of screens and mobile requires an understanding of the opportunities 
+and challenges presented by mobile technology Challenges include the obvious such as a 
+smaller screen and navigation limitations different operating systems as well as more complex 
+issues like file formats and bandwidth restrictions
+Mobile devices 
+A mobile device is a small device with computerlike functionality It allows for an internet 
+connection and various features such as Bluetooth NFC wifi and GPS These include 
+In 2021 the number of mobile users 
+worldwide stood at 71 billion and likely 
+to rise to 726 billion in 2022 In May 2022 
+the number of smartphone users globally 
+was 66 billion which is 8372 of the 
+worlds population Statista 2021
+NOTE

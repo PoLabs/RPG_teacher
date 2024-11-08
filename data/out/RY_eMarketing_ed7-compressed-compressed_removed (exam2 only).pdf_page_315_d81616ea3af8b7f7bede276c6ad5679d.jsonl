@@ -1,0 +1,56 @@
+662
+
+ANALYSING
+2143 Designing for analysis
+The purpose of running tests is to improve performance To do this you analyse your results 
+against what you expected to find and then choose the option that performed better This 
+sounds simple but how do you know what counts as better enough to warrant a change Is 
+it one more click than the other option three more clicks or should one perform 25 better 
+than the other You also need to think about chance how certain are you that the differences 
+in your results were not just coincidental These can be tricky questions to answer
+To determine which option in your split test did 
+better set parameters and assess the statistical 
+significance of your results In statistics we 
+create a null hypothesis For split tests the 
+null hypothesis is that there is no difference 
+between the performance of the two options 
+and any difference recorded is due to chance 
+You then use statistics to calculate the p value 
+which shows whether the difference was likely due to chance or not If the difference is sig
+nificant it is probably not due to chance Generally to be significant the p value should be less 
+than or equal to 005 indicating a less than 5 probability that the difference in performance 
+between the two options was due to chance
+However dont worry you do not have to be able to perform complex statistical calculations 
+Handy tools like VWOs split test significance calculator will do this for you All you have to do 
+is enter the number of users that visited your control version and the number of conversions 
+as well as the number of users that visited the variation and the number that converted The 
+calculator then provides your p value and states whether your test is significant enough to change 
+to the variation You can find the calculator here vwocomabsplittestsignificancecalculator 
+When designing your tests it is important to consider the null hypothesis and set the parameters 
+for significance By keeping these aspects in mind you will develop tests that allow for clearer 
+and easier analysis which will make the whole testing process that much more effective
+215 STEPBYSTEP GUIDE TO CONVERSION OPTIMISATION
+Proper planning is important to achieving 
+success with your conversion optimisation 
+Whatever the outcome of your test if youve 
+planned and documented carefully youll 
+always learn something Think about what is 
+bringing visitors to your site what persuaded 
+them to act and most importantly what caused 
+them to abandon your site
+The pvalue is defined as the probability 
+of getting results at least as extreme as 
+the ones you observed given that the 
+null hypothesis is correct where the 
+null hypothesis in AB testing is that the 
+variant and the control are the same
+NOTE
+You already know that conversion 
+optimisation is the practice of increasing 
+the percentage of users who perform 
+a desired action on a website Read 
+this blog on wwwhotjarcomconver
+sionrateoptimization where a usercen
+tric definition of conversion optimisation 
+is discussed
+NOTE

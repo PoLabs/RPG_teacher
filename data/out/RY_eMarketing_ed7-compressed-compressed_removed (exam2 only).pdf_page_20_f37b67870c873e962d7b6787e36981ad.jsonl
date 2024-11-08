@@ -1,0 +1,58 @@
+189
+Web development and design 
+A responsive website is not the same as an adaptive website A responsive site uses the 
+browsers screen space to determine how to reflow the original design content that was 
+probably optimised for desktop while an adaptive site provides a specifically tailored design 
+for the device you are using Designing an adaptive site requires multiple fixed layout sizes 
+usually the six most common screen widths The relevant one is deployed depending on the 
+screen size of the device 
+Many users prefer responsive design as it provides familiarity uniformity and seamlessness which 
+are important considerations in user experience Soegaard 2021 Responsive design should 
+be mobile friendly This helps to maintain usability when reflowed for a mobile devices screen 
+Adaptive designs are more labour intensive and more expensive As an approach its being 
+used less and less Although industry professionals often prefer adaptive sites industry 
+preference wont translate into higher listings on SERPs while Googles ranking methodology 
+favours responsive design 
+Creating a responsive website means you only 
+need to build one website for the full range of 
+devices from desktop to mobile This can be a 
+technically challenging exercise and will require 
+a lot of planning upfront to make sure that the 
+site displays correctly on each device 
+Here is a table that compares the relative strengths and weaknesses of each option Theres 
+no right or wrong answer on which one to pick Choose the option that best suits your brand 
+target audience and digital objectives 
+Table 74 Strengths and weaknesses of responsive and adaptive sites
+Strengths
+Weaknesses
+Mobilespecific 
+adaptive sites
+	 Design best suited to screen 
+size
+	 More aesthetically pleasing and 
+provide better UX
+	 Fully optimised for mobile
+	 Google prefers responsive sites
+	 Need at least 6 different specific 
+screensize designs
+	 Expensive 
+	 Labour intensive 
+Native app
+	 Versatile and creative tools can 
+be created
+	 Interactive and fun
+	 Can create real added value 
+through innovative approaches
+	 Not possible via a web browser
+	 Doesnt work on feature phones
+	 Different versions needed for 
+different phone makes and 
+models
+	 Entirely different and complex 
+development process
+Try visiting roxikcomcat and resize 
+your browser to see the cat change 
+shape based on the screen width This 
+is a great illustrative example of a fluid 
+responsive layout 
+NOTE

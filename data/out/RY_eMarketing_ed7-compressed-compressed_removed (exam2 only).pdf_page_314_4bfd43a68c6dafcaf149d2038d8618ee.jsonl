@@ -1,0 +1,59 @@
+661
+Conversion optimisation
+viewing that specific page Of course if you are running advertising campaigns to direct traffic 
+to the page being tested you can always spend a bit more money to increase the number of 
+users coming to that page
+You also want to determine what percentage of users will be involved in the test In a simple 
+AB test if you include 100 of your visitors in the test 50 will see version A and 50 will 
+see version B If you include only 50 of your visitors in the test this means that 25 of your 
+overall visitors will see version A and 25 will see version B Including 100 of your visitors 
+will give you results more quickly However you may be concerned that your alternative version 
+could perform worse and you dont want to compromise your performance too much 
+Change in conversion rate 
+While this is not something you will know upfront the percentage change in conversion 
+rate also affects the length of a test The greater the change the more quickly a statistically 
+significant decision can be made 
+Number of variations 
+The more variations you have the longer it will take to determine which combination performs 
+the best 
+These factors can then be used to calculate the suggested length of time for a test to run 
+There are several online calculators that do this for you A good one to try is this one offered 
+by Visual Website Optimizer vwocomtoolsabtestdurationcalculator
+Estimate test duration
+Scenario 1
+Scenario 2
+Scenario 3
+Scenario 4
+ Test combination
+2
+2
+2
+2
+ Page views per day
+200
+200
+300
+300
+ Visitors in experiment
+100
+100
+50
+50
+ Current conversion rate
+30
+30
+30
+30
+ Expected improvement
+20
+40
+20
+30
+Days duration
+401
+104
+535
+422
+Figure 216 Small changes can affect your online testing 
+It is usually preferable to test bigger changes or variations rather than very small ones unless 
+you have a very large audience 

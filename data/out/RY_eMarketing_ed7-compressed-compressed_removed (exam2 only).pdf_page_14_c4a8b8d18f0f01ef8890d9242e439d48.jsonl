@@ -1,0 +1,42 @@
+183
+Web development and design 
+Frontendclientside development languages and frameworks 
+Web users have come to expect rich interactive 
+experiences online and interactive website 
+interfaces are a part of that Frontend 
+languages or clientside languages are 
+languages that are interpreted and executed 
+in users browsers rather than on the web server 
+These experiences range from simple animations through to highly responsive interfaces that 
+require input from the user There are several technologies available to create such experiences 
+each with its own opportunities and challenges 
+As with serverside languages you need to consider a few properties of the frontend language 
+you want to use Bear in mind that serverside languages and frontend languages are often 
+used together as all web projects require frontend languages for development 
+Cost Frontend language development costs are comparatively lower than backend costs 
+although rich interface developers often demand premium rates 
+Features HTML CSS and JavaScript opensource languages are often used together and are 
+compatible with most hardware and software Content developed in these is also more search 
+engine friendly Today Flash is rarely used despite its interactive multimedia capabilities In 
+many cases richer experiences can be achieved with HTML CSS and JavaScript Your most 
+important consideration should always be what your end users will be able to view 
+Scalability Depending on the capabilities of the device executing the language certain features 
+may not be available or certain code may run too slowly to create a good user experience 
+The development of frontend code needs to take all the considered devices into account 
+Browser and OS support With frontend languages you have to cater for browser and 
+operating system support A website will look different on each browser and operating system 
+and this needs to be factored in If a feature cannot be displayed under certain conditions 
+workarounds have to be implemented A rule of thumb in web development is that a website 
+must work on Safari
+Opensource or proprietary software Any developer can create addons for or improve on 
+opensource software while proprietary software is owned and its use is restricted It can be 
+cheaper to develop in an opensource frontend language such as HTML However as HTML 
+is needed to host all web pages combinations of open source and proprietary software are 
+sometimes used This is however in most cases and for the languages we cover not a major 
+consideration 
+There are several frontend language options to choose fromalthough the most popular by 
+far is HTML coupled with CSS and JavaScript
+There are many free resources online 
+that teach you how to code One is 
+Codeacademy wwwcodeacademycom
+NOTE

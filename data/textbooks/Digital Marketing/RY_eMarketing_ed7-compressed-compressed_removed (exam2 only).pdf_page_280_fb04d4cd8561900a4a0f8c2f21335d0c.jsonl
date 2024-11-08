@@ -1,0 +1,35 @@
+627
+Tracking and analysis
+With growing consumer privacy concerns evidenced in laws like the EU Privacy Directive 
+1995 and the Protection of Personal Information Act PoPIA 2021 which requires websites to 
+disclose their cookie usagecookies started to fall out of favour making tracking more difficult 
+Googles Universal Analytics changed all of that when it was introduced in 2012 Now about 
+a decade later Google will be replacing Universal Analytics with Google Analytics 4 by mid 
+2023 Because of its dominance in the search engine market we will focus on how Google 
+will affect tracking and measurement using these models
+2041 Universal Analytics and Google Analytics 4
+When it was introduced Universal Analytics set the standard for how user data was collected 
+and organised It was designed to offer new tracking codes for websites and features to measure 
+user behaviour more accurately This however will be phased out by 1 July 2023 and Google 
+Analytics 4 will replace the measurement model
+The difference between Universal Analytics and Google Analytics 4
+According to Boon 2021 the key differences between Universal Analytics and Google Analytics4 
+GA4 are as follows
+Different measuring models 
+Universal Analytics uses a measurement model based on sessions and pageviews A session 
+is a group of user interactions hits with a website that takes place over a given timeframe A 
+session can contain multiple pageviews events and ecommerce transactions
+GA4 uses a measurement model based on events and parameters The principle here is that 
+any interaction can be captured as an event As a result all Universal Analytics hit types 
+translate to events in GA4
+Removal of monthly hit limits 
+Another significant difference between Universal Analytics and GA4 is the removal of monthly 
+hit limits The free version of Universal Analytics had a monthly limit of 10 million hits which no 
+longer exists Instead GA4 has a limit on the number of different events that can be captured 
+500 There is at the time of writing no limit as to the volume of hits that can be collected This 
+has resulted in a number of clients already opting for a GA4first approach to their analytics
+Free connection to BigQuery 
+The final difference is GA4s free connection to BigQuery Previously this feature was only 
+available to GA360 customers one of the big differentiators between the free and paid versions 
+of GA BigQuery enables very large and complex data sets to be queried very quickly and takes 
+the data out of GA that gives you the ability to interrogate it without the issue of sampling

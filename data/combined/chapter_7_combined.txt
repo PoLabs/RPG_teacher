@@ -1,0 +1,15 @@
+
+**Fantasy Chapter Name:**
+Queer Lodgings
+
+**Fantasy Chapter Summary:**
+Gandalf takes the group to the house of Beorn, a half-man, half-bear creature. Beorn provides them with food and lodging, and recommends they take the northern pass through Mirkwood, the last obstacle before the Lonely Mountain, to avoid an attack by the Wargs and goblins. Beorn and Gandalf warn the group to never stray from the path.
+
+**Textbook Chapter Name:**
+WEB DEVELOPMENT AND DESIGN
+
+**Textbook Chapter Summary:**
+Designing your website according to best practices  following the process of developing a website from start to finish.   Developing a strong  stable  and usable website.   Creating a suitable mobile web experience for your users. Enhancing user experience through design and guiding a visitor seamlessly through a website  as opposed to distracting visitors from their goals.  Ensuring consistency in visual messaging across all properties. Supporting a wide range of web browsers and mobile devices.
+
+**Sample Questions:**
+What are some key design elements you would ensure were included when designing a website?  Why is it so important to realistically assess the needs of your site before development? What do you think are the biggest challenges for optimising your design across multiple devices?  What  to you  is the most important step in web development?   What role does a website play in an overall digital marketing strategy?

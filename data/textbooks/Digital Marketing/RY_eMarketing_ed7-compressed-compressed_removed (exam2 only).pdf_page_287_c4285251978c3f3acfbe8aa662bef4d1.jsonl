@@ -1,0 +1,14 @@
+634
+
+ANALYSING
+inferring the identify of individual users based on the data in the demographic topic For 
+mobile apps data is found from the Android Advertising ID and the iOS Identifier for 
+Advertisers If these are not present Analytics cannot source the data That means the 
+data available may represent only a subset of your users and not the whole composition
+	
+Tech This topic gives insight into the technologies people use It provides information on 
+device categories namely mobile desktop and tablet devices It also gives information 
+on the type of platform used to access your app or website like web browsers Android 
+apps and iOS apps
+Figure 209 An example of the Demographics overview
+Figure 2010 An example of the Tech overview

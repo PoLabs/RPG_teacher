@@ -1,0 +1,52 @@
+191
+Web development and design 
+Web standards are managed by the W3C The standards were created to promote 
+consensus fairness public accountability and quality Complying with web standards 
+means the site uses valid code and adheres to stipulations from the W3C Read more 
+about web standards at wwww3orgstandardsabouthtml
+Mobile handset emulators allow you to see how your workinprogress website will be formatted 
+depending on which device you are emulating It has been suggested that nothing can replace 
+testing on actual mobile devices so if you are doing the testing recruit contacts with different 
+handsets to show you the difference in display 
+Some emulators are 
+	
+BrowserStack browserstackcom
+	
+TestiPhone testiphonecom 
+	
+Mobile phone emulator for Samsung iPhone and other mobilephoneemulatorcom 
+	
+Safari on the iPhone can be tested with IOS simulator 
+Responsive design 
+Responsive websites are designed for a range 
+of screen widths When deciding whether to 
+create a responsive site or adapt desktop sites 
+consider your customer first 
+	
+How much of your website traffic comes from specific mobile devices If this is a large 
+percentage consider building a responsive site designed for optimal viewing on mobile 
+screen sizes
+	
+Do your desktop users have the same goals as your mobile users Here you need to keep 
+in mind your CTAs and dropdown menus Ensure they can be accessed correctly by the 
+relevant device 
+	
+What is your budget and how quickly do you need your website to be built Responsive 
+websites take a while to build and can be expensive You could save money long term by 
+going this route but there is a sizeable upfront investment
+	
+Do you have an existing site and can it be converted into a responsive website or will it 
+need to be rebuilt Du Plessis 2012
+Responsive design comes with a fair bit of 
+terminology but you should be familiar with 
+three key concepts namely flexible grids media 
+queries and flexible images 
+Read more about responsive web design 
+here colorwhistlecomaguideto
+responsivewebsitedesign
+NOTE
+Before you continue reading check out 
+this video on creating simple flexible 
+grids in CSS using flexbox www
+youtubecomwatchvsYASH3iGNQ
+NOTE

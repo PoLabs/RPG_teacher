@@ -1,0 +1,37 @@
+498
+
+UNITING
+The look and feel 
+Studies have found that users read or scan 
+emails following an Fshape Nielsen2006 
+A followup study by the German Research 
+Center for Artificial Intelligence looked at 
+how users read text on smartphones testing 
+different layouts and paragraph lengths and 
+found that the Fshape still applies Biedert Dengel Buscher and Vartan 2012 So plan your 
+important information to follow this flow 
+Figure 1613 The Fshape still applies on smartphones with the 
+lefthand side of the screen dominating patterns
+Cluttered inboxes and busy subscribers mean an email thats lengthy and difficult to get through 
+probably wont be read Help your subscribers by structuring your email content into segments 
+making use of borders or colour blocks to accentuate and divide content Its important to 
+balance image and text in your emails Make a point of placing images next to the relevant text 
+General design guidelines 
+HTML and CSS design principles differ for 
+web and email Here are a few things to keep 
+in mind when designing your email 
+	
+Dont make use of external or embedded 
+style sheets and avoid unnecessary embedded rows and columns 
+	
+Make use of table nesting as far as possible as this is generally considered to render the 
+best results with difficult email clients Email designers tend to make use of tables to design 
+their email layout using inline styles within these tables 
+Take a look here for some free email 
+templates as a place to get started 
+wwwcampaignmonitorcomemail
+templates
+NOTE
+Read more about this in Chapter 7 Web 
+development and design
+NOTE

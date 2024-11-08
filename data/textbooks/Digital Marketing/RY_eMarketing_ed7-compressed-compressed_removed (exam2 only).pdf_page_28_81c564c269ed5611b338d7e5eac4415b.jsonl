@@ -1,0 +1,41 @@
+197
+Web development and design 
+Step 4 Testing and launch 
+Once you have planned an amazing site designed it beautifully built it skilfully and filled it 
+with fantastic copy its time to test it and then take it live 
+Testing is an important part of website development and design and it should take place 
+throughout the process of planning designing and building leaving just final quality assurance 
+QA testing before the site goes live Test subjects should be real potential users of the website 
+not just members of the development team The site needs to be tested in all common browsers 
+and devices to make sure that it looks and works as it should across all of them All links should 
+be tested to make sure that they work correctly and its always a good idea to get a final check 
+of all of the copy before it goes live 
+Tools such as W3Cs HTML validator validatorw3org should be used to validate your HTML 
+See more about testing in Section 77 Quality assurance
+Make sure your web analytics tracking tags are 
+in place after which it will be time to take your 
+site live Now you need to move on to driving 
+traffic to your newly launched site That is where 
+all the Creating tactics in this textbook come in handy 
+76 DEVELOPMENT METHODOLOGIES 
+There are different approaches to building a website The one described in this chapter Section 
+75 The web development process is the waterfall process where one step follows the other 
+This is in contrast with other methods such as the agile methodology which involves faster 
+iteration and greater collaboration but doesnt afford clients as much control and upfront clarity 
+on the deliverables and timelines 
+Discover
+Design
+Develop
+Test
+Business 
+requirements
+Technical 
+design
+Coding  
+testing
+Client OK  
+ launch
+Figure 714 The waterfall method
+Read more about this in Chapter 20 
+Tracking and analysis 
+NOTE

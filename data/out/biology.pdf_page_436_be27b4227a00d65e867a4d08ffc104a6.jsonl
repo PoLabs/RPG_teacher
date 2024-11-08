@@ -1,0 +1,56 @@
+the polypeptide chain Therefore tRNAs are the molecules that actually translate the language of RNA into the
+language of proteins
+Of the 64 possible mRNA codonsor triplet combinations of A U G and Cthree specify the termination of
+protein synthesis and 61 specify the addition of amino acids to the polypeptide chain Of these 61 one codon
+AUG also encodes the initiation of translation Each tRNA anticodon can base pair with one or more of the
+mRNA codons for its amino acid For instance if the sequence CUA occurred on an mRNA template in the
+proper reading frame it would bind a leucine tRNA expressing the complementary sequence GAU The ability
+of some tRNAs to match more than one codon is what gives the genetic code its blocky structure
+As the adaptor molecules of translation it is surprising that tRNAs can fit so much specificity into such a small
+package Consider that tRNAs need to interact with three factors 1 they must be recognized by the correct
+aminoacyl synthetase see below 2 they must be recognized by ribosomes and 3 they must bind to the
+correct sequence in mRNA
+Aminoacyl tRNA Synthetases
+The process of pretRNA synthesis by RNA polymerase III only creates the RNA portion of the adaptor molecule
+The corresponding amino acid must be added later once the tRNA is processed and exported to the cytoplasm
+Through the process of tRNA charging each tRNA molecule is linked to its correct amino acid by one of a
+group of enzymes called aminoacyl tRNA synthetases At least one type of aminoacyl tRNA synthetase exists
+for each of the 20 amino acids the exact number of aminoacyl tRNA synthetases varies by species These
+enzymes first bind and hydrolyze ATP to catalyze a highenergy bond between an amino acid and adenosine
+monophosphate AMP a pyrophosphate molecule is expelled in this reaction The activated amino acid is then
+transferred to the tRNA and AMP is released The term charging is appropriate since the highenergy bond
+that attaches an amino acid to its tRNA is later used to drive the formation of the peptide bond Each tRNA is
+named for its amino acid
+The Mechanism of Protein Synthesis
+As with mRNA synthesis protein synthesis can be divided into three phases initiation elongation and
+termination The process of translation is similar in prokaryotes and eukaryotes Here well explore how
+translation occurs in E coli a representative prokaryote and specify any differences between prokaryotic and
+eukaryotic translation
+Initiation of Translation
+Protein synthesis begins with the formation of an initiation complex In E coli this complex involves the small
+30S ribosome the mRNA template three initiation factors IFs IF1 IF2 and IF3 and a special initiator
+tRNA called tRNAMetf
+In E coli mRNA a sequence upstream of the first AUG codon called the ShineDalgarno sequence AGGAGG
+interacts with the rRNA molecules that compose the ribosome This interaction anchors the 30S ribosomal
+subunit at the correct location on the mRNA template Guanosine triphosphate GTP which is a purine
+nucleotide triphosphate acts as an energy source during translationboth at the start of elongation and during
+the ribosomes translocation Binding of the mRNA to the 30S ribosome also requires IFIII
+The initiator tRNA then interacts with the start codon AUG or rarely GUG This tRNA carries the amino
+acid methionine which is formylated after its attachment to the tRNA The formylation creates a faux peptide
+bond between the formyl carboxyl group and the amino group of the methionine Binding of the fMettRNAMetf
+is mediated by the initiation factor IF2 The fMet begins every polypeptide chain synthesized by E coli but
+it is usually removed after translation is complete When an inframe AUG is encountered during translation
+elongation a nonformylated methionine is inserted by a regular MettRNAMet After the formation of the initiation
+complex the 30S ribosomal subunit is joined by the 50S subunit to form the translation complex In eukaryotes
+a similar initiation complex forms comprising mRNA the 40S small ribosomal subunit eukaryotic IFs and
+nucleoside triphosphates GTP and ATP The methionine on the charged initiator tRNA called MettRNAi is not
+formylated However MettRNAi is distinct from other MettRNAs in that it can bind IFs
+Instead of depositing at the ShineDalgarno sequence the eukaryotic initiation complex recognizes the
+7methylguanosine cap at the 5 end of the mRNA A capbinding protein CBP and several other IFs assist the
+movement of the ribosome to the 5 cap Once at the cap the initiation complex tracks along the mRNA in the 5
+to 3 direction searching for the AUG start codon Many eukaryotic mRNAs are translated from the first AUG but
+this is not always the case According to Kozaks rules the nucleotides around the AUG indicate whether it is
+the correct start codon Kozaks rules state that the following consensus sequence must appear around the AUG
+426
+Chapter 15  Genes and Proteins
+This OpenStax book is available for free at httpcnxorgcontentcol2436118

@@ -1,0 +1,27 @@
+Building Phylogenetic Trees with Analysis of DNA Sequence
+Alignments
+All living organisms display patterns of relationships derived from their evolutionary history Phylogeny is the
+science that describes the relative connections between organisms in terms of ancestral and descendant
+species Phylogenetic trees such as the plant evolutionary history shown in Figure 267 are treelike
+branching diagrams that depict these relationships Species are found at the tips of the branches Each
+branching point called a node is the point at which a single taxonomic group taxon such as a species
+separates into two or more species
+Figure 267 Plant phylogeny This phylogenetic tree shows the evolutionary relationships of plants
+Phylogenetic trees have been built to describe the relationships between species since the first sketch of
+a tree that appeared in Darwins Origin of Species Traditional methods involve comparison of homologous
+anatomical structures and embryonic development assuming that closely related organisms share
+anatomical features that emerge during embryo development Some traits that disappear in the adult are
+present in the embryo for example an early human embryo has a postanal tail as do all members of
+the Phylum Chordata The study of fossil records shows the intermediate stages that link an ancestral
+form to its descendants However many of the approaches to classification based on the fossil record
+alone are imprecise and lend themselves to multiple interpretations As the tools of molecular biology
+and computational analysis have been developed and perfected in recent years a new generation of
+treebuilding methods has taken shape The key assumption is that genes for essential proteins or RNA
+structures such as the ribosomal RNAs are inherently conserved because mutations changes in the DNA
+sequence could possibly compromise the survival of the organism DNA from minute samples of living
+organisms or fossils can be amplified by polymerase chain reaction PCR and sequenced targeting the
+regions of the genome that are most likely to be conserved between species The genes encoding the 18S
+ribosomal RNA from the small subunit and plastid genes are frequently chosen for DNA alignment analysis
+Once the sequences of interest are obtained they are compared with existing sequences in databases
+Chapter 26  Seed Plants
+737
