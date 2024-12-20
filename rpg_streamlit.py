@@ -41,12 +41,12 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 pc = Pinecone(api_key=pinecone_api_key)
 # for openAI ADA embeddings
 #client = OpenAI(api_key=openai_api_key)
-openai.api_key = "YOUR_API_KEY"
+openai.api_key = openai_api_key
 
 # Create a client
 client = openai.Client(api_key=openai.api_key)
 
-
+print(openai_api_key)
 TOP_K = 5  # Global constant
 
 index_name_mappings = {
@@ -65,7 +65,7 @@ def get_embedding(text):
     """Generate embeddings using OpenAI API."""
     response = client.embeddings.create(
         model="text-embedding-ada-002",
-        input="Your text here"
+        input=text
     )
     embedding = response.data[0].embedding
     return embedding
