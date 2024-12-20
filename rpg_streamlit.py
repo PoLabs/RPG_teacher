@@ -35,7 +35,7 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 # for pinecone VectorDB
 pc = Pinecone(api_key=pinecone_api_key)
 # for openAI ADA embeddings
-client = OpenAI(openai_api_key=openai_api_key)
+client = OpenAI(api_key=openai_api_key)
 
 TOP_K = 5  # Global constant
 

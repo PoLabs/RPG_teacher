@@ -3,5 +3,5 @@ pandas==2.2.3
 llama-index-llms-nvidia==0.2.6
 llama-index-core==0.11.22
 tenacity==8.2.0
-openai==1.54.1
+openai==1.47.0
 pinecone==5.3.1
