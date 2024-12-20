@@ -15,7 +15,7 @@ from llama_index.core import SimpleDirectoryReader
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 import json
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
-from openai import OpenAI
+import openai
 from pinecone import Pinecone, ServerlessSpec
 
 import os
@@ -40,7 +40,8 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 # for pinecone VectorDB
 pc = Pinecone(api_key=pinecone_api_key)
 # for openAI ADA embeddings
-client = OpenAI(api_key=openai_api_key)
+#client = OpenAI(api_key=openai_api_key)
+openai.api_key = openai_api_key
 
 TOP_K = 5  # Global constant
 
@@ -58,7 +59,7 @@ index_name_mappings = {
 
 def get_embedding(text):
     """Generate embeddings using OpenAI API."""
-    response = client.embeddings.create(model="text-embedding-ada-002", input=text)
+    response = openai.embeddings.create(model="text-embedding-ada-002", input=text)
     # Access the first embedding from the response using dot notation
     embedding = response.data[0].embedding
     #print(f'embedding: {embedding}')
