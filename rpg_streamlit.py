@@ -18,6 +18,11 @@ from llama_index.core.base.llms.types import ChatMessage, MessageRole
 from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
+import os
+os.environ['NLTK_DATA'] = '/tmp/nltk_data'
+os.makedirs('/tmp/nltk_data', exist_ok=True)  # Ensure it exists and is writable
+
+
 
 nvidia_api_key = st.secrets["nvidia_api_key"]
 nvidia_stability_api_key = st.secrets["nvidia_stability_api_key"]
