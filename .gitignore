@@ -1,6 +1,7 @@
 /venv_nemo
 /venv_llamaindex
 /venv_llamaindex2
+/venv_llamaindex3
 /data/raw
 /.streamlit/secrets.toml
 /.streamlit/secrets.toml.swp
