@@ -59,10 +59,12 @@ index_name_mappings = {
 
 def get_embedding(text):
     """Generate embeddings using OpenAI API."""
-    response = openai.embeddings.create(model="text-embedding-ada-002", input=text)
-    # Access the first embedding from the response using dot notation
-    embedding = response.data[0].embedding
-    #print(f'embedding: {embedding}')
+    response = openai.Embedding.create(
+        model="text-embedding-ada-002",
+        input=text
+    )
+    # The response structure: response['data'] is a list of embeddings for each input
+    embedding = response['data'][0]['embedding']
     return embedding
 
 # Function to query Pinecone index
