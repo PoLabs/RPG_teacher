@@ -8,7 +8,7 @@ import pandas as pd
 import base64
 
 import nltk
-nltk.download('punkt', download_dir='/tmp/nltk_data')
+nltk.download('punkt')#, download_dir='/tmp/nltk_data')
 
 import requests
 from PIL import Image
