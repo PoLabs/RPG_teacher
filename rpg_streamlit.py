@@ -1062,7 +1062,7 @@ def generate_next_story_segment(user_input=None):
 
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
-        if st.button("Restart Adventure"):
+        if st.button("Restart Adventure", key=f"restart"):
             # Reset session state for a new game
             reset_app()
 
