@@ -1295,5 +1295,5 @@ else:
 
     elif st.session_state.game_stage == 'end':
         st.markdown("**Game Over:** You have completed all encounters!")
-        if st.button("Restart Adventure", key='restart2'):
+        if st.button("Restart Adventure", key='restart'):
             reset_app()
