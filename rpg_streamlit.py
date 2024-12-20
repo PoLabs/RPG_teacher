@@ -18,9 +18,9 @@ from llama_index.core.base.llms.types import ChatMessage, MessageRole
 import openai
 from pinecone import Pinecone, ServerlessSpec
 
-import os
-os.environ['NLTK_DATA'] = '/tmp/nltk_data'
-os.makedirs('/tmp/nltk_data', exist_ok=True)  # Ensure it exists and is writable
+#import os
+#os.environ['NLTK_DATA'] = '/tmp/nltk_data'
+#os.makedirs('/tmp/nltk_data', exist_ok=True)  # Ensure it exists and is writable
 
 
 
