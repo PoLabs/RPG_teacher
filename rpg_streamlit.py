@@ -41,7 +41,11 @@ Settings.llm = NVIDIA(model="meta/llama-3.1-70b-instruct")#llama-3.1-405b-instru
 pc = Pinecone(api_key=pinecone_api_key)
 # for openAI ADA embeddings
 #client = OpenAI(api_key=openai_api_key)
-openai.api_key = openai_api_key
+openai.api_key = "YOUR_API_KEY"
+
+# Create a client
+client = openai.Client(api_key=openai.api_key)
+
 
 TOP_K = 5  # Global constant
 
