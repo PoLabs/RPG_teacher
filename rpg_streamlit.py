@@ -6,6 +6,10 @@ import time
 import random
 import pandas as pd
 import base64
+
+import nltk
+nltk.download('punkt', download_dir='/tmp/nltk_data')
+
 import requests
 from PIL import Image
 from io import BytesIO
@@ -46,7 +50,6 @@ openai.api_key = openai_api_key
 # Create a client
 client = openai.Client(api_key=openai.api_key)
 
-print(openai_api_key)
 TOP_K = 5  # Global constant
 
 index_name_mappings = {
